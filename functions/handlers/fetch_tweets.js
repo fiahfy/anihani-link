@@ -45,7 +45,11 @@ const fetchTimelines = async (sinceId) => {
 }
 
 const extractTweet = (timeline) => {
-
+  const text = timeline.full_text
+  if (!text.match(/配信スケジュール[\s\S]*#ハニスト/)) {
+    return false
+  }
+  return true
 }
 
 module.exports = async () => {
@@ -53,7 +57,7 @@ module.exports = async () => {
   console.log('since: %s', sinceId)
   const timelines = await fetchTimelines(sinceId)
   console.log('fetch tweets: %s', timelines.length)
-  const tweets = timelines.map(extractTweet).filter((tweet) => !!tweet)
+  const tweets = timelines.map(extractTweet).filter((tweet) => Boolean(tweet))
   console.log('extract tweets: %s', tweets.length)
   if (!tweets.length) {
     return
