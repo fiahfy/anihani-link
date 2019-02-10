@@ -6,13 +6,18 @@
 cd functions
 yarn
 ```
+* Export config
+    ```
+    firebase functions:config:get > .runtimeconfig.json
+    ```
+* Download service account key and save as `key.json`
 
-### emulate locally (HTTP function only)
+### Emulate locally (HTTP function only)
 ```
 yarn serve
 ```
 
-### emulate locally
+### Emulate locally
 ```
 yarn shell
 ```

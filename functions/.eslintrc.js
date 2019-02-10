@@ -8,7 +8,6 @@ module.exports = {
   },
   extends: 'eslint:recommended',
   rules: {
-    // // Removed rule disallow the use of console from recommended eslint rules
     'no-console': 'off',
   }
 }
