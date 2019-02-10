@@ -1,18 +1,8 @@
 const initializeApp = require('../firebase')
+const groups = require('../data/groups.json')
 
 const app = initializeApp()
 const db = app.firestore()
-
-const groups = {
-  'animare': {
-    'name': 'Animare',
-    'name_ja': 'あにまーれ',
-  },
-  'honey-strap': {
-    'name': 'Honey Strap',
-    'name_ja': 'ハニーストラップ'
-  },
-}
 
 module.exports = async () => {
   const batch = db.batch()

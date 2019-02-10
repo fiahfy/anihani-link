@@ -1,4 +1,3 @@
-const fs = require('fs')
 const Twitter = require('twitter')
 const initializeApp = require('../firebase')
 
@@ -23,6 +22,7 @@ const Owner = {
 }
 
 const timezoneOffsetHours = -9
+const fetchCount = 20
 
 const getLatestId = async () => {
   const snapshot = await db.collection('anihani-tweets')
@@ -34,22 +34,35 @@ const getLatestId = async () => {
   return tweet.id
 }
 
-const addTimeline = async (timeline) => {
+const addTweet = async (tweet) => {
   console.log('add tweet')
-  await db.collection('anihani-tweets').add(timeline)
+  await db.collection('anihani-tweets').add(tweet)
   console.log('added row')
+}
+
+const deleteTweets = async () => {
+  console.log('delete all tweets')
+  const batch = db.batch()
+  const snapshot = await db.collection('anihani-tweets').get();
+  snapshot.docs.forEach((doc) => {
+    batch.delete(doc.ref)
+  })
+  await batch.commit()
+  console.log('deleted rows: %s', snapshot.size)
 }
 
 const updateSchedules = async ({ date, schedules }) => {
   const t = new Date(date)
-  t.setDate(t.getDate() + 1)
-  console.log('update schedule: %s -> %s', date, t)
-  const snapshot = await db.collection('anihani-schedules')
-      .where('started_at', '>=', date)
-      .where('started_at', '<', t)
-      .get();
-
+  t.setHours(t.getHours() + 6)
+  const m = new Date(t)
+  m.setDate(m.getDate() + 1)
+  // delete 6:00 -> 30:00 (JST)
+  console.log('update schedule: %s -> %s', t, m)
   const batch = db.batch()
+  const snapshot = await db.collection('anihani-schedules')
+      .where('started_at', '>=', t)
+      .where('started_at', '<', m)
+      .get();
   snapshot.docs.forEach((doc) => {
     batch.delete(doc.ref)
   })
@@ -80,12 +93,14 @@ const fetchTimelines = async (sinceId) => {
   const timelines = await client.get('statuses/user_timeline', {
     screen_name: 'hnst_official',
     tweet_mode: 'extended',
-    count: 20,
+    count: fetchCount,
     since_id: sinceId
   })
-  // fs.writeFileSync('./timeline.json', JSON.stringify(timelines));
-  // const timelines = require('../timeline.json')
-  return timelines
+  if (!timelines) {
+    return []
+  }
+  // remove tweet has since id
+  return timelines.filter((timeline) => timeline.id !== sinceId)
 }
 
 const extractSchedule = (timeline) => {
@@ -149,7 +164,6 @@ const extractSchedule = (timeline) => {
       const minute = Number(match[3])
 
       const ownerId = Owner[member] || null
-      console.log(`${member},${ownerId}`)
       const title = member
       const description = match[4] || null
       const startedAt = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), hour, minute))
@@ -170,6 +184,9 @@ const extractSchedule = (timeline) => {
 }
 
 module.exports = async ({ force }) => {
+  if (force) {
+    await deleteTweets()
+  }
   const sinceId = await getLatestId()
   console.log('fetch tweets since: %s', sinceId)
   const timelines = await fetchTimelines(sinceId)
@@ -185,5 +202,5 @@ module.exports = async ({ force }) => {
   for (let schedule of schedules) {
     await updateSchedules(schedule)
   }
-  await addTimeline(timelines[0])
+  await addTweet(timelines[0])
 }

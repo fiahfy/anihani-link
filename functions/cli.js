@@ -13,8 +13,23 @@ const updateMembers = require('./actions/update_members')
 
 ;(async () => {
   try {
-    // await fetchTweetsHandler()
-    await updateMembers()
+    const [, , command, ...options] = process.argv
+    switch (command) {
+      case 'group':
+        await updateGroups()
+        break
+      case 'member':
+        await updateMembers()
+        break
+      case 'schedule': {
+        const force = options.includes('--force')
+        await updateSchedules({ force })
+        break
+      }
+      default:
+        console.error('invalid command')
+        break
+    }
   } catch (e) {
     console.error(e)
   }
