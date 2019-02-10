@@ -4,15 +4,6 @@ const initializeApp = require('../firebase')
 const app = initializeApp()
 const db = app.firestore()
 
-const TwitterAccount = {
-    Animare: {
-      id: ''
-    },
-    HoneyStrap: {
-      id: 1007247110167674900
-    }
-}
-
 const Owner = {
   'パトラ': 'patra-suo',
   'シャル': 'charlotte-shimamura',
@@ -24,12 +15,20 @@ const Owner = {
 const timezoneOffsetHours = -9
 const fetchCount = 20
 
-const getLatestId = async () => {
+const getGroup = async (groupId) => {
+  const snapshot = await db.collection('anihani-groups')
+    .doc(groupId)
+    .get();
+  const group = snapshot.data()
+  return group
+}
+
+const getLatestId = async (twitterId) => {
   const snapshot = await db.collection('anihani-tweets')
-      .where('user.id', '==', TwitterAccount.HoneyStrap.id)
-      .orderBy('id', 'desc')
-      .limit(1)
-      .get();
+    .where('user.id_str', '==', twitterId)
+    .orderBy('id', 'desc')
+    .limit(1)
+    .get();
   const tweet = snapshot.docs.map((doc) => doc.data())[0] || {}
   return tweet.id
 }
@@ -40,10 +39,12 @@ const addTweet = async (tweet) => {
   console.log('added row')
 }
 
-const deleteTweets = async () => {
+const deleteTweets = async (twitterId) => {
   console.log('delete all tweets')
   const batch = db.batch()
-  const snapshot = await db.collection('anihani-tweets').get();
+  const snapshot = await db.collection('anihani-tweets')
+    .where('user.id_str', '==', twitterId)
+    .get();
   snapshot.docs.forEach((doc) => {
     batch.delete(doc.ref)
   })
@@ -51,7 +52,7 @@ const deleteTweets = async () => {
   console.log('deleted rows: %s', snapshot.size)
 }
 
-const updateSchedules = async ({ date, schedules }) => {
+const updateSchedules = async (groupId, { date, schedules }) => {
   const t = new Date(date)
   t.setHours(t.getHours() + 6)
   const m = new Date(t)
@@ -60,9 +61,10 @@ const updateSchedules = async ({ date, schedules }) => {
   console.log('update schedule: %s -> %s', t, m)
   const batch = db.batch()
   const snapshot = await db.collection('anihani-schedules')
-      .where('started_at', '>=', t)
-      .where('started_at', '<', m)
-      .get();
+    .where('group', '==', db.collection('anihani-groups').doc(groupId))
+    .where('started_at', '>=', t)
+    .where('started_at', '<', m)
+    .get();
   snapshot.docs.forEach((doc) => {
     batch.delete(doc.ref)
   })
@@ -70,6 +72,7 @@ const updateSchedules = async ({ date, schedules }) => {
     const ref = db.collection('anihani-schedules').doc()
     batch.set(ref, {
       owner: s.ownerId ? db.collection('anihani-members').doc(s.ownerId) : null,
+      group: db.collection('anihani-groups').doc(groupId),
       title: s.title,
       description: s.description,
       started_at: s.startedAt,
@@ -83,7 +86,7 @@ const updateSchedules = async ({ date, schedules }) => {
   console.log('added rows: %s', schedules.length)
 }
 
-const fetchTimelines = async (sinceId) => {
+const fetchTimelines = async (screenName, sinceId) => {
   const client = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -91,7 +94,7 @@ const fetchTimelines = async (sinceId) => {
     access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
   })
   const timelines = await client.get('statuses/user_timeline', {
-    screen_name: 'hnst_official',
+    screen_name: screenName,
     tweet_mode: 'extended',
     count: fetchCount,
     since_id: sinceId
@@ -108,7 +111,7 @@ const extractSchedule = (timeline) => {
   let text = timeline.full_text
   let reg, match
 
-  reg = /配信スケジュール.*\n([\s\S]*)#ハニスト/
+  reg = /配信スケジュール.*\n([\s\S]*)#(あにまーれ|ハニスト)/
   match = reg.exec(text)
   if (!match) {
     return false
@@ -183,14 +186,31 @@ const extractSchedule = (timeline) => {
   })
 }
 
-module.exports = async ({ force }) => {
-  if (force) {
-    await deleteTweets()
+module.exports = async ({ groupId, force }) => {
+  if (!groupId) {
+    console.log('group id not specified')
+    return
   }
-  const sinceId = await getLatestId()
+
+  const group = await getGroup(groupId)
+  if (!group) {
+    console.log('group not found: %s', groupId)
+    return
+  }
+
+  if (force) {
+    await deleteTweets(group.twitter.id_str)
+  }
+
+  const sinceId = await getLatestId(group.twitter.id_str)
   console.log('fetch tweets since: %s', sinceId)
-  const timelines = await fetchTimelines(sinceId)
+
+  const timelines = await fetchTimelines(group.twitter.screen_name, sinceId)
   console.log('fetched tweets: %s', timelines.length)
+  if (!timelines.length) {
+    return
+  }
+
   const schedules = timelines.map(extractSchedule)
     .filter((schedule) => Boolean(schedule))
     .reverse()
@@ -199,8 +219,10 @@ module.exports = async ({ force }) => {
   if (!schedules.length) {
     return
   }
+
   for (let schedule of schedules) {
-    await updateSchedules(schedule)
+    await updateSchedules(groupId, schedule)
   }
+
   await addTweet(timelines[0])
 }

@@ -1,10 +1,18 @@
 {
   "animare": {
     "name": "Animare",
-    "name_ja": "あにまーれ"
+    "name_ja": "あにまーれ",
+    "twitter": {
+      "id_str": "993839162099810305",
+      "screen_name": "AniMare_cafe"
+    }
   },
   "honey-strap": {
     "name": "Honey Strap",
-    "name_ja": "ハニーストラップ"
+    "name_ja": "ハニーストラップ",
+    "twitter": {
+      "id_str": "1007247110167674881",
+      "screen_name": "HNST_official"
+    }
   }
 }

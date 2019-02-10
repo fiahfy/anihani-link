@@ -23,7 +23,8 @@ const updateMembers = require('./actions/update_members')
         break
       case 'schedule': {
         const force = options.includes('--force')
-        await updateSchedules({ force })
+        const groupId = options[options.indexOf('-g') + 1]
+        await updateSchedules({ groupId, force })
         break
       }
       default:
