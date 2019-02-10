@@ -7,6 +7,9 @@ process.env.TWITTER_ACCESS_TOKEN_SECRET = ''
 
 const updateSchedules = require('./actions/update_schedules')
 
-exports.fetchTweets = functions.https.onRequest(async () => {
-  await updateSchedules()
-})
+exports.fetchTweets = functions
+  .region('asia-northeast1')
+  .https.onRequest(async () => {
+    await updateSchedules({ groupId: 'animare' })
+    await updateSchedules({ groupId: 'honey-strap' })
+  })
