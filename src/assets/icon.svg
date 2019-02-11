@@ -1,0 +1,20 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  x="0"
+  y="0"
+  width="512"
+  height="512"
+>
+  <polygon
+    points="0 0, 235 0, 235 235, 0 235"
+    fill="#8bc34a"
+  />
+  <polygon
+    points="277 0, 512 0, 512 235, 277 235"
+    fill="#8bc34a"
+  />
+  <polygon
+    points="0 277, 235 277, 235 512, 0 512"
+    fill="#8bc34a"
+  />
+</svg>

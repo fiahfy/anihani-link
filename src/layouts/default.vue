@@ -1,0 +1,138 @@
+<template>
+  <v-app>
+    <v-navigation-drawer v-model="drawer" app>
+      <v-toolbar flat>
+        <v-toolbar-side-icon @click.stop="drawer = !drawer" />
+        <v-toolbar-title>Title</v-toolbar-title>
+      </v-toolbar>
+      <v-divider />
+      <v-list dense>
+        <v-list dense>
+          <v-list-tile
+            v-for="tab in tabs"
+            :key="tab.name"
+            @click="(e) => onListClick(e, tab)"
+          >
+            <v-list-tile-action>
+              <v-icon color="primary">{{ tab.icon }}</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title v-text="tab.title" />
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+        <v-list dense>
+          <v-list-tile href="https://github.com/fiahfy/paddy">
+            <v-list-tile-action>
+              <img src="~/assets/github-mark.svg" height="24" width="24" />
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>GitHub</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-toolbar app>
+      <v-toolbar-side-icon
+        class="hidden-xs-only"
+        @click.stop="drawer = !drawer"
+      />
+      <v-toolbar-title>Title</v-toolbar-title>
+    </v-toolbar>
+
+    <v-content class="fill-height">
+      <nuxt />
+    </v-content>
+
+    <v-footer app mandatory height="56" class="hidden-sm-and-up">
+      <v-bottom-nav :active.sync="activeIndex" :value="true">
+        <v-btn
+          v-for="(tab, index) of tabs"
+          :key="tab.name"
+          color="primary"
+          flat
+          :value="index"
+          @click="(e) => onTabClick(e, tab)"
+        >
+          <span>{{ tab.title }}</span>
+          <v-icon>{{ tab.icon }}</v-icon>
+        </v-btn>
+      </v-bottom-nav>
+    </v-footer>
+  </v-app>
+</template>
+
+<script>
+import { mapGetters, mapMutations, mapState } from 'vuex'
+
+export default {
+  components: {},
+  data() {
+    return {
+      drawer: false,
+      activeIndex: 0,
+      tabs: [
+        {
+          title: 'Schedule',
+          icon: 'schedule',
+          name: 'index'
+        },
+        {
+          title: 'Member',
+          icon: 'account_circle',
+          name: 'members'
+        }
+      ]
+    }
+  },
+  computed: {
+    title() {
+      const date = new Date(this.month)
+      return date.toLocaleString('en-US', { month: 'long', year: 'numeric' })
+    },
+    today() {
+      return new Date(this.now).getDate()
+    },
+    ...mapState([]),
+    ...mapGetters([])
+  },
+  created() {
+    this.activeIndex = this.tabs.findIndex(
+      (tab) => tab.name === this.$route.name
+    )
+  },
+  methods: {
+    getClasses(category) {
+      return {
+        'primary--text': category.id === this.category.id
+      }
+    },
+    onListClick(e, tab) {
+      this.$router.push({ name: tab.name })
+    },
+    onTabClick(e, tab) {
+      this.$router.push({ name: tab.name })
+    },
+    ...mapMutations([])
+  }
+}
+</script>
+
+<style scoped>
+.application >>> .application--wrap {
+  min-height: unset;
+}
+.v-item-group.v-bottom-nav .v-btn--active {
+  padding-top: 8px;
+}
+.v-item-group.v-bottom-nav .v-btn--active >>> .v-btn__content {
+  font-size: 12px;
+}
+@media only screen and (min-width: 600px) {
+  .v-content {
+    padding-bottom: 0 !important;
+  }
+}
+</style>
