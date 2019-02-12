@@ -48,6 +48,12 @@ module.exports = {
   modules: [
     ['@nuxtjs/dotenv', { path: process.cwd() }],
     [
+      '@nuxtjs/google-analytics',
+      {
+        id: 'XXXXX'
+      }
+    ],
+    [
       '@nuxtjs/pwa',
       {
         manifest: {
