@@ -95,7 +95,7 @@ export default {
       .where('started_at', '>', yesterday)
       .orderBy('started_at', 'asc')
       .get()
-    this.daySchedulesa = schedulesSnapshot.docs
+    this.daySchedules = schedulesSnapshot.docs
       .map((doc) => {
         let owner = doc.data().owner
         if (owner) {
