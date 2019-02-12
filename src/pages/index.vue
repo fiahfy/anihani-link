@@ -1,5 +1,5 @@
 <template>
-  <v-container fill-height scroll-y pa-0>
+  <v-container fill-height>
     <v-layout v-if="daySchedules.length" row>
       <v-flex xs12>
         <v-card>
@@ -40,15 +40,19 @@
       </v-flex>
     </v-layout>
     <v-layout v-else fill-height align-center justify-center>
-      <v-flex>
-        <div class="text-xs-center">
-          <v-icon size="128" color="grey lighten-2">error</v-icon>
-          <p class="subheading">No Schedules</p>
-          <p class="caption">
-            No data or No good.
-          </p>
-        </div>
-      </v-flex>
+      <v-progress-circular
+        v-if="loading"
+        indeterminate
+        color="primary"
+        size="64"
+      />
+      <div v-else class="text-xs-center">
+        <v-icon size="128" color="grey lighten-2">error</v-icon>
+        <p class="subheading">No Schedules</p>
+        <p class="caption">
+          No data or No good.
+        </p>
+      </div>
     </v-layout>
   </v-container>
 </template>
@@ -75,6 +79,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       daySchedules: []
     }
   },
@@ -129,6 +134,7 @@ export default {
           }
         ]
       }, [])
+    this.loading = false
   }
 }
 </script>

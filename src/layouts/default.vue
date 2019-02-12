@@ -1,40 +1,28 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" app>
-      <v-toolbar flat>
-        <v-toolbar-side-icon @click.stop="drawer = !drawer" />
-        <v-toolbar-title>Title</v-toolbar-title>
-      </v-toolbar>
-      <v-divider />
+    <v-navigation-drawer v-model="drawer" app clipped>
       <v-list dense>
-        <v-list dense>
-          <v-list-tile
-            v-for="tab in tabs"
-            :key="tab.name"
-            @click="(e) => onListClick(e, tab)"
-          >
-            <v-list-tile-action>
-              <v-icon color="primary">{{ tab.icon }}</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title v-text="tab.title" />
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-        <v-list dense>
-          <v-list-tile href="https://github.com/fiahfy/paddy">
-            <v-list-tile-action>
-              <img src="~/assets/github-mark.svg" height="24" width="24" />
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>GitHub</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
+        <v-list-tile v-for="tab in tabs" :key="tab.name" :to="tab.path">
+          <v-list-tile-action>
+            <v-icon>{{ tab.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title v-text="tab.title" />
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile href="https://github.com/fiahfy/paddy">
+          <v-list-tile-action>
+            <img src="~/assets/github-mark.svg" height="24" width="24" />
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>GitHub</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar app>
+    <v-toolbar app clipped-left>
       <v-toolbar-side-icon
         class="hidden-xs-only"
         @click.stop="drawer = !drawer"
@@ -42,7 +30,7 @@
       <v-toolbar-title>Title</v-toolbar-title>
     </v-toolbar>
 
-    <v-content class="fill-height">
+    <v-content class="fill-height scroll-y">
       <nuxt />
     </v-content>
 
@@ -71,18 +59,20 @@ export default {
   components: {},
   data() {
     return {
-      drawer: false,
+      drawer: null,
       activeIndex: 0,
       tabs: [
         {
           title: 'Schedule',
           icon: 'schedule',
-          name: 'index'
+          name: 'index',
+          path: '/'
         },
         {
           title: 'Member',
           icon: 'account_circle',
-          name: 'members'
+          name: 'members',
+          path: '/members'
         }
       ]
     }
@@ -109,11 +99,8 @@ export default {
         'primary--text': category.id === this.category.id
       }
     },
-    onListClick(e, tab) {
-      this.$router.push({ name: tab.name })
-    },
     onTabClick(e, tab) {
-      this.$router.push({ name: tab.name })
+      this.$router.push(tab.path)
     },
     ...mapMutations([])
   }
@@ -121,18 +108,20 @@ export default {
 </script>
 
 <style scoped>
-.application >>> .application--wrap {
-  min-height: unset;
+@media only screen and (min-width: 600px) {
+  .v-content {
+    padding-bottom: 0 !important;
+  }
+}
+@media only screen and (min-width: 1264px) {
+  .v-navigation-drawer {
+    max-height: calc(100% - 64px) !important;
+  }
 }
 .v-item-group.v-bottom-nav .v-btn--active {
   padding-top: 8px;
 }
 .v-item-group.v-bottom-nav .v-btn--active >>> .v-btn__content {
   font-size: 12px;
-}
-@media only screen and (min-width: 600px) {
-  .v-content {
-    padding-bottom: 0 !important;
-  }
 }
 </style>

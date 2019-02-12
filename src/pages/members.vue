@@ -1,5 +1,5 @@
 <template>
-  <v-container fill-height scroll-y pa-0>
+  <v-container fill-height>
     <v-layout column>
       <v-card
         v-for="member of members"
