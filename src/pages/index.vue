@@ -1,15 +1,13 @@
 <template>
   <v-container fill-height>
-    <v-layout v-if="schedules.length" row>
-      <v-flex xs12>
-        <v-card>
-          <schedule-list
-            v-for="(schedule, index) of schedules"
-            :key="index"
-            :schedule="schedule"
-          />
-        </v-card>
-      </v-flex>
+    <v-layout v-if="schedules.length" column>
+      <v-card>
+        <schedule-list
+          v-for="(schedule, index) of schedules"
+          :key="index"
+          :schedule="schedule"
+        />
+      </v-card>
     </v-layout>
     <v-layout v-else fill-height align-center justify-center>
       <v-progress-circular v-if="loading" indeterminate color="primary" />
