@@ -7,12 +7,11 @@
     </v-list-tile-avatar>
 
     <v-list-tile-content>
-      <v-list-tile-title
-        v-text="schedule.owner ? schedule.owner.name_ja : schedule.title"
-      />
-      <v-list-tile-sub-title>
-        <span>{{ time }}-</span>
-      </v-list-tile-sub-title>
+      <v-list-tile-sub-title>{{ startedAt }} - </v-list-tile-sub-title>
+      <v-list-tile-title>
+        <span v-text="title" />
+        <span class="caption ml-1" v-text="schedule.description" />
+      </v-list-tile-title>
     </v-list-tile-content>
   </v-list-tile>
 </template>
@@ -26,7 +25,12 @@ export default {
     }
   },
   computed: {
-    time() {
+    title() {
+      return this.schedule.owner
+        ? this.schedule.owner.name_ja
+        : this.schedule.title
+    },
+    startedAt() {
       const d = this.schedule.started_at.toDate()
       return d.toLocaleTimeString(window.navigator.language, {
         hour: 'numeric',

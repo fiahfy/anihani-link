@@ -1,6 +1,6 @@
 <template>
   <v-list subheader two-line>
-    <v-subheader>{{ headline }}</v-subheader>
+    <v-subheader v-text="headline" />
 
     <template v-for="(s, index) of schedule.schedules">
       <v-divider v-if="index !== 0" :key="index" inset />
@@ -25,7 +25,7 @@ export default {
   computed: {
     headline() {
       const d = new Date(this.schedule.date)
-      return d.toLocaleString(window.navigator.language, {
+      return d.toLocaleDateString(window.navigator.language, {
         weekday: 'short',
         day: 'numeric',
         month: 'short'
