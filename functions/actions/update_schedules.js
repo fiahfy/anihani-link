@@ -5,6 +5,10 @@ const app = initializeApp()
 const db = app.firestore()
 
 const Owner = {
+  'はねる': 'haneru-inaba',
+  'ひなこ': 'hinako-umori',
+  'いちか': 'ichika-soya',
+  'らん': 'ran-hinokuma',
   'パトラ': 'patra-suo',
   'シャル': 'charlotte-shimamura',
   'エリ': 'eli-sogetsu',

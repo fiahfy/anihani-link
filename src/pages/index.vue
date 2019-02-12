@@ -1,15 +1,15 @@
 <template>
   <v-container fill-height scroll-y pa-0>
-    <v-layout row>
+    <v-layout v-if="daySchedules.length" row>
       <v-flex xs12>
         <v-card>
           <v-list two-line>
             <template v-for="daySchedule of daySchedules">
               <v-subheader :key="daySchedule.timestamp">
-                {{ daySchedule.timestamp }}
+                {{ daySchedule.timestamp | headline }}
               </v-subheader>
 
-              <template v-for="schedule of daySchedule.schedules">
+              <template v-for="(schedule, index) of daySchedule.schedules">
                 <v-list-tile :key="schedule.id" avatar @click="">
                   <v-list-tile-avatar>
                     <img
@@ -18,17 +18,36 @@
                   </v-list-tile-avatar>
 
                   <v-list-tile-content>
-                    <v-list-tile-title v-text="schedule.id" />
-                    <v-list-tile-sub-title
-                      v-html="schedule.description"
-                    ></v-list-tile-sub-title>
+                    <v-list-tile-title
+                      v-text="
+                        schedule.owner ? schedule.owner.name_ja : schedule.title
+                      "
+                    />
+                    <v-list-tile-sub-title>
+                      <span>{{ schedule.started_at | time }}-</span>
+                    </v-list-tile-sub-title>
                   </v-list-tile-content>
                 </v-list-tile>
-                <v-divider :key="`${schedule.id}-divider`" inset />
+                <v-divider
+                  v-if="index !== daySchedule.schedules.length - 1"
+                  :key="`${schedule.id}-divider`"
+                  inset
+                />
               </template>
             </template>
           </v-list>
         </v-card>
+      </v-flex>
+    </v-layout>
+    <v-layout v-else fill-height align-center justify-center>
+      <v-flex>
+        <div class="text-xs-center">
+          <v-icon size="128" color="grey lighten-2">error</v-icon>
+          <p class="subheading">No Schedules</p>
+          <p class="caption">
+            No data or No good.
+          </p>
+        </div>
       </v-flex>
     </v-layout>
   </v-container>
@@ -36,29 +55,56 @@
 
 <script>
 export default {
+  filters: {
+    headline(value) {
+      const d = new Date(value)
+      return d.toLocaleString(window.navigator.language, {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short'
+      })
+    },
+    time(value) {
+      const d = value.toDate()
+      return (
+        ('00' + d.getHours()).slice(-2) +
+        ':' +
+        ('00' + d.getMinutes()).slice(-2)
+      )
+    }
+  },
   data() {
     return {
       daySchedules: []
     }
   },
   async created() {
+    const membersSnapshot = await this.$db.collection('anihani-members').get()
+    const members = membersSnapshot.docs.reduce((carry, doc) => {
+      return {
+        ...carry,
+        [doc.id]: doc.data()
+      }
+    }, {})
+
     const d = new Date()
-    const yesterday = new Date(d.getFullYear(), d.getMonth(), d.getDate() - 1)
-    const snapshot = await this.$db
+    const yesterday = new Date(d.getFullYear(), d.getMonth(), d.getDate() - 2)
+
+    const schedulesSnapshot = await this.$db
       .collection('anihani-schedules')
       .where('started_at', '>', yesterday)
       .orderBy('started_at', 'asc')
       .get()
-    this.daySchedules = snapshot.docs
+    this.daySchedulesa = schedulesSnapshot.docs
       .map((doc) => {
-        const owner = doc.data().owner
+        let owner = doc.data().owner
         if (owner) {
-          // const o = await db.collection('anihani-members').doc(doc.data().owner).get()
-          // console.log(o.data())
+          owner = members[owner.id]
         }
         return {
           ...doc.data(),
-          id: doc.id
+          id: doc.id,
+          owner
         }
       })
       .reduce((carry, schedule) => {
