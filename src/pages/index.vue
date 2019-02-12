@@ -36,7 +36,7 @@ export default {
     }
   },
   async created() {
-    const membersSnapshot = await this.$db.collection('anihani-members').get()
+    const membersSnapshot = await this.$db.collection('members').get()
     const members = membersSnapshot.docs.reduce((carry, doc) => {
       return {
         ...carry,
@@ -48,7 +48,7 @@ export default {
     const yesterday = new Date(d.getFullYear(), d.getMonth(), d.getDate() - 2)
 
     const schedulesSnapshot = await this.$db
-      .collection('anihani-schedules')
+      .collection('schedules')
       .where('started_at', '>', yesterday)
       .orderBy('started_at', 'asc')
       .get()

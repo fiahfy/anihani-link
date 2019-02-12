@@ -68,7 +68,7 @@ export default {
     }
   },
   async created() {
-    const snapshot = await this.$db.collection('anihani-members').get()
+    const snapshot = await this.$db.collection('members').get()
     this.members = snapshot.docs.map((doc) => {
       return { ...doc.data(), id: doc.id }
     })

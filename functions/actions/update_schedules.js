@@ -21,7 +21,7 @@ const fetchCount = 20
 
 const getGroup = async (groupId) => {
   const snapshot = await db
-    .collection('anihani-groups')
+    .collection('groups')
     .doc(groupId)
     .get()
   const group = snapshot.data()
@@ -30,7 +30,7 @@ const getGroup = async (groupId) => {
 
 const getLatestId = async (twitterId) => {
   const snapshot = await db
-    .collection('anihani-tweets')
+    .collection('tweets')
     .where('user.id_str', '==', twitterId)
     .orderBy('id', 'desc')
     .limit(1)
@@ -41,7 +41,7 @@ const getLatestId = async (twitterId) => {
 
 const addTweet = async (tweet) => {
   console.log('add tweet')
-  await db.collection('anihani-tweets').add(tweet)
+  await db.collection('tweets').add(tweet)
   console.log('added row')
 }
 
@@ -49,7 +49,7 @@ const deleteTweets = async (twitterId) => {
   console.log('delete all tweets')
   const batch = db.batch()
   const snapshot = await db
-    .collection('anihani-tweets')
+    .collection('tweets')
     .where('user.id_str', '==', twitterId)
     .get()
   snapshot.docs.forEach((doc) => {
@@ -68,8 +68,8 @@ const updateSchedules = async (groupId, { date, schedules }) => {
   console.log('update schedule: %s -> %s', t, m)
   const batch = db.batch()
   const snapshot = await db
-    .collection('anihani-schedules')
-    .where('group', '==', db.collection('anihani-groups').doc(groupId))
+    .collection('schedules')
+    .where('group', '==', db.collection('groups').doc(groupId))
     .where('started_at', '>=', t)
     .where('started_at', '<', m)
     .get()
@@ -77,10 +77,10 @@ const updateSchedules = async (groupId, { date, schedules }) => {
     batch.delete(doc.ref)
   })
   for (let s of schedules) {
-    const ref = db.collection('anihani-schedules').doc()
+    const ref = db.collection('schedules').doc()
     batch.set(ref, {
-      owner: s.ownerId ? db.collection('anihani-members').doc(s.ownerId) : null,
-      group: db.collection('anihani-groups').doc(groupId),
+      owner: s.ownerId ? db.collection('members').doc(s.ownerId) : null,
+      group: db.collection('groups').doc(groupId),
       title: s.title,
       description: s.description,
       started_at: s.startedAt,
