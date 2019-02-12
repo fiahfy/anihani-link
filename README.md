@@ -28,8 +28,18 @@ For detailed explanation on how things work, checkout the [Nuxt.js docs](https:/
 ```
 # functions (all functions)
 firebase deploy --only functions
+# functions (specified function)
+firebase deploy --only functions:function1
+
+# storage
+firebase deploy --only storage
+
 # firestore (rules and indexes)
 firebase deploy --only firestore
+# firestore (rules)
+firebase deploy --only firestore:rules
+# firestore (indexes)
+firebase deploy --only firestore:indexes
 ```
 
 ### Import functions config
