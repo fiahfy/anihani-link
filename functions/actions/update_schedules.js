@@ -5,34 +5,36 @@ const app = initializeApp()
 const db = app.firestore()
 
 const Owner = {
-  'はねる': 'haneru-inaba',
-  'ひなこ': 'hinako-umori',
-  'いちか': 'ichika-soya',
-  'らん': 'ran-hinokuma',
-  'パトラ': 'patra-suo',
-  'シャル': 'charlotte-shimamura',
-  'エリ': 'eli-sogetsu',
-  'ミコ': 'mico-sekishiro',
-  'メアリ': 'mary-saionji',
+  はねる: 'haneru-inaba',
+  ひなこ: 'hinako-umori',
+  いちか: 'ichika-soya',
+  らん: 'ran-hinokuma',
+  パトラ: 'patra-suo',
+  シャル: 'charlotte-shimamura',
+  エリ: 'eli-sogetsu',
+  ミコ: 'mico-sekishiro',
+  メアリ: 'mary-saionji'
 }
 
 const timezoneOffsetHours = -9
 const fetchCount = 20
 
 const getGroup = async (groupId) => {
-  const snapshot = await db.collection('anihani-groups')
+  const snapshot = await db
+    .collection('anihani-groups')
     .doc(groupId)
-    .get();
+    .get()
   const group = snapshot.data()
   return group
 }
 
 const getLatestId = async (twitterId) => {
-  const snapshot = await db.collection('anihani-tweets')
+  const snapshot = await db
+    .collection('anihani-tweets')
     .where('user.id_str', '==', twitterId)
     .orderBy('id', 'desc')
     .limit(1)
-    .get();
+    .get()
   const tweet = snapshot.docs.map((doc) => doc.data())[0] || {}
   return tweet.id
 }
@@ -46,9 +48,10 @@ const addTweet = async (tweet) => {
 const deleteTweets = async (twitterId) => {
   console.log('delete all tweets')
   const batch = db.batch()
-  const snapshot = await db.collection('anihani-tweets')
+  const snapshot = await db
+    .collection('anihani-tweets')
     .where('user.id_str', '==', twitterId)
-    .get();
+    .get()
   snapshot.docs.forEach((doc) => {
     batch.delete(doc.ref)
   })
@@ -64,11 +67,12 @@ const updateSchedules = async (groupId, { date, schedules }) => {
   // delete 6:00 -> 30:00 (JST)
   console.log('update schedule: %s -> %s', t, m)
   const batch = db.batch()
-  const snapshot = await db.collection('anihani-schedules')
+  const snapshot = await db
+    .collection('anihani-schedules')
     .where('group', '==', db.collection('anihani-groups').doc(groupId))
     .where('started_at', '>=', t)
     .where('started_at', '<', m)
-    .get();
+    .get()
   snapshot.docs.forEach((doc) => {
     batch.delete(doc.ref)
   })
@@ -81,8 +85,8 @@ const updateSchedules = async (groupId, { date, schedules }) => {
       description: s.description,
       started_at: s.startedAt,
       published_at: s.publishedAt,
-      created_at: new Date,
-      updated_at: new Date
+      created_at: new Date(),
+      updated_at: new Date()
     })
   }
   await batch.commit()
@@ -120,7 +124,7 @@ const extractSchedule = (timeline) => {
   if (!match) {
     return false
   }
-  [, text] = match
+  ;[, text] = match
 
   let matches = []
   let index = 0
@@ -142,15 +146,18 @@ const extractSchedule = (timeline) => {
     const month = Number(match[2])
     const date = Number(match[3])
 
-    const d = new Date
+    const d = new Date()
     let year = d.getFullYear()
     if (d.getMonth() + 1 === 12 && month === 1) {
       year += 1 // next year
     }
 
-    matches = [...matches, {
-      date: new Date(Date.UTC(year, month - 1, date, timezoneOffsetHours))
-    }]
+    matches = [
+      ...matches,
+      {
+        date: new Date(Date.UTC(year, month - 1, date, timezoneOffsetHours))
+      }
+    ]
   }
   if (!matches.length) {
     return false
@@ -173,15 +180,26 @@ const extractSchedule = (timeline) => {
       const ownerId = Owner[member] || null
       const title = member
       const description = match[4] || null
-      const startedAt = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), hour, minute))
+      const startedAt = new Date(
+        Date.UTC(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
+          hour,
+          minute
+        )
+      )
 
-      schedules = [...schedules, {
-        ownerId,
-        title,
-        description,
-        startedAt,
-        publishedAt
-      }]
+      schedules = [
+        ...schedules,
+        {
+          ownerId,
+          title,
+          description,
+          startedAt,
+          publishedAt
+        }
+      ]
     }
     return {
       date,
@@ -215,7 +233,8 @@ module.exports = async ({ groupId, force }) => {
     return
   }
 
-  const schedules = timelines.map(extractSchedule)
+  const schedules = timelines
+    .map(extractSchedule)
     .filter((schedule) => Boolean(schedule))
     .reverse()
     .reduce((previous, current) => [...previous, ...current], [])
