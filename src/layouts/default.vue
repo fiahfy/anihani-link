@@ -1,22 +1,13 @@
 <template>
   <v-app>
     <v-navigation-drawer v-model="drawer" app clipped>
-      <v-list dense>
+      <v-list>
         <v-list-tile v-for="tab in tabs" :key="tab.name" :to="tab.path">
           <v-list-tile-action>
             <v-icon>{{ tab.icon }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title v-text="tab.title" />
-          </v-list-tile-content>
-        </v-list-tile>
-
-        <v-list-tile href="https://github.com/fiahfy/paddy">
-          <v-list-tile-action>
-            <img src="~/assets/github-mark.svg" height="24" width="24" />
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>GitHub</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -73,6 +64,12 @@ export default {
           icon: 'account_circle',
           name: 'members',
           path: '/members'
+        },
+        {
+          title: 'About',
+          icon: 'help',
+          name: 'about',
+          path: '/about'
         }
       ]
     }

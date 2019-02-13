@@ -23,7 +23,7 @@
     "prettier": "^1.14.3"
   },
   "private": true,
-  "productName": "Paddy",
+  "productName": "AniHani Schedule",
   "repository": {
     "type": "git",
     "url": "https://github.com/fiahfy/paddy"

@@ -9,23 +9,7 @@ module.exports = {
    ** Headers of the page
    ** Common headers are already provided by @nuxtjs/pwa preset
    */
-  head: {
-    meta: [
-      {
-        hid: 'og:url',
-        name: 'og:url',
-        property: 'og:url',
-        content: 'https://fiahfy.github.io/paddy/'
-      }
-    ],
-    link: [
-      {
-        rel: 'apple-touch-icon',
-        href: 'apple-touch-icon.png',
-        sizes: '512x512'
-      }
-    ]
-  },
+  head: {},
   /*
    ** Customize the progress bar color
    */
