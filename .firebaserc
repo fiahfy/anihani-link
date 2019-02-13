@@ -1,5 +1,5 @@
 {
   "projects": {
-    "development": "anihani-development"
+    "default": "anihani-development"
   }
 }
