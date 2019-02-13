@@ -174,21 +174,15 @@ const extractSchedule = (timeline) => {
       }
 
       const member = match[1]
-      const hour = Number(match[2]) + timezoneOffsetHours
+      const hour = Number(match[2])
       const minute = Number(match[3])
 
       const ownerId = Owner[member] || null
       const title = member
       const description = match[4] || null
-      const startedAt = new Date(
-        Date.UTC(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate(),
-          hour,
-          minute
-        )
-      )
+      const startedAt = new Date(date)
+      startedAt.setHours(startedAt.getHours() + hour)
+      startedAt.setMinutes(startedAt.getMinutes() + minute)
 
       schedules = [
         ...schedules,
@@ -240,6 +234,7 @@ module.exports = async ({ groupId, force }) => {
     .reduce((previous, current) => [...previous, ...current], [])
   console.log('extracted schedules: %s', schedules.length)
   if (!schedules.length) {
+    await addTweet(timelines[0])
     return
   }
 
