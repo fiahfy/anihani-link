@@ -119,12 +119,12 @@ const extractSchedule = (timeline) => {
   let text = timeline.full_text
   let reg, match
 
-  reg = /配信スケジュール.*\n([\s\S]*)#(あにまーれ|ハニスト)/
-  match = reg.exec(text)
-  if (!match) {
-    return false
-  }
-  ;[, text] = match
+  // reg = /配信スケジュール.*\n([\s\S]*)#(あにまーれ|ハニスト)/
+  // match = reg.exec(text)
+  // if (!match) {
+  //   return false
+  // }
+  // ;[, text] = match
 
   let matches = []
   let index = 0
@@ -165,7 +165,7 @@ const extractSchedule = (timeline) => {
 
   return matches.map(({ date, text }) => {
     // eslint-disable-next-line no-irregular-whitespace
-    const reg = /([^\s　]+)[\s　]+(\d+):(\d+)-(?:[\s　]*[(（](.+)[）)])?/g
+    const reg = /([^\s　]+)[\s　]+(\d+):(\d+)-(?:[\s　]*[(（](.+)[）)])?(?:\n(＊[^\n\s]+))?/g
     let schedules = []
     for (;;) {
       const match = reg.exec(text)
@@ -179,7 +179,10 @@ const extractSchedule = (timeline) => {
 
       const ownerId = Owner[member] || null
       const title = member
-      const description = match[4] || null
+      let description = match[4] || null
+      if (description) {
+        description += match[5] || ''
+      }
       const startedAt = new Date(date)
       startedAt.setHours(startedAt.getHours() + hour)
       startedAt.setMinutes(startedAt.getMinutes() + minute)
