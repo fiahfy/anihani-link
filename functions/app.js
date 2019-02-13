@@ -32,7 +32,7 @@ process.env.TWITTER_ACCESS_TOKEN_SECRET = ''
 const updateSchedules = require('./actions/update_schedules')
 
 app.get('/fetchTweets', async (req, res) => {
-  await updateSchedules({ groupId: 'animare' })
+  await updateSchedules({ groupId: 'ani-mare' })
   await updateSchedules({ groupId: 'honey-strap' })
 
   res

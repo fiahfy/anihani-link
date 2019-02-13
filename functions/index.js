@@ -17,7 +17,7 @@ exports.fetchTweets = functions
       resq.status(403).send('Forbidden')
       return
     }
-    await updateSchedules({ groupId: 'animare' })
+    await updateSchedules({ groupId: 'ani-mare' })
     await updateSchedules({ groupId: 'honey-strap' })
     resq.send('OK')
   })

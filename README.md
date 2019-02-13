@@ -31,9 +31,6 @@ firebase deploy --only functions
 # functions (specified function)
 firebase deploy --only functions:function1
 
-# storage
-firebase deploy --only storage
-
 # firestore (rules and indexes)
 firebase deploy --only firestore
 # firestore (rules)
