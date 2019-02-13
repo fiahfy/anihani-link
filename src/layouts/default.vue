@@ -94,11 +94,6 @@ export default {
     )
   },
   methods: {
-    getClasses(category) {
-      return {
-        'primary--text': category.id === this.category.id
-      }
-    },
     onTabClick(e, tab) {
       this.$router.push(tab.path)
     },
