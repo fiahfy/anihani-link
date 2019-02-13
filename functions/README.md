@@ -27,6 +27,8 @@ yarn shell
 ### Deploy
 ```
 gcloud app deploy
+# cron jobs
+gcloud app deploy cron.yaml
 ```
 
 ### Show Logs

@@ -1,0 +1,4 @@
+cron:
+  - description: 'fetch tweets'
+    url: /fetchTweets
+    schedule: every 10 minutes

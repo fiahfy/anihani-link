@@ -13,12 +13,12 @@
  * limitations under the License.
  */
 
-'use strict';
+'use strict'
 
 // [START gae_node_request_example]
-const express = require('express');
+const express = require('express')
 
-const app = express();
+const app = express()
 
 const serviceAccount = require('./key.json')
 process.env.FIREBASE_SERVICE_ACCOUNT = JSON.stringify(serviceAccount)
@@ -31,19 +31,20 @@ process.env.TWITTER_ACCESS_TOKEN_SECRET = ''
 
 const updateSchedules = require('./actions/update_schedules')
 
-app.get('/', async (req, res) => {
+app.get('/fetchTweets', async (req, res) => {
   await updateSchedules({ groupId: 'animare' })
   await updateSchedules({ groupId: 'honey-strap' })
+
   res
     .status(200)
     .send('OK')
-    .end();
-});
+    .end()
+})
 
 // Start the server
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-  console.log('Press Ctrl+C to quit.');
-});
+  console.log(`App listening on port ${PORT}`)
+  console.log('Press Ctrl+C to quit.')
+})
 // [END gae_node_request_example]
