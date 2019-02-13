@@ -11,7 +11,7 @@
         <v-card-actions>
           <v-list-tile class="grow">
             <v-list-tile-avatar color="grey darken-4" size="48" class="mr-1">
-              <v-img :src="getSrc(member)" />
+              <v-img :src="getSrc(member)" contain />
             </v-list-tile-avatar>
 
             <v-list-tile-content>
@@ -59,10 +59,17 @@ const colors = {
   'haneru-inaba': 'rgb(235, 211, 109)',
   'ichika-soya': 'rgb(85, 188, 232)',
   'mico-sekishiro': 'rgb(181, 207, 129)',
-  'eli-sogetsu': 'rgb(172, 172, 172)',
+  'eli-sogetsu': 'rgb(174, 181, 192)',
   'patra-suo': 'rgb(250, 52, 127)',
   'charlotte-shimamura': 'rgb(126, 133, 251)',
   'mary-saionji': 'rgb(206, 132, 216)'
+}
+const shuffle = (a) => {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
 }
 
 export default {
@@ -75,9 +82,10 @@ export default {
   },
   async created() {
     const snapshot = await this.$db.collection('members').get()
-    this.members = snapshot.docs.map((doc) => {
+    const members = snapshot.docs.map((doc) => {
       return { ...doc.data(), id: doc.id }
     })
+    this.members = shuffle(members)
     this.loading = false
   },
   methods: {

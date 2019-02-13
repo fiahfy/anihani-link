@@ -46,7 +46,8 @@ module.exports = {
         },
         meta: {
           nativeUI: true,
-          mobileAppIOS: true
+          mobileAppIOS: true,
+          appleStatusBarStyle: 'black'
         }
       }
     ],

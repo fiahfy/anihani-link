@@ -1,7 +1,7 @@
 <template>
   <v-list-tile avatar>
     <v-list-tile-avatar size="48" color="grey darken-4">
-      <img :src="src" />
+      <v-img :src="src" contain />
     </v-list-tile-avatar>
 
     <v-list-tile-content>
@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style scoped>
-.v-avatar > img {
-  object-fit: contain;
+.v-list__tile__avatar {
+  min-width: 64px;
 }
 </style>
