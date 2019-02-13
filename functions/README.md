@@ -22,6 +22,19 @@ yarn serve
 yarn shell
 ```
 
+## GAE
+
+### Deploy
+```
+gcloud app deploy
+```
+
+### Show Logs
+```
+gcloud app logs tail -s default
+```
+
+
 ## CLI
 
 ### Update Groups
