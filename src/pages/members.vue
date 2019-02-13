@@ -10,7 +10,7 @@
       >
         <v-card-actions>
           <v-list-tile class="grow">
-            <v-list-tile-avatar color="grey darken-4" size="48">
+            <v-list-tile-avatar color="grey darken-4" size="48" class="mr-1">
               <v-img :src="getSrc(member)" />
             </v-list-tile-avatar>
 
@@ -18,13 +18,22 @@
               <v-list-tile-title v-text="member.name_ja" />
             </v-list-tile-content>
 
-            <!-- <v-layout align-center justify-end>
-              <v-icon class="mr-1">mdi-heart</v-icon>
-              <span class="subheading mr-2">256</span>
-              <span class="mr-1">·</span>
-              <v-icon class="mr-1">mdi-share-variant</v-icon>
-              <span class="subheading">45</span>
-            </v-layout> -->
+            <v-layout align-center justify-end>
+              <v-btn
+                icon
+                :href="
+                  `https://www.youtube.com/channel/${member.youtube.channel_id}`
+                "
+              >
+                <img src="/img/youtube-logo.png" height="16" />
+              </v-btn>
+              <v-btn
+                icon
+                :href="`https://twitter.com/${member.twitter.screen_name}`"
+              >
+                <img src="/img/twitter-logo.svg" height="30" />
+              </v-btn>
+            </v-layout>
           </v-list-tile>
         </v-card-actions>
         <v-card-text v-text="member.description" />
@@ -47,11 +56,11 @@
 const colors = {
   'ran-hinokuma': 'rgb(123, 187, 80)',
   'hinako-umori': 'rgb(233, 127, 172)',
-  'haneru-inaba': 'rgb(245, 221, 129)',
+  'haneru-inaba': 'rgb(235, 211, 109)',
   'ichika-soya': 'rgb(85, 188, 232)',
-  'mico-sekishiro': 'rgb(201, 227, 159)',
-  'eli-sogetsu': 'rgb(123, 187, 80)',
-  'patra-suo': 'rgb(250, 32, 127)',
+  'mico-sekishiro': 'rgb(181, 207, 129)',
+  'eli-sogetsu': 'rgb(172, 172, 172)',
+  'patra-suo': 'rgb(250, 52, 127)',
   'charlotte-shimamura': 'rgb(126, 133, 251)',
   'mary-saionji': 'rgb(206, 132, 216)'
 }

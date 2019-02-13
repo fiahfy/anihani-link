@@ -18,7 +18,10 @@
         class="hidden-xs-only"
         @click.stop="drawer = !drawer"
       />
-      <v-toolbar-title>AniHani Schedule</v-toolbar-title>
+      <v-toolbar-title class="d-flex align-center">
+        <img src="/icon_transparent.png" height="44" class="mb-1" />
+        <span>AniHani Schedule</span>
+      </v-toolbar-title>
     </v-toolbar>
 
     <v-content class="fill-height scroll-y">
@@ -105,6 +108,11 @@ export default {
 </script>
 
 <style scoped>
+@media only screen and (max-width: 599px) {
+  .v-toolbar__title:not(:first-child) {
+    margin-left: 0 !important;
+  }
+}
 @media only screen and (min-width: 600px) {
   .v-content {
     padding-bottom: 0 !important;

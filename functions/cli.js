@@ -15,13 +15,13 @@ const updateMembers = require('./actions/update_members')
   try {
     const [, , command, ...options] = process.argv
     switch (command) {
-      case 'group':
+      case 'groups':
         await updateGroups()
         break
-      case 'member':
+      case 'members':
         await updateMembers()
         break
-      case 'schedule': {
+      case 'schedules': {
         const force = options.includes('--force')
         const groupId = options[options.indexOf('-g') + 1]
         await updateSchedules({ groupId, force })
