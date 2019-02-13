@@ -45,7 +45,7 @@ export default {
     }, {})
 
     const d = new Date()
-    const yesterday = new Date(d.getFullYear(), d.getMonth(), d.getDate() - 2)
+    const yesterday = new Date(d.getFullYear(), d.getMonth(), d.getDate())
 
     const schedulesSnapshot = await this.$db
       .collection('schedules')
@@ -56,7 +56,7 @@ export default {
       .map((doc) => {
         let owner = doc.data().owner
         if (owner) {
-          owner = members[owner.id]
+          owner = { ...members[owner.id], id: owner.id }
         }
         return {
           ...doc.data(),

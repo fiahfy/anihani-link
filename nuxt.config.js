@@ -50,7 +50,15 @@ module.exports = {
         }
       }
     ],
-    '@nuxtjs/vuetify'
+    [
+      '@nuxtjs/vuetify',
+      {
+        theme: {
+          primary: '#ff4081',
+          accent: '#ff4081'
+        }
+      }
+    ]
   ],
   /*
    ** Plugins

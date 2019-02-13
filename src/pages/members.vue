@@ -10,11 +10,8 @@
       >
         <v-card-actions>
           <v-list-tile class="grow">
-            <v-list-tile-avatar color="grey darken-3">
-              <v-img
-                class="elevation-6"
-                src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-              />
+            <v-list-tile-avatar color="grey darken-4" size="48">
+              <v-img :src="getSrc(member)" />
             </v-list-tile-avatar>
 
             <v-list-tile-content>
@@ -73,6 +70,11 @@ export default {
       return { ...doc.data(), id: doc.id }
     })
     this.loading = false
+  },
+  methods: {
+    getSrc(member) {
+      return `/img/members/${member.id}_96x96.png`
+    }
   }
 }
 </script>

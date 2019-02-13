@@ -68,3 +68,5 @@ dist
 
 # Service woker
 src/static/sw.*
+
+tmp*

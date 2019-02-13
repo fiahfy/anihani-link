@@ -1,9 +1,7 @@
 <template>
   <v-list-tile avatar>
-    <v-list-tile-avatar>
-      <img
-        src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-      />
+    <v-list-tile-avatar size="48" color="grey darken-4">
+      <img :src="src" />
     </v-list-tile-avatar>
 
     <v-list-tile-content>
@@ -25,6 +23,11 @@ export default {
     }
   },
   computed: {
+    src() {
+      return this.schedule.owner
+        ? `/img/members/${this.schedule.owner.id}_96x96.png`
+        : `/img/groups/${this.schedule.group.id}_226x96.png`
+    },
     title() {
       return this.schedule.owner
         ? this.schedule.owner.name_ja
@@ -41,3 +44,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.v-avatar > img {
+  object-fit: contain;
+}
+</style>

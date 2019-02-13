@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app dark>
     <v-navigation-drawer v-model="drawer" app clipped>
       <v-list>
         <v-list-tile v-for="tab in tabs" :key="tab.name" :to="tab.path">
@@ -18,7 +18,7 @@
         class="hidden-xs-only"
         @click.stop="drawer = !drawer"
       />
-      <v-toolbar-title>Title</v-toolbar-title>
+      <v-toolbar-title>AniHani Schedule</v-toolbar-title>
     </v-toolbar>
 
     <v-content class="fill-height scroll-y">
