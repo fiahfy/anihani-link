@@ -4,12 +4,17 @@
       <v-img :src="src" contain />
     </v-list-tile-avatar>
 
-    <v-list-tile-content>
-      <v-list-tile-sub-title>{{ startedAt }} - </v-list-tile-sub-title>
-      <v-list-tile-title>
-        <span v-text="title" />
-        <span class="caption ml-1" v-text="schedule.description" />
+    <v-list-tile-content class="justify-start">
+      <v-list-tile-title :class="{ 'font-weight-bold': highlighted }">
+        {{ startedAt }} -
       </v-list-tile-title>
+      <v-list-tile-sub-title>
+        <span
+          :class="{ 'text--primary': true, 'font-weight-bold': highlighted }"
+          v-text="title"
+        />
+        {{ description }}
+      </v-list-tile-sub-title>
     </v-list-tile-content>
   </v-list-tile>
 </template>
@@ -19,10 +24,13 @@ export default {
   props: {
     schedule: {
       type: Object,
-      default: () => {}
+      required: true
     }
   },
   computed: {
+    highlighted() {
+      return this.schedule.started_at.toDate().getTime() > Date.now()
+    },
     src() {
       return this.schedule.owner
         ? `/img/members/${this.schedule.owner.id}_96x96.png`
@@ -32,6 +40,9 @@ export default {
       return this.schedule.owner
         ? this.schedule.owner.name_ja
         : this.schedule.title
+    },
+    description() {
+      return this.schedule.description ? ' - ' + this.schedule.description : ''
     },
     startedAt() {
       const d = this.schedule.started_at.toDate()
@@ -48,5 +59,13 @@ export default {
 <style scoped>
 .v-list__tile__avatar {
   min-width: 64px;
+  margin-top: -12px;
+}
+.v-list__tile__content {
+  padding-top: 10px;
+}
+.v-list__tile__sub-title {
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
 }
 </style>

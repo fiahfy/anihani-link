@@ -1,12 +1,10 @@
 <template>
-  <v-list subheader two-line>
-    <v-subheader inset v-text="headline" />
-    <v-divider inset class="pl-2" />
-    <schedule-list-tile
-      v-for="s of schedule.schedules"
-      :key="s.id"
-      :schedule="s"
-    />
+  <v-list subheader three-line>
+    <v-subheader v-text="headline" />
+    <template v-for="(s, index) of schedule.schedules">
+      <v-divider v-if="index !== 0" :key="index" inset class="pl-2" />
+      <schedule-list-tile :key="s.id" :schedule="s" />
+    </template>
   </v-list>
 </template>
 
