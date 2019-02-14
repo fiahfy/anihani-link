@@ -1,5 +1,4 @@
 const functions = require('firebase-functions')
-const secureCompare = require('secure-compare')
 
 process.env.TWITTER_CONSUMER_KEY = functions.config().twitter.consumer_key
 process.env.TWITTER_CONSUMER_SECRET = functions.config().twitter.consumer_secret
@@ -10,14 +9,13 @@ const updateSchedules = require('./actions/update_schedules')
 
 exports.fetchTweets = functions
   .region('asia-northeast1')
-  .https.onRequest(async (req, resq) => {
-    const key = req.query.key
-    if (!secureCompare(key, functions.config().https.access_key)) {
-      console.error('access key is not match: %s', key)
-      resq.status(403).send('Forbidden')
-      return
+  .pubsub.topic('fetch-tweets')
+  .onPublish(async () => {
+    try {
+      await updateSchedules({ groupId: 'ani-mare' })
+      await updateSchedules({ groupId: 'honey-strap' })
+    } catch (e) {
+      console.error(e)
     }
-    await updateSchedules({ groupId: 'ani-mare' })
-    await updateSchedules({ groupId: 'honey-strap' })
-    resq.send('OK')
+    return true
   })
