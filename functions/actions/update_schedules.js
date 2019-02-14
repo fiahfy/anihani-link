@@ -206,6 +206,8 @@ const extractSchedule = (timeline) => {
 }
 
 module.exports = async ({ groupId, force }) => {
+  console.log('fetch tweets for group: %s', groupId)
+
   if (!groupId) {
     console.log('group id not specified')
     return
