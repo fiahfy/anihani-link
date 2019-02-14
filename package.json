@@ -31,7 +31,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "HOST=0.0.0.0 nuxt",
-    "generate": "nuxt generate && rm -rf docs/* && cp -r dist/ docs/",
+    "generate": "nuxt generate",
     "lint": "eslint -f codeframe --ext .js,.vue --ignore-path .gitignore --ignore-pattern functions .",
     "precommit": "npm run lint",
     "start": "nuxt start"
