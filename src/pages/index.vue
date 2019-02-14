@@ -1,5 +1,5 @@
 <template>
-  <v-container fill-height>
+  <v-container fill-height pa-0>
     <v-layout v-if="schedules.length" column>
       <v-card>
         <schedule-list

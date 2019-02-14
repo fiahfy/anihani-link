@@ -20,7 +20,7 @@
       />
       <v-toolbar-title class="d-flex align-center">
         <img src="/icon_transparent.png" height="44" class="mb-1" />
-        <span>あにはに.link</span>
+        <span>あにハニ.link</span>
       </v-toolbar-title>
     </v-toolbar>
 
