@@ -20,7 +20,7 @@
       />
       <v-toolbar-title class="d-flex align-center">
         <img src="/icon_transparent.png" height="44" class="mb-1" />
-        <span>AniHani Schedule</span>
+        <span>あにはに.link</span>
       </v-toolbar-title>
     </v-toolbar>
 

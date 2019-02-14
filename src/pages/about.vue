@@ -3,7 +3,7 @@
     <v-layout column>
       <v-card>
         <v-list>
-          <v-list-tile href="https://github.com/fiahfy/anihani-schedule">
+          <v-list-tile href="https://github.com/fiahfy/anihani-link">
             <v-list-tile-action>
               <img
                 src="/img/github-mark.svg"
