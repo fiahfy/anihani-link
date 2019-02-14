@@ -70,3 +70,5 @@ dist
 src/static/sw.*
 
 tmp*
+.firebase
+.env*

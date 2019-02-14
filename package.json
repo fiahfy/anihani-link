@@ -24,6 +24,7 @@
   },
   "private": true,
   "productName": "AniHani Schedule",
+  "productShortName": "AniHani Sched.",
   "repository": {
     "type": "git",
     "url": "https://github.com/fiahfy/anihani-schedule"

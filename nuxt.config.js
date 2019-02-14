@@ -42,7 +42,7 @@ module.exports = {
       {
         manifest: {
           name: pkg.productName,
-          short_name: pkg.productName
+          short_name: pkg.productShortName
         },
         meta: {
           nativeUI: true,
