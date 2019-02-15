@@ -1,6 +1,6 @@
 {
   "name": "anihani-link",
-  "description": "When did you do that?",
+  "description": "Unofficial schedule site for AniMare and HoneyStrap",
   "version": "0.0.1",
   "author": {
     "name": "fiahfy",
@@ -23,7 +23,6 @@
     "prettier": "^1.14.3"
   },
   "private": true,
-  "productName": "あにハニ.link",
   "repository": {
     "type": "git",
     "url": "https://github.com/fiahfy/anihani-link"

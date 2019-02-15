@@ -41,13 +41,16 @@ module.exports = {
       '@nuxtjs/pwa',
       {
         manifest: {
-          name: pkg.productName,
-          short_name: pkg.productShortName
+          name: 'あにハニ.link',
+          short_name: 'あにハニ.link',
+          description:
+            'バーチャルYouTuberユニット 「有閑喫茶あにまーれ」「ハニーストラップ」 非公式スケジュールサイト'
         },
         meta: {
           nativeUI: true,
           mobileAppIOS: true,
-          appleStatusBarStyle: 'black'
+          appleStatusBarStyle: 'black',
+          ogHost: 'https://fiahfy-anihani.firebaseapp.com'
         }
       }
     ],
