@@ -42,7 +42,7 @@ const getLatestId = async (twitterId) => {
 const addTweet = async (tweet) => {
   console.log('add tweet')
   await db.collection('tweets').add(tweet)
-  console.log('added row')
+  console.log('added tweet')
 }
 
 const deleteTweets = async (twitterId) => {
@@ -59,23 +59,30 @@ const deleteTweets = async (twitterId) => {
   console.log('deleted rows: %s', snapshot.size)
 }
 
-const updateSchedules = async (groupId, { date, schedules }) => {
+const updateDailySchedules = async (groupId, { date, append, schedules }) => {
+  // 6:00 -> 30:00 (JST)
   const t = new Date(date)
   t.setHours(t.getHours() + 6)
   const m = new Date(t)
   m.setDate(m.getDate() + 1)
-  // delete 6:00 -> 30:00 (JST)
-  console.log('update schedule: %s -> %s', t, m)
+  console.log('update daily schedules: %s -> %s', t, m)
+
+  let deletedRows = 0
   const batch = db.batch()
-  const snapshot = await db
-    .collection('schedules')
-    .where('group', '==', db.collection('groups').doc(groupId))
-    .where('started_at', '>=', t)
-    .where('started_at', '<', m)
-    .get()
-  snapshot.docs.forEach((doc) => {
-    batch.delete(doc.ref)
-  })
+  if (!append) {
+    console.log('delete schedules')
+    const snapshot = await db
+      .collection('schedules')
+      .where('group', '==', db.collection('groups').doc(groupId))
+      .where('started_at', '>=', t)
+      .where('started_at', '<', m)
+      .get()
+    snapshot.docs.forEach((doc) => {
+      batch.delete(doc.ref)
+    })
+    deletedRows = snapshot.size
+  }
+
   for (let s of schedules) {
     const ref = db.collection('schedules').doc()
     batch.set(ref, {
@@ -90,18 +97,22 @@ const updateSchedules = async (groupId, { date, schedules }) => {
     })
   }
   await batch.commit()
-  console.log('deleted rows: %s', snapshot.size)
+  if (deletedRows) {
+    console.log('deleted rows: %s', deletedRows)
+  }
   console.log('added rows: %s', schedules.length)
+  console.log('updated daily schedules')
 }
 
 const fetchTimelines = async (screenName, sinceId) => {
+  console.log('fetch tweets since: %s', sinceId)
   const client = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
     access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
     access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
   })
-  const timelines = await client.get('statuses/user_timeline', {
+  let timelines = await client.get('statuses/user_timeline', {
     screen_name: screenName,
     tweet_mode: 'extended',
     count: fetchCount,
@@ -110,11 +121,24 @@ const fetchTimelines = async (screenName, sinceId) => {
   if (!timelines) {
     return []
   }
-  // remove tweet has since id
-  return timelines.filter((timeline) => timeline.id !== sinceId)
+  // exclude tweet has since id
+  timelines = timelines.filter((timeline) => timeline.id !== sinceId)
+  console.log('fetched tweets: %s', timelines.length)
+  return timelines
 }
 
-const extractSchedule = (timeline) => {
+const extractDailySchedules = (timelines) => {
+  console.log('extracted daily schedules')
+  const dailySchedules = timelines
+    .map(extractDailySchedule)
+    .filter((schedule) => Boolean(schedule))
+    .reverse()
+    .reduce((previous, current) => [...previous, ...current], [])
+  console.log('extracted daily schedules: %s', dailySchedules.length)
+  return dailySchedules
+}
+
+const extractDailySchedule = (timeline) => {
   const publishedAt = new Date(timeline.created_at)
   let text = timeline.full_text
   let reg, match
@@ -125,6 +149,10 @@ const extractSchedule = (timeline) => {
   //   return false
   // }
   // ;[, text] = match
+
+  reg = /追加/
+  match = reg.exec(text)
+  const append = !!match
 
   let matches = []
   let index = 0
@@ -200,6 +228,7 @@ const extractSchedule = (timeline) => {
     }
     return {
       date,
+      append,
       schedules
     }
   })
@@ -224,28 +253,22 @@ module.exports = async ({ groupId, force }) => {
   }
 
   const sinceId = await getLatestId(group.twitter.id_str)
-  console.log('fetch tweets since: %s', sinceId)
 
   const timelines = await fetchTimelines(group.twitter.screen_name, sinceId)
-  console.log('fetched tweets: %s', timelines.length)
   if (!timelines.length) {
     return
   }
+  const latestTimeline = timelines[0]
 
-  const schedules = timelines
-    .map(extractSchedule)
-    .filter((schedule) => Boolean(schedule))
-    .reverse()
-    .reduce((previous, current) => [...previous, ...current], [])
-  console.log('extracted schedules: %s', schedules.length)
-  if (!schedules.length) {
-    await addTweet(timelines[0])
+  const dailySchedules = extractDailySchedules(timelines)
+  if (!dailySchedules.length) {
+    await addTweet(latestTimeline)
     return
   }
 
-  for (let schedule of schedules) {
-    await updateSchedules(groupId, schedule)
+  for (let dailySchedule of dailySchedules) {
+    await updateDailySchedules(groupId, dailySchedule)
   }
 
-  await addTweet(timelines[0])
+  await addTweet(latestTimeline)
 }
