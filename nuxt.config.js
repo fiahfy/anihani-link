@@ -57,6 +57,9 @@ module.exports = {
         theme: {
           primary: '#ff4081',
           accent: '#ff4081'
+        },
+        options: {
+          customProperties: true
         }
       }
     ]
@@ -64,9 +67,14 @@ module.exports = {
   /*
    ** Plugins
    */
-  plugins: ['~/plugins/firebase'],
+  plugins: [
+    { src: '~/plugins/firebase', ssr: false },
+    { src: '~/plugins/now', ssr: false }
+  ],
   /*
    ** Router
    */
-  router: {}
+  router: {
+    middleware: ['now']
+  }
 }

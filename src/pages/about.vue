@@ -2,7 +2,18 @@
   <v-container fill-height pa-0>
     <v-layout column>
       <v-card>
+        <v-list>
+          <v-subheader class="text-uppercase">About</v-subheader>
+          <div class="body-2 px-4">
+            バーチャルYouTuberユニット 有閑喫茶あにまーれ/ハニーストラップ
+            のスケジュールを公式Twitterのツイートからデータを取得し、一覧として表示しています<br />
+            キャンセル、ゲリラは反映していません<br />
+            動作環境: Google Chrome, Mobile Safari
+          </div>
+        </v-list>
+
         <v-list v-if="groups.length">
+          <v-subheader class="text-uppercase">Official</v-subheader>
           <v-list-tile
             v-for="group of groups"
             :key="group.id"
@@ -21,7 +32,7 @@
         </v-layout>
 
         <v-list>
-          <v-subheader>Social</v-subheader>
+          <v-subheader class="text-uppercase">Social</v-subheader>
           <v-list-tile href="https://github.com/fiahfy/anihani-link">
             <v-list-tile-action>
               <img
