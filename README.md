@@ -1,6 +1,6 @@
 # anihani-link
 
-> WIP
+> Unofficial schedule site for AniMare and HoneyStrap
 
 ## Build Setup
 
