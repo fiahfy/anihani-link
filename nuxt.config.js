@@ -39,8 +39,8 @@ module.exports = {
       '@nuxtjs/pwa',
       {
         manifest: {
-          name: 'あにハニ.link',
-          short_name: 'あにハニ.link',
+          name: 'あにハニ.link (β)',
+          short_name: 'あにハニ.link (β)',
           description:
             'バーチャルYouTuberユニット 「有閑喫茶あにまーれ」「ハニーストラップ」 非公式スケジュールサイト'
         },

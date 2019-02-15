@@ -20,7 +20,7 @@
       />
       <v-toolbar-title class="d-flex align-center">
         <img src="/icon_transparent.png" height="44" class="mb-1" />
-        <span>あにハニ.link</span>
+        <span>{{ title }}</span>
       </v-toolbar-title>
     </v-toolbar>
 
@@ -79,8 +79,7 @@ export default {
   },
   computed: {
     title() {
-      const date = new Date(this.month)
-      return date.toLocaleString('en-US', { month: 'long', year: 'numeric' })
+      return document.title
     },
     today() {
       return new Date(this.now).getDate()
