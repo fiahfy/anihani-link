@@ -22,34 +22,25 @@ yarn serve
 yarn shell
 ```
 
-## GAE
-
-### Deploy
-```
-gcloud app deploy
-# cron jobs
-gcloud app deploy cron.yaml
-```
-
-### Show Logs
-```
-gcloud app logs tail -s default
-```
-
 
 ## CLI
 
 ### Update Groups
 ```
-node cli.js group
+node cli.js update groups
 ```
 
 ### Update Members
 ```
-node cli.js member
+node cli.js update members
 ```
 
-### Update Schedules
+### Fetch Wiki Pages
 ```
-node cli.js schedule -g <group-id> [--force]
+node cli.js fetch wiki -g <group-id>
+```
+
+### Fetch Tweets
+```
+node cli.js fetch tweets -g <group-id> [--force]
 ```

@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "fiahfy-anihani-development",
+    "development": "fiahfy-anihani-development",
     "production": "fiahfy-anihani"
   }
 }

@@ -49,7 +49,7 @@ export default {
 
     const schedulesSnapshot = await this.$db
       .collection('schedules')
-      .where('started_at', '>', yesterday)
+      .where('started_at', '>=', yesterday)
       .orderBy('started_at', 'asc')
       .get()
     this.schedules = schedulesSnapshot.docs

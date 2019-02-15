@@ -128,7 +128,7 @@ const fetchTimelines = async (screenName, sinceId) => {
 }
 
 const extractDailySchedules = (timelines) => {
-  console.log('extracted daily schedules')
+  console.log('extract daily schedules')
   const dailySchedules = timelines
     .map(extractDailySchedule)
     .filter((schedule) => Boolean(schedule))
