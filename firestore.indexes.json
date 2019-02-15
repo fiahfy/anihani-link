@@ -1,7 +1,7 @@
 {
   "indexes": [
     {
-      "collectionGroup": "anihani-tweets",
+      "collectionGroup": "tweets",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -15,7 +15,7 @@
       ]
     },
     {
-      "collectionGroup": "anihani-schedules",
+      "collectionGroup": "schedules",
       "queryScope": "COLLECTION",
       "fields": [
         {

@@ -9,21 +9,12 @@
     ],
     "source": "functions"
   },
-  "storage": {
-    "rules": "storage.rules"
-  },
   "hosting": {
-    "public": "public",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
     ]
   }
 }

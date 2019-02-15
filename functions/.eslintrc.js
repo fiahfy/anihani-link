@@ -6,7 +6,10 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018
   },
-  extends: 'eslint:recommended',
+  extends: [
+    'eslint:recommended',
+    'plugin:prettier/recommended'
+  ],
   rules: {
     'no-console': 'off',
   }

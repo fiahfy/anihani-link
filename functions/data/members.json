@@ -2,55 +2,109 @@
   "haneru-inaba": {
     "name": "Haneru Inaba",
     "name_ja": "因幡はねる",
-    "group": "animare",
-    "description": "有閑喫茶あにまーれの雇われ店長。しっかり者でメンバーのまとめ役。\n好きなことをしてバイト代をもらえることに惹かれて入店。かわいいものとおいしいものが大好き！\nお客様への愛情も深く、時には怖いほどにお客様の動向を見守る（？）ことも・・・。\n"
+    "group": "ani-mare",
+    "description": "有閑喫茶あにまーれの雇われ店長。しっかり者でメンバーのまとめ役。\n好きなことをしてバイト代をもらえることに惹かれて入店。かわいいものとおいしいものが大好き！\nお客様への愛情も深く、時には怖いほどにお客様の動向を見守る（？）ことも・・・。\n",
+    "twitter": {
+      "screen_name": "Haneru_Inaba"
+    },
+    "youtube": {
+      "channel_id": "UC0Owc36U9lOyi9Gx9Ic-4qg"
+    }
   },
   "hinako-umori": {
     "name": "Hinako Umori",
     "name_ja": "宇森ひなこ",
-    "group": "animare",
-    "description": "有閑喫茶あにまーれの歌姫JK店員。\n得意な歌を武器に「ひなこ王国」の王国民を増やすべく活動している。\n甘え上手なみんなの妹・・・なのだが、悪戯っぽい小悪魔な一面も・・・。"
+    "group": "ani-mare",
+    "description": "有閑喫茶あにまーれの歌姫JK店員。\n得意な歌を武器に「ひなこ王国」の王国民を増やすべく活動している。\n甘え上手なみんなの妹・・・なのだが、悪戯っぽい小悪魔な一面も・・・。",
+    "twitter": {
+      "screen_name": "Hinako_Umori"
+    },
+    "youtube": {
+      "channel_id": "UChqYnJlFxlBi6DfRz6jRenQ"
+    }
   },
   "ichika-soya": {
     "name": "Ichika Soya",
     "name_ja": "宗谷いちか",
-    "group": "animare",
-    "description": "何でも話を聞いてくれる、有閑喫茶あにまーれのおねえさん店員。\nいつもいつでも笑顔でお客様を元気にしてくれる。\n得意不得意関係なく、興味を持ったらなんでもやってみる行動派。"
+    "group": "ani-mare",
+    "description": "何でも話を聞いてくれる、有閑喫茶あにまーれのおねえさん店員。\nいつもいつでも笑顔でお客様を元気にしてくれる。\n得意不得意関係なく、興味を持ったらなんでもやってみる行動派。",
+    "twitter": {
+      "screen_name": "Ichika_Souya"
+    },
+    "youtube": {
+      "channel_id": "UC2kyQhzGOB-JPgcQX9OMgEw"
+    }
   },
   "ran-hinokuma": {
     "name": "Ran Hinokuma",
     "name_ja": "日ノ隈らん",
-    "group": "animare",
-    "description": "有閑喫茶あにまーれの店員、ではないのだが、いつも入り浸って他のメンバーにちょっかいをかけている。\n自由奔放で何をしでかすかわからないのだが、お店のマスコットのように愛されている。"
+    "group": "ani-mare",
+    "description": "有閑喫茶あにまーれの店員、ではないのだが、いつも入り浸って他のメンバーにちょっかいをかけている。\n自由奔放で何をしでかすかわからないのだが、お店のマスコットのように愛されている。",
+    "twitter": {
+      "screen_name": "Ran_Hinokuma"
+    },
+    "youtube": {
+      "channel_id": "UCRvpMpzAXBRKJQuk-8-Sdvg"
+    }
   },
   "patra-suo": {
     "name": "Patra Suo",
     "name_ja": "周防パトラ",
     "group": "honey-strap",
-    "description": "ハニーストラップのツンデレロリ女王・・・のはずだったのだが、弄られることが「おいしい」を繰り返すうちに、いつの間にか、ハニーストラップのお笑い担当のような扱いに。\n一方で、自分で作詞作曲したオリジナルソングを披露したり、イラストを描いたりと多才な一面も持つ。"
-  },
-  "charlotte-shimamura": {
-    "name": "Charlotte Shimamura",
-    "name_ja": "島村シャルロット",
-    "group": "honey-strap",
-    "description": "ハニーストラップの末っ子わがまま店員。\n悪魔なのに天使と呼ばれることが多く、、、それが悩みという女悪魔。\nしっかりした悪魔になろうと、一日一悪を掲げるものの、根が素直でいい子なのでなかなか悪いことができない。"
+    "description": "ハニーストラップのツンデレロリ女王・・・のはずだったのだが、弄られることが「おいしい」を繰り返すうちに、いつの間にか、ハニーストラップのお笑い担当のような扱いに。\n一方で、自分で作詞作曲したオリジナルソングを披露したり、イラストを描いたりと多才な一面も持つ。",
+    "twitter": {
+      "screen_name": "Patra_HNST"
+    },
+    "youtube": {
+      "channel_id": "UCeLzT-7b2PBcunJplmWtoDg"
+    }
   },
   "eli-sogetsu": {
     "name": "Eli Sogetsu",
     "name_ja": "蒼月エリ",
     "group": "honey-strap",
-    "description": "ハニーストラップの歌姫店員。\n歌を愛し、自分の歌声を多くの人に届けたいと願う女悪魔。圧倒的な歌唱力と美しいギターの旋律でお客様を魅了している。\nしっかりものに見えるが、実は機械音痴すぎる一面も・・・。"
+    "description": "ハニーストラップの歌姫店員。\n歌を愛し、自分の歌声を多くの人に届けたいと願う女悪魔。圧倒的な歌唱力と美しいギターの旋律でお客様を魅了している。\nしっかりものに見えるが、実は機械音痴すぎる一面も・・・。",
+    "twitter": {
+      "screen_name": "Eli_HNST"
+    },
+    "youtube": {
+      "channel_id": "UC3UKMRQmBcjXWu66cvxcngA"
+    }
   },
-  "mico-sekishiro": {
-    "name": "Mico Sekishiro",
-    "name_ja": "堰代ミコ",
+  "charlotte-shimamura": {
+    "name": "Charlotte Shimamura",
+    "name_ja": "島村シャルロット",
     "group": "honey-strap",
-    "description": "発想も行動も言動も摩訶不思議な美少女店員。\n“無自覚”な天然だが、見方によっては天才とも言える。\nいつもホワホワしているが、たまに別人のような声色で演技や朗読を始めたりと、底の見えない魅力を持っている。"
+    "description": "ハニーストラップの末っ子わがまま店員。\n悪魔なのに天使と呼ばれることが多く、、、それが悩みという女悪魔。\nしっかりした悪魔になろうと、一日一悪を掲げるものの、根が素直でいい子なのでなかなか悪いことができない。",
+    "twitter": {
+      "screen_name": "Charlotte_HNST"
+    },
+    "youtube": {
+      "channel_id": "UCYTz3uIgwVY3ZU-IQJS8r3A"
+    }
   },
   "mary-saionji": {
     "name": "Mary Saionji",
     "name_ja": "西園寺メアリ",
     "group": "honey-strap",
-    "description": "ハニーストラップのお姉さま店員。\n全てを受け止めてくれるような溢れる母性と包容力でお客様もメンバーも骨抜きにする、天真爛漫なお姉さま。\nお酒を飲むと裏メアリになるという噂もあったり、なかったり・・・。"
+    "description": "ハニーストラップのお姉さま店員。\n全てを受け止めてくれるような溢れる母性と包容力でお客様もメンバーも骨抜きにする、天真爛漫なお姉さま。\nお酒を飲むと裏メアリになるという噂もあったり、なかったり・・・。",
+    "twitter": {
+      "screen_name": "Mary_HNST"
+    },
+    "youtube": {
+      "channel_id": "UCwePpiw1ocZRSNSkpKvVISw"
+    }
+  },
+  "mico-sekishiro": {
+    "name": "Mico Sekishiro",
+    "name_ja": "堰代ミコ",
+    "group": "honey-strap",
+    "description": "発想も行動も言動も摩訶不思議な美少女店員。\n“無自覚”な天然だが、見方によっては天才とも言える。\nいつもホワホワしているが、たまに別人のような声色で演技や朗読を始めたりと、底の見えない魅力を持っている。",
+    "twitter": {
+      "screen_name": "Mico_HNST"
+    },
+    "youtube": {
+      "channel_id": "UCDh2bWI5EDu7PavqwICkVpA"
+    }
   }
 }

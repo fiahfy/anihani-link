@@ -1,6 +1,6 @@
 {
-  "name": "paddy",
-  "description": "When did you do that?",
+  "name": "anihani-link",
+  "description": "Unofficial schedule site for AniMare and HoneyStrap",
   "version": "0.0.1",
   "author": {
     "name": "fiahfy",
@@ -9,32 +9,29 @@
   },
   "dependencies": {
     "@nuxtjs/dotenv": "^1.3.0",
+    "@nuxtjs/google-analytics": "^2.0.3",
     "@nuxtjs/pwa": "^2.3.2",
     "@nuxtjs/vuetify": "^0.5.2",
     "firebase": "^5.8.2",
-    "nuxt": "^2.2.0",
-    "vue-awesome-swiper": "^3.1.3",
-    "vuex-persistedstate": "^2.5.4"
+    "nuxt": "^2.2.0"
   },
   "devDependencies": {
     "eslint": "^5.6.0",
     "eslint-config-prettier": "^4.0.0",
-    "eslint-loader": "^2.1.0",
     "eslint-plugin-prettier": "^3.0.0",
     "eslint-plugin-vue": "^5.0.0-beta.3",
     "prettier": "^1.14.3"
   },
   "private": true,
-  "productName": "Paddy",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fiahfy/paddy"
+    "url": "https://github.com/fiahfy/anihani-link"
   },
   "scripts": {
     "build": "nuxt build",
     "dev": "HOST=0.0.0.0 nuxt",
-    "generate": "nuxt generate && rm -rf docs/* && cp -r dist/ docs/",
-    "lint": "eslint -f codeframe --ext .js,.vue --ignore-path .gitignore --ignore-pattern docs .",
+    "generate": "nuxt generate",
+    "lint": "eslint -f codeframe --ext .js,.vue --ignore-path .gitignore --ignore-pattern functions .",
     "precommit": "npm run lint",
     "start": "nuxt start"
   }

@@ -1,31 +1,13 @@
-const pkg = require('./package.json')
-
 module.exports = {
   /*
    ** Global CSS
    */
-  css: ['swiper/dist/css/swiper.css', '~/assets/css/app.css'],
+  css: ['~/assets/css/app.css'],
   /*
    ** Headers of the page
    ** Common headers are already provided by @nuxtjs/pwa preset
    */
-  head: {
-    meta: [
-      {
-        hid: 'og:url',
-        name: 'og:url',
-        property: 'og:url',
-        content: 'https://fiahfy.github.io/paddy/'
-      }
-    ],
-    link: [
-      {
-        rel: 'apple-touch-icon',
-        href: 'apple-touch-icon.png',
-        sizes: '512x512'
-      }
-    ]
-  },
+  head: { htmlAttrs: { lang: 'ja' } },
   /*
    ** Customize the progress bar color
    */
@@ -48,30 +30,52 @@ module.exports = {
   modules: [
     ['@nuxtjs/dotenv', { path: process.cwd() }],
     [
+      '@nuxtjs/google-analytics',
+      {
+        id: 'UA-41512550-11'
+      }
+    ],
+    [
       '@nuxtjs/pwa',
       {
         manifest: {
-          name: pkg.productName,
-          short_name: pkg.productName
+          name: 'あにハニ.link',
+          short_name: 'あにハニ.link',
+          description:
+            'バーチャルYouTuberユニット 「有閑喫茶あにまーれ」「ハニーストラップ」 非公式スケジュールサイト'
         },
         meta: {
           nativeUI: true,
-          mobileAppIOS: true
+          mobileAppIOS: true,
+          appleStatusBarStyle: 'black',
+          ogHost: 'https://fiahfy-anihani.firebaseapp.com'
         }
       }
     ],
-    '@nuxtjs/vuetify'
+    [
+      '@nuxtjs/vuetify',
+      {
+        theme: {
+          primary: '#ff4081',
+          accent: '#ff4081'
+        },
+        options: {
+          customProperties: true
+        }
+      }
+    ]
   ],
   /*
    ** Plugins
    */
   plugins: [
-    '~/plugins/firebase',
-    '~/plugins/vue-awesome-swiper',
-    '~/plugins/vuex-persistedstate'
+    { src: '~/plugins/firebase', ssr: false },
+    { src: '~/plugins/now', ssr: false }
   ],
   /*
    ** Router
    */
-  router: {}
+  router: {
+    middleware: ['now']
+  }
 }

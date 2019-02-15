@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "fiahfy-sandbox"
+    "default": "fiahfy-anihani-development",
+    "production": "fiahfy-anihani"
   }
 }
