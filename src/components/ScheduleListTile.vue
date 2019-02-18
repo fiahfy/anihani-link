@@ -9,7 +9,7 @@
         <span>{{ startedAt }} -</span>
         <span
           v-if="live"
-          class="live primary--text caption ml-1 text-uppercase"
+          class="live primary--text caption ml-2 text-uppercase"
         >
           Live Now
         </span>
@@ -84,10 +84,10 @@ export default {
   padding-top: 10px;
 }
 .v-list__tile__title {
-  vertical-align: middle;
+  vertical-align: bottom;
 }
 .v-list__tile__title > * {
-  vertical-align: middle;
+  vertical-align: bottom;
 }
 .v-list__tile__sub-title {
   /* autoprefixer: ignore next */
@@ -95,6 +95,6 @@ export default {
 }
 .live {
   border: 1px solid var(--v-primary-base);
-  padding: 1px 4px;
+  padding: 1.5px 4px;
 }
 </style>
