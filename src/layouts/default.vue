@@ -2,7 +2,7 @@
   <v-app dark>
     <v-navigation-drawer v-model="drawer" app clipped>
       <v-list>
-        <v-list-tile v-for="tab in tabs" :key="tab.name" :to="tab.path">
+        <v-list-tile v-for="(tab, index) in tabs" :key="index" :to="tab.path">
           <v-list-tile-action>
             <v-icon>{{ tab.icon }}</v-icon>
           </v-list-tile-action>
@@ -32,7 +32,7 @@
       <v-bottom-nav :active.sync="activeIndex" :value="true">
         <v-btn
           v-for="(tab, index) of tabs"
-          :key="tab.name"
+          :key="index"
           color="primary"
           flat
           :value="index"
@@ -59,19 +59,19 @@ export default {
         {
           title: 'Schedule',
           icon: 'schedule',
-          name: 'index',
+          names: ['index', 'schedules'],
           path: '/'
         },
         {
           title: 'Member',
           icon: 'account_circle',
-          name: 'members',
+          names: ['members'],
           path: '/members'
         },
         {
           title: 'About',
           icon: 'help',
-          name: 'about',
+          names: ['about'],
           path: '/about'
         }
       ]
@@ -88,8 +88,8 @@ export default {
     ...mapGetters([])
   },
   created() {
-    this.activeIndex = this.tabs.findIndex(
-      (tab) => tab.name === this.$route.name
+    this.activeIndex = this.tabs.findIndex((tab) =>
+      tab.names.includes(this.$route.name)
     )
   },
   methods: {

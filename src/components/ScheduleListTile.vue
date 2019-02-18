@@ -1,5 +1,5 @@
 <template>
-  <v-list-tile avatar>
+  <v-list-tile avatar :to="'/schedules?id=' + schedule.id">
     <v-list-tile-avatar size="48" color="grey darken-4">
       <v-img :src="src" contain />
     </v-list-tile-avatar>

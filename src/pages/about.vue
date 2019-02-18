@@ -13,7 +13,7 @@
           </div>
         </v-list>
 
-        <v-list v-if="groups.length">
+        <v-list>
           <v-subheader class="text-uppercase">Official</v-subheader>
           <v-list-tile
             v-for="group of groups"
@@ -28,9 +28,6 @@
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
-        <v-layout v-else-if="loading" ma-3 align-center justify-center>
-          <v-progress-circular indeterminate color="primary" />
-        </v-layout>
 
         <v-list>
           <v-subheader class="text-uppercase">Social</v-subheader>
@@ -63,18 +60,9 @@
 
 <script>
 export default {
-  data() {
-    return {
-      loading: true,
-      groups: []
-    }
-  },
-  async created() {
-    const snapshot = await this.$db.collection('groups').get()
-    this.groups = snapshot.docs.map((doc) => {
-      return { ...doc.data(), id: doc.id }
-    })
-    this.loading = false
+  async asyncData({ store }) {
+    const groups = await store.dispatch('group/fetchGroups')
+    return { groups }
   }
 }
 </script>

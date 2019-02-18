@@ -1,6 +1,6 @@
 <template>
   <v-container fill-height pa-0>
-    <v-layout v-if="schedules.length" column>
+    <v-layout column>
       <v-card>
         <schedule-list
           v-for="(schedule, index) of schedules"
@@ -8,16 +8,6 @@
           :schedule="schedule"
         />
       </v-card>
-    </v-layout>
-    <v-layout v-else fill-height align-center justify-center>
-      <v-progress-circular v-if="loading" indeterminate color="primary" />
-      <div v-else class="text-xs-center">
-        <v-icon size="128" color="grey lighten-2">schedule</v-icon>
-        <p class="subheading">No Schedules</p>
-        <p class="caption">
-          No data or No good.
-        </p>
-      </div>
     </v-layout>
   </v-container>
 </template>
@@ -29,38 +19,29 @@ export default {
   components: {
     ScheduleList
   },
-  data() {
-    return {
-      loading: true,
-      schedules: []
-    }
-  },
-  async created() {
-    const membersSnapshot = await this.$db.collection('members').get()
-    const members = membersSnapshot.docs.reduce((carry, doc) => {
+  async asyncData({ store }) {
+    let members = await store.dispatch('member/fetchMembers')
+    members = members.reduce((carry, member) => {
       return {
         ...carry,
-        [doc.id]: doc.data()
+        [member.id]: member
       }
     }, {})
 
     const d = new Date()
-    const yesterday = new Date(d.getFullYear(), d.getMonth(), d.getDate())
+    const startedAt = new Date(d.getFullYear(), d.getMonth(), d.getDate())
 
-    const schedulesSnapshot = await this.$db
-      .collection('schedules')
-      .where('started_at', '>=', yesterday)
-      .orderBy('started_at', 'asc')
-      .get()
-    this.schedules = schedulesSnapshot.docs
-      .map((doc) => {
-        let owner = doc.data().owner
+    let schedules = await store.dispatch('schedule/fetchSchedules', {
+      startedAt
+    })
+    schedules = schedules
+      .map((schedule) => {
+        let owner = schedule.owner
         if (owner) {
           owner = { ...members[owner.id], id: owner.id }
         }
         return {
-          ...doc.data(),
-          id: doc.id,
+          ...schedule,
           owner
         }
       })
@@ -86,9 +67,7 @@ export default {
           }
         ]
       }, [])
-    this.loading = false
+    return { schedules }
   }
 }
 </script>
-
-<style scoped></style>

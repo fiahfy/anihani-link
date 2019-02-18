@@ -28,6 +28,7 @@
         </v-layout>
       </v-list-tile>
     </v-card-actions>
+    <!-- eslint-disable-next-line vue/no-v-html -->
     <v-card-text v-html="description" />
   </v-card>
 </template>
