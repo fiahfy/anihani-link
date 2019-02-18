@@ -55,6 +55,7 @@ const updateDailySchedules = async (groupId, { date, append, schedules }) => {
       group: db.collection('groups').doc(groupId),
       title: s.title,
       description: s.description || null,
+      url: s.url,
       started_at: s.startedAt,
       published_at: s.publishedAt,
       created_at: new Date(),
@@ -146,11 +147,26 @@ const getDailySchedule = async (date) => {
   let schedules = []
   for (let item of list) {
     const text = item.rawText
-    const matches = text.match(/^(\d+)時(\d+)分～\s((.+?)(:?[\s/]|$).*)/)
-    const [, h, m, all, member] = matches
+    const matches = text.match(
+      /^(\d+)時(\d+)分～\s((.+?)((:?[\s/()]|$)[\s\S]*))/
+    )
+    const [, h, m, all, member, desc] = matches
 
     const ownerId = Owner[member] || null
     const title = ownerId ? member : all
+    let description = ownerId ? desc : null
+    if (description) {
+      description = description.replace(/^\//, '').replace(/\s+/g, ' ')
+    }
+
+    let url = null
+    for (let node of item.childNodes) {
+      const attrs = node.attributes
+      if (attrs && attrs.href) {
+        url = attrs.href
+        break
+      }
+    }
 
     const startedAt = new Date(date)
     startedAt.setHours(startedAt.getHours() + Number(h))
@@ -161,6 +177,8 @@ const getDailySchedule = async (date) => {
       {
         ownerId,
         title,
+        description,
+        url,
         startedAt,
         publishedAt
       }
