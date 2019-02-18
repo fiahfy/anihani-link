@@ -1,11 +1,18 @@
 export const state = () => ({
-  members: []
+  members: {}
 })
 
-export const getters = {}
+export const getters = {
+  members: (state) => {
+    return Object.values(state.members)
+  },
+  getMember: (state) => ({ id }) => {
+    return state.members[id]
+  }
+}
 
 export const actions = {
-  async fetchMembers() {
+  async fetchMembers({ commit }) {
     const snapshot = await this.$db.collection('members').get()
     const members = snapshot.docs.map((doc) => {
       const data = doc.data()
@@ -15,9 +22,10 @@ export const actions = {
         group: data.group ? { id: data.group.id } : null
       }
     })
+    commit('setMembers', { members })
     return members
   },
-  async fetchMember(_, { id }) {
+  async fetchMember({ commit }, { id }) {
     const doc = await this.$db
       .collection('members')
       .doc(id)
@@ -31,12 +39,26 @@ export const actions = {
       id: doc.id,
       group: data.group ? { id: data.group.id } : null
     }
+    commit('setMember', { member })
     return member
   }
 }
 
 export const mutations = {
   setMembers(state, { members }) {
-    state.members = members
+    state.members = {
+      ...members.reduce((carry, member) => {
+        return {
+          ...carry,
+          [member.id]: member
+        }
+      }, {})
+    }
+  },
+  setMember(state, { member }) {
+    state.members = {
+      ...state.members,
+      [member.id]: { ...member }
+    }
   }
 }

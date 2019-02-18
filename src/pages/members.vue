@@ -26,7 +26,7 @@ export default {
     MemberCard
   },
   async asyncData({ store }) {
-    let members = await store.dispatch('member/fetchMembers')
+    let members = store.getters['member/members']
     members = shuffle(members)
     return { members }
   }

@@ -10,6 +10,23 @@
             <v-list-tile-title v-text="tab.title" />
           </v-list-tile-content>
         </v-list-tile>
+        <v-divider />
+        <v-subheader class="text-uppercase">Schedules</v-subheader>
+        <v-list-tile
+          v-for="member in members"
+          :key="member.id"
+          :to="'/?owner_id=' + member.id"
+          :class="getTileClass(member)"
+          avatar
+          active-class=""
+        >
+          <v-list-tile-avatar color="grey darken-4">
+            <v-img :src="`/img/members/${member.id}_96x96.png`" contain />
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-title v-text="member.name_ja" />
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
 
@@ -47,7 +64,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapState } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   components: {},
@@ -84,8 +101,7 @@ export default {
     today() {
       return new Date(this.now).getDate()
     },
-    ...mapState([]),
-    ...mapGetters([])
+    ...mapState('member', ['members'])
   },
   created() {
     this.activeIndex = this.tabs.findIndex((tab) =>
@@ -96,7 +112,10 @@ export default {
     onTabClick(e, tab) {
       this.$router.push(tab.path)
     },
-    ...mapMutations([])
+    getTileClass(member) {
+      const { owner_id: ownerId } = this.$route.query
+      return { 'primary--text': member.id === ownerId }
+    }
   }
 }
 </script>

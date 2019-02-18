@@ -19,26 +19,22 @@ export default {
   components: {
     ScheduleList
   },
-  async asyncData({ store }) {
-    let members = await store.dispatch('member/fetchMembers')
-    members = members.reduce((carry, member) => {
-      return {
-        ...carry,
-        [member.id]: member
-      }
-    }, {})
+  watchQuery: ['owner_id'],
+  async asyncData({ query, store }) {
+    const { owner_id: ownerId } = query
 
     const d = new Date()
     const startedAt = new Date(d.getFullYear(), d.getMonth(), d.getDate())
 
     let schedules = await store.dispatch('schedule/fetchSchedules', {
-      startedAt
+      startedAt,
+      ownerId
     })
     schedules = schedules
       .map((schedule) => {
         let owner = schedule.owner
         if (owner) {
-          owner = { ...members[owner.id], id: owner.id }
+          owner = store.getters['member/getMember']({ id: owner.id })
         }
         return {
           ...schedule,

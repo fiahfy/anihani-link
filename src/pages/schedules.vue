@@ -3,7 +3,7 @@
     <v-layout column>
       <v-card>
         <v-list two-line>
-          <v-list-tile avatar>
+          <v-list-tile avatar :to="to">
             <v-list-tile-avatar size="48" color="grey darken-4">
               <v-img :src="src" contain />
             </v-list-tile-avatar>
@@ -57,10 +57,9 @@ export default {
       return error({ statusCode: 404, message: 'Schedule Not Found' })
     }
     if (schedule.owner) {
-      const member = await store.dispatch('member/fetchMember', {
+      schedule.owner = store.getters['member/getMember']({
         id: schedule.owner.id
       })
-      schedule.owner = { ...member, id: schedule.owner.id }
     }
     return { schedule }
   },
@@ -72,6 +71,11 @@ export default {
         this.schedule.started_at.toDate().getTime() < this.now &&
         endedAt.getTime() > this.now
       )
+    },
+    to() {
+      return this.schedule.owner
+        ? '/?owner_id=' + this.schedule.owner.id
+        : '/?group_id=' + this.schedule.group.id
     },
     src() {
       return this.schedule.owner
