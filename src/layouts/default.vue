@@ -10,7 +10,9 @@
             <v-list-tile-title v-text="tab.title" />
           </v-list-tile-content>
         </v-list-tile>
-        <v-divider />
+      </v-list>
+      <v-divider />
+      <v-list>
         <v-subheader class="text-uppercase">Schedules</v-subheader>
         <v-list-tile
           v-for="member in members"
