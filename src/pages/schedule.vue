@@ -15,15 +15,17 @@
 
           <v-list-tile>
             <v-list-tile-content>
-              <v-list-tile-sub-title>Start Time</v-list-tile-sub-title>
+              <v-list-tile-sub-title>Start</v-list-tile-sub-title>
               <v-list-tile-title>
-                <span>{{ startedAt }}</span>
-                <span
-                  v-if="live"
-                  class="live primary--text caption ml-2 text-uppercase"
-                >
-                  Live Now
-                </span>
+                <v-layout align-center>
+                  <span>{{ startedAt }}</span>
+                  <span
+                    v-if="live"
+                    class="live primary--text caption ml-2 text-uppercase"
+                  >
+                    Live Now
+                  </span>
+                </v-layout>
               </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
@@ -48,6 +50,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   watchQuery: ['id'],
   async asyncData({ error, query, store }) {
@@ -73,9 +77,7 @@ export default {
       )
     },
     to() {
-      return this.schedule.owner
-        ? '/?owner_id=' + this.schedule.owner.id
-        : '/?group_id=' + this.schedule.group.id
+      return this.schedule.owner ? '/member?id=' + this.schedule.owner.id : null
     },
     src() {
       return this.schedule.owner
@@ -111,7 +113,8 @@ export default {
         )
       }
       return null
-    }
+    },
+    ...mapState(['now'])
   }
 }
 </script>
@@ -120,15 +123,11 @@ export default {
 .v-list__tile__avatar {
   min-width: 64px;
 }
-.v-list__tile__title {
-  vertical-align: bottom;
-}
-.v-list__tile__title > * {
-  vertical-align: bottom;
-}
 .live {
   border: 1px solid var(--v-primary-base);
-  padding: 1.5px 4px;
+  padding: 1px 4px;
+  line-height: 14px;
+  box-sizing: content-box;
 }
 .description {
   padding-top: 14px;

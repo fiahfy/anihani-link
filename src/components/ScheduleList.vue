@@ -1,9 +1,9 @@
 <template>
   <v-list subheader three-line>
     <v-subheader v-text="headline" />
-    <template v-for="(s, index) of schedule.schedules">
+    <template v-for="(schedule, index) of schedules">
       <v-divider v-if="index !== 0" :key="index" inset class="pl-2" />
-      <schedule-list-tile :key="s.id" :schedule="s" />
+      <schedule-list-tile :key="schedule.id" :schedule="schedule" />
     </template>
   </v-list>
 </template>
@@ -16,14 +16,18 @@ export default {
     ScheduleListTile
   },
   props: {
-    schedule: {
-      type: Object,
-      default: () => {}
+    date: {
+      type: Date,
+      required: true
+    },
+    schedules: {
+      type: Array,
+      default: () => []
     }
   },
   computed: {
     headline() {
-      const d = new Date(this.schedule.date)
+      const d = new Date(this.date)
       return d.toLocaleDateString(window.navigator.language, {
         weekday: 'short',
         day: 'numeric',
