@@ -21,6 +21,12 @@ module.exports = {
    */
   mode: 'spa',
   /*
+   ** Generate configuration
+   */
+  generate: {
+    fallback: true
+  },
+  /*
    ** Source directory
    */
   srcDir: 'src',
