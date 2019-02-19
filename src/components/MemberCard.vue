@@ -1,5 +1,10 @@
 <template>
-  <v-card class="ma-3" :style="{ 'background-color': color }" dark>
+  <v-card
+    class="ma-3"
+    :style="{ 'background-color': color }"
+    dark
+    :to="'/member?id=' + member.id"
+  >
     <v-card-actions class="pt-3 pb-0">
       <v-list-tile class="grow">
         <v-list-tile-avatar color="grey darken-4" size="48" class="mr-1">
@@ -9,23 +14,6 @@
         <v-list-tile-content>
           <v-list-tile-title v-text="member.name_ja" />
         </v-list-tile-content>
-
-        <v-layout align-center justify-end>
-          <v-btn
-            icon
-            :href="
-              `https://www.youtube.com/channel/${member.youtube.channel_id}`
-            "
-          >
-            <img src="/img/youtube-logo.png" height="16" />
-          </v-btn>
-          <v-btn
-            icon
-            :href="`https://twitter.com/${member.twitter.screen_name}`"
-          >
-            <img src="/img/twitter-logo.svg" height="30" />
-          </v-btn>
-        </v-layout>
       </v-list-tile>
     </v-card-actions>
     <!-- eslint-disable-next-line vue/no-v-html -->

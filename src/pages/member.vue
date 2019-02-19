@@ -15,9 +15,7 @@
             <span class="grey--text" v-html="description" />
           </v-layout>
         </v-card-title>
-      </v-card>
 
-      <v-card>
         <v-list subheader>
           <v-subheader class="text-uppercase">Links</v-subheader>
           <v-list-tile
@@ -43,19 +41,20 @@
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
-      </v-card>
 
-      <schedule-card :schedules="schedules" />
+        <schedule-all v-if="schedules.length" :schedules="schedules" />
+        <div v-else class="pb-3 grey--text text-xs-center">No Schedules</div>
+      </v-card>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-import ScheduleCard from '~/components/ScheduleCard.vue'
+import ScheduleAll from '~/components/ScheduleAll.vue'
 
 export default {
   components: {
-    ScheduleCard
+    ScheduleAll
   },
   watchQuery: ['id'],
   async asyncData({ error, query, store }) {

@@ -1,12 +1,12 @@
 <template>
-  <v-card>
+  <div>
     <schedule-list
       v-for="(daySchedule, index) of daySchedules"
       :key="index"
       :date="daySchedule.date"
       :schedules="daySchedule.schedules"
     />
-  </v-card>
+  </div>
 </template>
 
 <script>
