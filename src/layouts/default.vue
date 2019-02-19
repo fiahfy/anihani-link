@@ -2,22 +2,22 @@
   <v-app dark>
     <v-navigation-drawer v-model="drawer" app clipped>
       <v-list>
-        <v-list-tile v-for="(tab, index) in tabs" :key="index" :to="tab.path">
+        <v-list-tile v-for="(nav, index) in navs" :key="index" :to="nav.path">
           <v-list-tile-action>
-            <v-icon>{{ tab.icon }}</v-icon>
+            <v-icon>{{ nav.icon }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title v-text="tab.title" />
+            <v-list-tile-title v-text="nav.title" />
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
       <v-divider />
-      <v-list>
-        <v-subheader class="text-uppercase">Schedules</v-subheader>
+      <v-list subheader>
+        <v-subheader class="text-uppercase">Members</v-subheader>
         <v-list-tile
           v-for="member in members"
           :key="member.id"
-          :to="'/?owner_id=' + member.id"
+          :to="'/member?id=' + member.id"
           :class="getTileClass(member)"
           avatar
           active-class=""
@@ -50,15 +50,14 @@
     <v-footer app mandatory height="56" class="hidden-sm-and-up">
       <v-bottom-nav :active.sync="activeIndex" :value="true">
         <v-btn
-          v-for="(tab, index) of tabs"
+          v-for="(nav, index) of navs"
           :key="index"
           color="primary"
           flat
-          :value="index"
-          @click="(e) => onTabClick(e, tab)"
+          @click="(e) => onTabClick(e, nav)"
         >
-          <span>{{ tab.title }}</span>
-          <v-icon>{{ tab.icon }}</v-icon>
+          <span>{{ nav.title }}</span>
+          <v-icon>{{ nav.icon }}</v-icon>
         </v-btn>
       </v-bottom-nav>
     </v-footer>
@@ -74,17 +73,17 @@ export default {
     return {
       drawer: null,
       activeIndex: 0,
-      tabs: [
+      navs: [
         {
           title: 'Schedule',
           icon: 'schedule',
-          names: ['index', 'schedules'],
+          names: ['index', 'schedule'],
           path: '/'
         },
         {
           title: 'Member',
           icon: 'account_circle',
-          names: ['members'],
+          names: ['members', 'member'],
           path: '/members'
         },
         {
@@ -100,23 +99,28 @@ export default {
     title() {
       return document.title
     },
-    today() {
-      return new Date(this.now).getDate()
-    },
     ...mapState('member', ['members'])
   },
+  watch: {
+    $route() {
+      this.updateActiveIndex()
+    }
+  },
   created() {
-    this.activeIndex = this.tabs.findIndex((tab) =>
-      tab.names.includes(this.$route.name)
-    )
+    this.updateActiveIndex()
   },
   methods: {
-    onTabClick(e, tab) {
-      this.$router.push(tab.path)
+    onTabClick(e, nav) {
+      this.$router.push(nav.path)
     },
     getTileClass(member) {
-      const { owner_id: ownerId } = this.$route.query
-      return { 'primary--text': member.id === ownerId }
+      const { id } = this.$route.query
+      return { 'primary--text': member.id === id }
+    },
+    updateActiveIndex() {
+      this.activeIndex = this.navs.findIndex((nav) =>
+        nav.names.includes(this.$route.name)
+      )
     }
   }
 }
