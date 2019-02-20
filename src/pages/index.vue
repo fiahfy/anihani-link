@@ -1,7 +1,9 @@
 <template>
   <v-container fill-height pa-0>
     <v-layout v-if="schedules.length" column>
-      <schedule-all :schedules="schedules" />
+      <v-card>
+        <schedule-all :schedules="schedules" />
+      </v-card>
     </v-layout>
     <v-layout v-else fill-height align-center justify-center>
       <div class="text-xs-center">

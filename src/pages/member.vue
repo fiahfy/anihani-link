@@ -7,7 +7,18 @@
           height="320"
           contain
           class="mt-3"
-        />
+        >
+          <v-layout
+            slot="placeholder"
+            fill-height
+            align-center
+            justify-center
+            ma-0
+          >
+            <v-progress-circular indeterminate color="grey lighten-5" />
+          </v-layout>
+        </v-img>
+
         <v-card-title primary-title class="text-xs-center">
           <v-layout column>
             <div class="title mb-3" v-text="member.name_ja" />
