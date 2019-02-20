@@ -1,6 +1,55 @@
 <template>
   <v-container fill-height pa-0>
-    <v-layout column>
+
+        <v-card>
+    <v-layout row wrap pa-0>
+      <v-flex md4 xs12 px-3>
+        <v-layout row wrap align-center>
+          <v-flex xs12 py-3 text-xs-center>
+            <v-avatar size="192" color="grey darken-4">
+              <v-img :src="`/img/members/${member.id}_96x96.png`">
+                <v-layout
+                  slot="placeholder"
+                  fill-height
+                  align-center
+                  justify-center
+                >
+                  <v-progress-circular indeterminate color="grey lighten-5" />
+                </v-layout>
+              </v-img>
+            </v-avatar>
+          </v-flex>
+          <v-flex xs12 py-3 text-xs-center title v-text="member.name_ja" />
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <v-flex xs12 py-3 text-xs-center caption v-html="description" />
+          <v-flex xs12 py-3 text-xs-left>
+            <v-layout pb-2 align-center>
+              <img src="/img/twitter-logo.svg" height="30" />
+              <a
+                class="caption ellipsis ml-2"
+                :href="`https://twitter.com/${member.twitter.screen_name}`"
+                v-text="`twitter.com/${member.twitter.screen_name}`"
+              />
+            </v-layout>
+            <v-layout pb-2 align-center>
+              <img src="/img/youtube-logo.png" height="16" class="px-1" />
+              <a
+                class="caption ellipsis ml-2"
+                :href="
+                  `https://www.youtube.com/channel/${member.youtube.channel_id}`
+                "
+                v-text="`www.youtube.com/channel/${member.youtube.channel_id}`"
+              />
+            </v-layout>
+          </v-flex>
+        </v-layout>
+      </v-flex>
+      <v-flex md8 xs12>
+          <schedule-list v-if="schedules.length" :schedules="schedules" />
+      </v-flex>
+    </v-layout>
+    </v-card>
+    <!-- <v-layout column>
       <v-card>
         <v-img
           :src="`/img/members/${member.id}_500x700.png`"
@@ -22,7 +71,7 @@
         <v-card-title primary-title class="text-xs-center">
           <v-layout column>
             <div class="title mb-3" v-text="member.name_ja" />
-            <!-- eslint-disable-next-line vue/no-v-html -->
+            --><!-- eslint-disable-next-line vue/no-v-html --><!--
             <span class="grey--text" v-html="description" />
           </v-layout>
         </v-card-title>
@@ -56,7 +105,7 @@
         <schedule-list v-if="schedules.length" :schedules="schedules" />
         <div v-else class="pb-3 grey--text text-xs-center">No Schedules</div>
       </v-card>
-    </v-layout>
+    </v-layout> -->
   </v-container>
 </template>
 
@@ -86,7 +135,9 @@ export default {
   },
   computed: {
     description() {
-      return this.member.description.replace(/\n/g, '<br />')
+      return this.member.description
+        .replace(/。/g, '。\n')
+        .replace(/\n+/g, '<br />')
     }
   }
 }
