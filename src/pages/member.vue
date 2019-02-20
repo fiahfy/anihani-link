@@ -53,7 +53,7 @@
           </v-list-tile>
         </v-list>
 
-        <schedule-all v-if="schedules.length" :schedules="schedules" />
+        <schedule-list v-if="schedules.length" :schedules="schedules" />
         <div v-else class="pb-3 grey--text text-xs-center">No Schedules</div>
       </v-card>
     </v-layout>
@@ -61,11 +61,11 @@
 </template>
 
 <script>
-import ScheduleAll from '~/components/ScheduleAll.vue'
+import ScheduleList from '~/components/ScheduleList.vue'
 
 export default {
   components: {
-    ScheduleAll
+    ScheduleList
   },
   watchQuery: ['id'],
   async asyncData({ error, query, store }) {

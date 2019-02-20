@@ -2,7 +2,7 @@
   <v-container fill-height pa-0>
     <v-layout v-if="schedules.length" column>
       <v-card>
-        <schedule-all :schedules="schedules" />
+        <schedule-list :schedules="schedules" />
       </v-card>
     </v-layout>
     <v-layout v-else fill-height align-center justify-center>
@@ -15,11 +15,11 @@
 </template>
 
 <script>
-import ScheduleAll from '~/components/ScheduleAll.vue'
+import ScheduleList from '~/components/ScheduleList.vue'
 
 export default {
   components: {
-    ScheduleAll
+    ScheduleList
   },
   async asyncData({ store }) {
     const d = new Date()
