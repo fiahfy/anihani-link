@@ -1,18 +1,20 @@
 <template>
-  <v-list-tile avatar>
+  <v-list-tile avatar :to="'/schedule?id=' + schedule.id">
     <v-list-tile-avatar size="48" color="grey darken-4">
-      <v-img :src="src" contain />
+      <app-image :src="src" contain />
     </v-list-tile-avatar>
 
     <v-list-tile-content class="justify-start">
       <v-list-tile-title :class="{ 'font-weight-bold': highlighted }">
-        <span>{{ startedAt }} -</span>
-        <span
-          v-if="live"
-          class="live primary--text caption ml-1 text-uppercase"
-        >
-          Live Now
-        </span>
+        <v-layout align-center>
+          <span>{{ startedAt }} -</span>
+          <span
+            v-if="live"
+            class="live primary--text caption ml-2 text-uppercase"
+          >
+            Live Now
+          </span>
+        </v-layout>
       </v-list-tile-title>
       <v-list-tile-sub-title>
         <span
@@ -27,8 +29,12 @@
 
 <script>
 import { mapState } from 'vuex'
+import AppImage from '~/components/AppImage.vue'
 
 export default {
+  components: {
+    AppImage
+  },
   props: {
     schedule: {
       type: Object,
@@ -60,7 +66,7 @@ export default {
         : this.schedule.title
     },
     description() {
-      return this.schedule.description ? ' - ' + this.schedule.description : ''
+      return this.schedule.description ? ' — ' + this.schedule.description : ''
     },
     startedAt() {
       const d = this.schedule.started_at.toDate()
@@ -83,12 +89,6 @@ export default {
 .v-list__tile__content {
   padding-top: 10px;
 }
-.v-list__tile__title {
-  vertical-align: middle;
-}
-.v-list__tile__title > * {
-  vertical-align: middle;
-}
 .v-list__tile__sub-title {
   /* autoprefixer: ignore next */
   -webkit-box-orient: vertical;
@@ -96,5 +96,7 @@ export default {
 .live {
   border: 1px solid var(--v-primary-base);
   padding: 1px 4px;
+  line-height: 14px;
+  box-sizing: content-box;
 }
 </style>

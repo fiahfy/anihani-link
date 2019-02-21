@@ -7,14 +7,14 @@
           <div class="body-2 px-4">
             バーチャルYouTuberユニット
             「有閑喫茶あにまーれ」「ハニーストラップ」
-            のスケジュールを公式Twitterのツイートから取得し一覧として表示しています<br />
+            のスケジュールを公式Twitter、非公式Wikiから取得し一覧として表示しています<br />
             キャンセル、ゲリラは反映していません<br />
             動作環境: Google Chrome, Mobile Safari
           </div>
         </v-list>
 
-        <v-list v-if="groups.length">
-          <v-subheader class="text-uppercase">Official</v-subheader>
+        <v-list>
+          <v-subheader class="text-uppercase">Official Twitter</v-subheader>
           <v-list-tile
             v-for="group of groups"
             :key="group.id"
@@ -28,9 +28,28 @@
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
-        <v-layout v-else-if="loading" ma-3 align-center justify-center>
-          <v-progress-circular indeterminate color="primary" />
-        </v-layout>
+
+        <v-list>
+          <v-subheader class="text-uppercase">Unofficial Wiki</v-subheader>
+          <v-list-tile href="https://wikiwiki.jp/animare/">
+            <v-list-tile-action>
+              <v-icon>language</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>
+                有閑喫茶あにまーれ
+              </v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile href="https://wikiwiki.jp/honeystrap/">
+            <v-list-tile-action>
+              <v-icon>language</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>ハニーストラップ</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
 
         <v-list>
           <v-subheader class="text-uppercase">Social</v-subheader>
@@ -63,18 +82,9 @@
 
 <script>
 export default {
-  data() {
-    return {
-      loading: true,
-      groups: []
-    }
-  },
-  async created() {
-    const snapshot = await this.$db.collection('groups').get()
-    this.groups = snapshot.docs.map((doc) => {
-      return { ...doc.data(), id: doc.id }
-    })
-    this.loading = false
+  async asyncData({ store }) {
+    const groups = store.getters['group/groups']
+    return { groups }
   }
 }
 </script>

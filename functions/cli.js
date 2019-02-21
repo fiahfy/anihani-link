@@ -7,26 +7,46 @@ process.env.TWITTER_CONSUMER_SECRET = config.twitter.consumer_secret
 process.env.TWITTER_ACCESS_TOKEN_KEY = ''
 process.env.TWITTER_ACCESS_TOKEN_SECRET = ''
 
-const updateSchedules = require('./actions/update_schedules')
 const updateGroups = require('./actions/update_groups')
 const updateMembers = require('./actions/update_members')
+const fetchTweets = require('./actions/fetch_tweets')
+const fetchWiki = require('./actions/fetch_wiki')
 
 ;(async () => {
   try {
-    const [, , command, ...options] = process.argv
+    const [, , command, target, ...options] = process.argv
     switch (command) {
-      case 'groups':
-        await updateGroups()
+      case 'update':
+        switch (target) {
+          case 'groups':
+            await updateGroups()
+            break
+          case 'members':
+            await updateMembers()
+            break
+          default:
+            console.error('invalid target')
+            break
+        }
         break
-      case 'members':
-        await updateMembers()
+      case 'fetch':
+        switch (target) {
+          case 'tweets': {
+            const force = options.includes('--force')
+            const groupId = options[options.indexOf('-g') + 1]
+            await fetchTweets({ groupId, force })
+            break
+          }
+          case 'wiki': {
+            const groupId = options[options.indexOf('-g') + 1]
+            await fetchWiki({ groupId })
+            break
+          }
+          default:
+            console.error('invalid target')
+            break
+        }
         break
-      case 'schedules': {
-        const force = options.includes('--force')
-        const groupId = options[options.indexOf('-g') + 1]
-        await updateSchedules({ groupId, force })
-        break
-      }
       default:
         console.error('invalid command')
         break

@@ -11,7 +11,7 @@ module.exports = {
   /*
    ** Customize the progress bar color
    */
-  loading: { color: '#8BC34A' },
+  loading: { color: '#ff4081' },
   /*
    ** Build configuration
    */
@@ -20,6 +20,12 @@ module.exports = {
    ** Mode
    */
   mode: 'spa',
+  /*
+   ** Generate configuration
+   */
+  generate: {
+    fallback: true
+  },
   /*
    ** Source directory
    */
@@ -69,7 +75,9 @@ module.exports = {
    ** Plugins
    */
   plugins: [
+    { src: '~/plugins/filter', ssr: false },
     { src: '~/plugins/firebase', ssr: false },
+    { src: '~/plugins/member', ssr: false },
     { src: '~/plugins/now', ssr: false }
   ],
   /*

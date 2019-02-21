@@ -2,12 +2,31 @@
   <v-app dark>
     <v-navigation-drawer v-model="drawer" app clipped>
       <v-list>
-        <v-list-tile v-for="tab in tabs" :key="tab.name" :to="tab.path">
+        <v-list-tile v-for="(nav, index) in navs" :key="index" :to="nav.path">
           <v-list-tile-action>
-            <v-icon>{{ tab.icon }}</v-icon>
+            <v-icon>{{ nav.icon }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title v-text="tab.title" />
+            <v-list-tile-title v-text="nav.title" />
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+      <v-divider />
+      <v-list subheader>
+        <v-subheader class="text-uppercase">Members</v-subheader>
+        <v-list-tile
+          v-for="member in members"
+          :key="member.id"
+          :to="'/member?id=' + member.id"
+          :class="getTileClass(member)"
+          avatar
+          active-class=""
+        >
+          <v-list-tile-avatar color="grey darken-4">
+            <v-img :src="`/img/members/${member.id}_96x96.png`" contain />
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-title v-text="member.name_ja" />
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -31,15 +50,14 @@
     <v-footer app mandatory height="56" class="hidden-sm-and-up">
       <v-bottom-nav :active.sync="activeIndex" :value="true">
         <v-btn
-          v-for="(tab, index) of tabs"
-          :key="tab.name"
+          v-for="(nav, index) of navs"
+          :key="index"
           color="primary"
           flat
-          :value="index"
-          @click="(e) => onTabClick(e, tab)"
+          @click="(e) => onTabClick(e, nav)"
         >
-          <span>{{ tab.title }}</span>
-          <v-icon>{{ tab.icon }}</v-icon>
+          <span>{{ nav.title }}</span>
+          <v-icon>{{ nav.icon }}</v-icon>
         </v-btn>
       </v-bottom-nav>
     </v-footer>
@@ -47,7 +65,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapState } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   components: {},
@@ -55,23 +73,23 @@ export default {
     return {
       drawer: null,
       activeIndex: 0,
-      tabs: [
+      navs: [
         {
           title: 'Schedule',
           icon: 'schedule',
-          name: 'index',
+          names: ['index', 'schedule'],
           path: '/'
         },
         {
           title: 'Member',
           icon: 'account_circle',
-          name: 'members',
+          names: ['members', 'member'],
           path: '/members'
         },
         {
           title: 'About',
           icon: 'help',
-          name: 'about',
+          names: ['about'],
           path: '/about'
         }
       ]
@@ -81,22 +99,29 @@ export default {
     title() {
       return document.title
     },
-    today() {
-      return new Date(this.now).getDate()
-    },
-    ...mapState([]),
-    ...mapGetters([])
+    ...mapState('member', ['members'])
+  },
+  watch: {
+    $route() {
+      this.updateActiveIndex()
+    }
   },
   created() {
-    this.activeIndex = this.tabs.findIndex(
-      (tab) => tab.name === this.$route.name
-    )
+    this.updateActiveIndex()
   },
   methods: {
-    onTabClick(e, tab) {
-      this.$router.push(tab.path)
+    onTabClick(e, nav) {
+      this.$router.push(nav.path)
     },
-    ...mapMutations([])
+    getTileClass(member) {
+      const { id } = this.$route.query
+      return { 'primary--text': member.id === id }
+    },
+    updateActiveIndex() {
+      this.activeIndex = this.navs.findIndex((nav) =>
+        nav.names.includes(this.$route.name)
+      )
+    }
   }
 }
 </script>
