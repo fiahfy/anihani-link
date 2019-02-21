@@ -1,49 +1,47 @@
 <template>
   <v-container full-height pa-0>
-    <v-card>
-      <v-list two-line>
-        <v-list-tile avatar :to="to">
-          <v-list-tile-avatar size="48" color="grey darken-4">
-            <v-img :src="src" contain />
-          </v-list-tile-avatar>
+    <v-list two-line>
+      <v-list-tile avatar :to="to">
+        <v-list-tile-avatar size="48" color="grey darken-4">
+          <v-img :src="src" contain />
+        </v-list-tile-avatar>
 
-          <v-list-tile-content>
-            <v-list-tile-title v-text="title" />
-          </v-list-tile-content>
-        </v-list-tile>
+        <v-list-tile-content>
+          <v-list-tile-title v-text="title" />
+        </v-list-tile-content>
+      </v-list-tile>
 
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile-sub-title>Start</v-list-tile-sub-title>
-            <v-list-tile-title>
-              <v-layout align-center>
-                <span>{{ startedAt }}</span>
-                <span
-                  v-if="live"
-                  class="live primary--text caption ml-2 text-uppercase"
-                >
-                  Live Now
-                </span>
-              </v-layout>
-            </v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+      <v-list-tile>
+        <v-list-tile-content>
+          <v-list-tile-sub-title>Start</v-list-tile-sub-title>
+          <v-list-tile-title>
+            <v-layout align-center>
+              <span>{{ startedAt }}</span>
+              <span
+                v-if="live"
+                class="live primary--text caption ml-2 text-uppercase"
+              >
+                Live Now
+              </span>
+            </v-layout>
+          </v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
 
-        <v-list-tile v-if="url" :href="url">
-          <v-list-tile-content>
-            <v-list-tile-sub-title>URL</v-list-tile-sub-title>
-            <v-list-tile-title v-text="url" />
-          </v-list-tile-content>
-        </v-list-tile>
+      <v-list-tile v-if="url" :href="url">
+        <v-list-tile-content>
+          <v-list-tile-sub-title>URL</v-list-tile-sub-title>
+          <v-list-tile-title v-text="url" />
+        </v-list-tile-content>
+      </v-list-tile>
 
-        <v-list-tile v-if="schedule.description" class="description">
-          <v-list-tile-content>
-            <v-list-tile-sub-title>Description</v-list-tile-sub-title>
-            <v-list-tile-title v-text="schedule.description" />
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-    </v-card>
+      <v-list-tile v-if="schedule.description" class="description">
+        <v-list-tile-content>
+          <v-list-tile-sub-title>Description</v-list-tile-sub-title>
+          <v-list-tile-title v-text="schedule.description" />
+        </v-list-tile-content>
+      </v-list-tile>
+    </v-list>
   </v-container>
 </template>
 
@@ -57,11 +55,6 @@ export default {
     const schedule = await store.dispatch('schedule/fetchSchedule', { id })
     if (!schedule) {
       return error({ statusCode: 404, message: 'Schedule Not Found' })
-    }
-    if (schedule.owner) {
-      schedule.owner = store.getters['member/getMember']({
-        id: schedule.owner.id
-      })
     }
     return { schedule }
   },

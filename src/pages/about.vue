@@ -83,7 +83,7 @@
 <script>
 export default {
   async asyncData({ store }) {
-    const groups = await store.dispatch('group/fetchGroups')
+    const groups = store.getters['group/groups']
     return { groups }
   }
 }

@@ -1,21 +1,17 @@
 <template>
-  <v-container fill-height>
+  <v-container fill-height pa-0>
     <v-layout column>
-      <member-card
-        v-for="member of members"
-        :key="member.id"
-        :member="member"
-      />
+      <member-list :members="members" />
     </v-layout>
   </v-container>
 </template>
 
 <script>
-import MemberCard from '~/components/MemberCard.vue'
+import MemberList from '~/components/MemberList.vue'
 
 export default {
   components: {
-    MemberCard
+    MemberList
   },
   async asyncData({ error, store }) {
     const members = store.getters['member/members']

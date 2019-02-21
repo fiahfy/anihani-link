@@ -51,7 +51,7 @@
       </v-flex>
       <v-flex md8 sm6 xs12>
         <v-list subheader>
-          <v-subheader class="subheading">Schedules</v-subheader>
+          <v-subheader class="subheading text-uppercase">Schedules</v-subheader>
           <v-divider />
         </v-list>
         <schedule-list v-if="schedules.length" :schedules="schedules" />

@@ -2,7 +2,14 @@ export const state = () => ({
   groups: {}
 })
 
-export const getters = {}
+export const getters = {
+  groups: (state) => {
+    return Object.values(state.groups)
+  },
+  getGroup: (state) => ({ id }) => {
+    return state.groups[id]
+  }
+}
 
 export const actions = {
   async fetchGroups({ commit }) {

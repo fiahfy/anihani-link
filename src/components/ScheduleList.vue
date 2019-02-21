@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import DailyScheduleList from '~/components/DailyScheduleList.vue'
 
 export default {
@@ -25,40 +24,28 @@ export default {
   },
   computed: {
     daySchedules() {
-      return this.schedules
-        .map((schedule) => {
-          let owner = schedule.owner
-          if (owner) {
-            owner = this.getMember({ id: owner.id })
-          }
-          return {
-            ...schedule,
-            owner
-          }
-        })
-        .reduce((carry, schedule) => {
-          const d = schedule.started_at.toDate()
-          const date = new Date(d.getFullYear(), d.getMonth(), d.getDate())
-          if (
-            carry.length &&
-            carry[carry.length - 1].date.getTime() === date.getTime()
-          ) {
-            carry[carry.length - 1].schedules = [
-              ...carry[carry.length - 1].schedules,
-              schedule
-            ]
-            return carry
-          }
-          return [
-            ...carry,
-            {
-              date,
-              schedules: [schedule]
-            }
+      return this.schedules.reduce((carry, schedule) => {
+        const d = schedule.started_at.toDate()
+        const date = new Date(d.getFullYear(), d.getMonth(), d.getDate())
+        if (
+          carry.length &&
+          carry[carry.length - 1].date.getTime() === date.getTime()
+        ) {
+          carry[carry.length - 1].schedules = [
+            ...carry[carry.length - 1].schedules,
+            schedule
           ]
-        }, [])
-    },
-    ...mapGetters('member', ['getMember'])
+          return carry
+        }
+        return [
+          ...carry,
+          {
+            date,
+            schedules: [schedule]
+          }
+        ]
+      }, [])
+    }
   }
 }
 </script>

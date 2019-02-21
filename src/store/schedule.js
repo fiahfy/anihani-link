@@ -5,7 +5,7 @@ export const state = () => ({
 export const getters = {}
 
 export const actions = {
-  async fetchSchedules({ commit }, { startedAt, ownerId }) {
+  async fetchSchedules({ commit, rootGetters }, { startedAt, ownerId }) {
     let query = this.$db
       .collection('schedules')
       .where('started_at', '>=', startedAt)
@@ -19,17 +19,23 @@ export const actions = {
     const snapshot = await query.orderBy('started_at', 'asc').get()
     const schedules = snapshot.docs.map((doc) => {
       const data = doc.data()
+      const owner = data.owner
+        ? rootGetters['member/getMember']({ id: data.owner.id })
+        : null
+      const group = data.group
+        ? rootGetters['group/getGroup']({ id: data.group.id })
+        : null
       return {
         ...data,
         id: doc.id,
-        owner: data.owner ? { id: data.owner.id } : null,
-        group: data.group ? { id: data.group.id } : null
+        owner,
+        group
       }
     })
     commit('setSchedules', { schedules })
     return schedules
   },
-  async fetchSchedule({ commit }, { id }) {
+  async fetchSchedule({ commit, rootGetters }, { id }) {
     const doc = await this.$db
       .collection('schedules')
       .doc(id)
@@ -38,11 +44,17 @@ export const actions = {
       return null
     }
     const data = doc.data()
+    const owner = data.owner
+      ? rootGetters['member/getMember']({ id: data.owner.id })
+      : null
+    const group = data.group
+      ? rootGetters['group/getGroup']({ id: data.group.id })
+      : null
     const schedule = {
       ...data,
       id: doc.id,
-      owner: data.owner ? { id: data.owner.id } : null,
-      group: data.group ? { id: data.group.id } : null
+      owner,
+      group
     }
     commit('setSchedule', { schedule })
     return schedule

@@ -12,35 +12,21 @@ export const getters = {
 }
 
 export const actions = {
-  async fetchMembers({ commit }) {
+  async fetchMembers({ commit, rootGetters }) {
     const snapshot = await this.$db.collection('members').get()
     const members = snapshot.docs.map((doc) => {
       const data = doc.data()
+      const group = data.group
+        ? rootGetters['group/getGroup']({ id: data.group.id })
+        : null
       return {
         ...data,
         id: doc.id,
-        group: data.group ? { id: data.group.id } : null
+        group
       }
     })
     commit('setMembers', { members })
     return members
-  },
-  async fetchMember({ commit }, { id }) {
-    const doc = await this.$db
-      .collection('members')
-      .doc(id)
-      .get()
-    if (!doc.exists) {
-      return null
-    }
-    const data = doc.data()
-    const member = {
-      ...data,
-      id: doc.id,
-      group: data.group ? { id: data.group.id } : null
-    }
-    commit('setMember', { member })
-    return member
   }
 }
 
@@ -53,12 +39,6 @@ export const mutations = {
           [member.id]: member
         }
       }, {})
-    }
-  },
-  setMember(state, { member }) {
-    state.members = {
-      ...state.members,
-      [member.id]: { ...member }
     }
   }
 }
