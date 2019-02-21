@@ -1,15 +1,11 @@
 <template>
   <v-container fill-height pa-0>
-    <v-layout v-if="schedules.length" column>
-      <v-card>
-        <schedule-list :schedules="schedules" />
-      </v-card>
+    <v-layout v-if="schedules.length">
+      <schedule-list :schedules="schedules" />
     </v-layout>
-    <v-layout v-else fill-height align-center justify-center>
-      <div class="text-xs-center">
-        <v-icon size="128" color="grey">schedule</v-icon>
-        <p class="subheading">No Schedules</p>
-      </div>
+    <v-layout v-else align-center justify-center column>
+      <v-icon size="128" color="grey">schedule</v-icon>
+      <p class="subheading">No Schedules</p>
     </v-layout>
   </v-container>
 </template>

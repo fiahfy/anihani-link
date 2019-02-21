@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 100%;">
     <daily-schedule-list
       v-for="(daySchedule, index) of daySchedules"
       :key="index"
