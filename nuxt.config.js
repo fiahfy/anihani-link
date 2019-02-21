@@ -75,6 +75,7 @@ module.exports = {
    ** Plugins
    */
   plugins: [
+    { src: '~/plugins/filter', ssr: false },
     { src: '~/plugins/firebase', ssr: false },
     { src: '~/plugins/member', ssr: false },
     { src: '~/plugins/now', ssr: false }
