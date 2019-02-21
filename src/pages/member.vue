@@ -1,11 +1,11 @@
 <template>
   <v-container pa-0>
-    <v-layout row wrap pa-3>
+    <v-layout row wrap :class="{ 'pa-3': $vuetify.breakpoint.smAndUp }">
       <v-flex md4 sm6 xs12>
         <v-layout row wrap align-center pa-3>
           <v-flex xs12 pa-3 text-xs-center>
             <v-avatar size="192" color="grey darken-4">
-              <v-img :src="`/img/members/${member.id}_96x96.png`">
+              <app-image :src="`/img/members/${member.id}_192x192.png`">
                 <v-layout
                   slot="placeholder"
                   fill-height
@@ -14,12 +14,19 @@
                 >
                   <v-progress-circular indeterminate color="grey lighten-5" />
                 </v-layout>
-              </v-img>
+              </app-image>
             </v-avatar>
           </v-flex>
           <v-flex xs12 pa-3 text-xs-center title v-text="member.name_ja" />
-          <!-- eslint-disable-next-line vue/no-v-html -->
-          <v-flex xs12 pa-3 text-xs-center caption v-html="description" />
+          <!-- eslint-disable vue/no-v-html -->
+          <v-flex
+            xs12
+            pa-3
+            text-xs-center
+            caption
+            v-html="$options.filters.nl2br(member.description)"
+          />
+          <!-- eslint-enable vue/no-v-html -->
           <v-flex xs12 pa-3 text-xs-left>
             <v-layout pa-1 align-center>
               <img src="/img/twitter-logo.svg" height="30" class="mr-2" />
@@ -43,20 +50,32 @@
         </v-layout>
       </v-flex>
       <v-flex md8 sm6 xs12>
+        <v-list subheader>
+          <v-subheader class="subheading">Schedules</v-subheader>
+          <v-divider />
+        </v-list>
         <schedule-list v-if="schedules.length" :schedules="schedules" />
-        <v-layout v-else align-center justify-center column>
-          <p class="subheading">No Schedules</p>
-        </v-layout>
+        <v-list v-else>
+          <v-list-tile>
+            <v-list-tile-content>
+              <v-list-tile-title class="body-1 text-xs-center">
+                No Schedules
+              </v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+import AppImage from '~/components/AppImage.vue'
 import ScheduleList from '~/components/ScheduleList.vue'
 
 export default {
   components: {
+    AppImage,
     ScheduleList
   },
   watchQuery: ['id'],
@@ -75,13 +94,6 @@ export default {
       ownerId: member.id
     })
     return { member, schedules }
-  },
-  computed: {
-    description() {
-      return this.member.description
-        .replace(/。/g, '。\n')
-        .replace(/\n+/g, '<br />')
-    }
   }
 }
 </script>

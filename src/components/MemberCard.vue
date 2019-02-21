@@ -17,7 +17,7 @@
       </v-list-tile>
     </v-card-actions>
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <v-card-text v-html="description" />
+    <v-card-text v-html="$options.filters.nl2br(member.description)" />
   </v-card>
 </template>
 
@@ -47,9 +47,6 @@ export default {
     },
     src() {
       return `/img/members/${this.member.id}_96x96.png`
-    },
-    description() {
-      return this.member.description.replace(/\n/g, '<br />')
     }
   }
 }

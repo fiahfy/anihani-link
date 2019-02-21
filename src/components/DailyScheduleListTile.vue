@@ -1,7 +1,7 @@
 <template>
   <v-list-tile avatar :to="'/schedule?id=' + schedule.id">
     <v-list-tile-avatar size="48" color="grey darken-4">
-      <v-img :src="src" contain />
+      <app-image :src="src" contain />
     </v-list-tile-avatar>
 
     <v-list-tile-content class="justify-start">
@@ -29,8 +29,12 @@
 
 <script>
 import { mapState } from 'vuex'
+import AppImage from '~/components/AppImage.vue'
 
 export default {
+  components: {
+    AppImage
+  },
   props: {
     schedule: {
       type: Object,
