@@ -23,7 +23,7 @@
           active-class=""
         >
           <v-list-tile-avatar color="grey darken-4">
-            <v-img :src="`/img/members/${member.id}_96x96.png`" contain />
+            <app-image :src="`/img/members/${member.id}_48x48.png`" />
           </v-list-tile-avatar>
           <v-list-tile-content>
             <v-list-tile-title v-text="member.name_ja" />
@@ -66,9 +66,12 @@
 
 <script>
 import { mapState } from 'vuex'
+import AppImage from '~/components/AppImage.vue'
 
 export default {
-  components: {},
+  components: {
+    AppImage
+  },
   data() {
     return {
       drawer: null,

@@ -57,8 +57,8 @@ export default {
     },
     src() {
       return this.schedule.owner
-        ? `/img/members/${this.schedule.owner.id}_96x96.png`
-        : `/img/groups/${this.schedule.group.id}_226x96.png`
+        ? `/img/members/${this.schedule.owner.id}_48x48.png`
+        : `/img/groups/${this.schedule.group.id}_113x48.png`
     },
     title() {
       return this.schedule.owner

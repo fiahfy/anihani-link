@@ -1,7 +1,7 @@
 <template>
   <v-list-tile :to="'/member?id=' + member.id">
     <v-list-tile-avatar size="48" color="grey darken-4">
-      <app-image :src="`/img/members/${member.id}_96x96.png`" />
+      <app-image :src="`/img/members/${member.id}_48x48.png`" />
     </v-list-tile-avatar>
 
     <v-list-tile-content>

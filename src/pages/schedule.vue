@@ -3,7 +3,7 @@
     <v-list two-line>
       <v-list-tile avatar :to="to">
         <v-list-tile-avatar size="48" color="grey darken-4">
-          <v-img :src="src" contain />
+          <app-image :src="src" contain />
         </v-list-tile-avatar>
 
         <v-list-tile-content>
@@ -47,8 +47,12 @@
 
 <script>
 import { mapState } from 'vuex'
+import AppImage from '~/components/AppImage.vue'
 
 export default {
+  components: {
+    AppImage
+  },
   watchQuery: ['id'],
   async asyncData({ error, query, store }) {
     const { id } = query
@@ -72,8 +76,8 @@ export default {
     },
     src() {
       return this.schedule.owner
-        ? `/img/members/${this.schedule.owner.id}_96x96.png`
-        : `/img/groups/${this.schedule.group.id}_226x96.png`
+        ? `/img/members/${this.schedule.owner.id}_48x48.png`
+        : `/img/groups/${this.schedule.group.id}_113x48.png`
     },
     title() {
       return this.schedule.owner
