@@ -1,6 +1,6 @@
 <template>
   <v-img v-bind="$attrs" :src="src" :srcset="srcset">
-    <slot />
+    <slot v-for="slot in Object.keys($slots)" :slot="slot" :name="slot" />
   </v-img>
 </template>
 
