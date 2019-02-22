@@ -1,5 +1,6 @@
 <template>
   <v-list-tile avatar :to="'/schedule?id=' + schedule.id">
+    <v-divider vertical :color="color" class="mr-3" />
     <v-list-tile-avatar size="48" color="grey darken-4">
       <app-image :src="src" contain />
     </v-list-tile-avatar>
@@ -28,7 +29,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import AppImage from '~/components/AppImage.vue'
 
 export default {
@@ -41,19 +41,37 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      timer: null,
+      date: new Date()
+    }
+  },
   computed: {
+    color() {
+      return {
+        'charlotte-shimamura': '#676ee4',
+        'eli-sogetsu': '#94a2b8',
+        'haneru-inaba': '#ebcd47',
+        'hinako-umori': '#f075a8',
+        'ichika-soya': '#20a6df',
+        'mary-saionji': '#d26ce0',
+        'mico-sekishiro': '#c5d090',
+        'patra-suo': '#d9266b',
+        'ran-hinokuma': '#58b927'
+      }[(this.schedule.owner || {}).id]
+    },
     live() {
       const endedAt = this.schedule.started_at.toDate()
       endedAt.setHours(endedAt.getHours() + 1)
       return (
-        this.schedule.started_at.toDate().getTime() < this.now &&
-        endedAt.getTime() > this.now
+        this.schedule.started_at.toDate() < this.date && endedAt > this.date
       )
     },
     highlighted() {
       const endedAt = this.schedule.started_at.toDate()
       endedAt.setHours(endedAt.getHours() + 1)
-      return endedAt.getTime() > this.now
+      return endedAt > this.date
     },
     src() {
       return this.schedule.owner
@@ -75,13 +93,23 @@ export default {
         minute: 'numeric',
         hour12: false
       })
-    },
-    ...mapState(['now'])
+    }
+  },
+  created() {
+    this.timer = setInterval(() => {
+      this.date = new Date()
+    }, 1000)
+  },
+  destroyed() {
+    clearInterval(this.timer)
   }
 }
 </script>
 
 <style scoped>
+.v-divider {
+  border-right-width: 2px;
+}
 .v-list__tile__avatar {
   min-width: 64px;
   margin-top: -12px;

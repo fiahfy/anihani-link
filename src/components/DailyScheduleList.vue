@@ -2,7 +2,7 @@
   <v-list subheader three-line>
     <v-subheader v-text="headline" />
     <template v-for="(schedule, index) of schedules">
-      <v-divider v-if="index !== 0" :key="index" inset class="pl-2" />
+      <v-divider v-if="index !== 0" :key="index" inset />
       <daily-schedule-list-tile :key="schedule.id" :schedule="schedule" />
     </template>
   </v-list>
@@ -39,11 +39,8 @@ export default {
 </script>
 
 <style scoped>
-.v-subheader--inset {
-  margin-left: 64px;
-}
-.v-divider--inset:not(.v-divider--vertical) {
-  margin-left: 80px;
-  max-width: calc(100% - 80px);
+.v-divider--inset {
+  margin-left: 98px;
+  max-width: calc(100% - 98px);
 }
 </style>
