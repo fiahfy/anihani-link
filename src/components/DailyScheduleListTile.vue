@@ -1,5 +1,5 @@
 <template>
-  <v-list-tile avatar :to="'/schedule?id=' + schedule.id">
+  <v-list-tile avatar :to="'/event?id=' + schedule.id">
     <v-divider vertical :color="color" class="mr-3" />
     <v-list-tile-avatar size="48" color="grey darken-4">
       <app-image :src="src" contain />

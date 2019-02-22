@@ -86,7 +86,7 @@ export default {
     const { id } = query
     const member = store.getters['member/getMember']({ id })
     if (!member) {
-      return error({ statusCode: 404, message: 'Member Not Found' })
+      return error({ statusCode: 404, message: 'Member not found' })
     }
 
     const d = new Date()

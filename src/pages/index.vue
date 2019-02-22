@@ -21,7 +21,7 @@ export default {
       startedAt
     })
     if (!schedules.length) {
-      return error({ statusCode: 404, message: 'No Schedules' })
+      return error({ statusCode: 404, message: 'No schedules' })
     }
     return { schedules }
   }

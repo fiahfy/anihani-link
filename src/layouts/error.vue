@@ -3,7 +3,7 @@
     <v-layout fill-height align-center justify-center>
       <div class="text-xs-center">
         <v-icon size="128" color="grey">error_outline</v-icon>
-        <p class="subheading" v-text="message" />
+        <p class="subheading mt-2" v-text="message" />
         <p v-if="statusCode === 404" class="caption">
           <nuxt-link to="/">
             Back to the home page

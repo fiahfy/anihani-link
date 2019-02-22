@@ -63,7 +63,7 @@ export default {
     const { id } = query
     const schedule = await store.dispatch('schedule/fetchSchedule', { id })
     if (!schedule) {
-      return error({ statusCode: 404, message: 'Schedule Not Found' })
+      return error({ statusCode: 404, message: 'Schedule not found' })
     }
     return { schedule }
   },
