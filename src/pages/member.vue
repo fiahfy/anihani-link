@@ -7,7 +7,7 @@
             <v-avatar size="192" color="grey darken-4">
               <app-image
                 :src="`/img/members/${member.id}_192x192.png`"
-                :lazy-src="`/img/members/${member.id}_12x12.png`"
+                :lazy-src="`/img/members/${member.id}_48x48.png`"
               >
                 <v-layout
                   slot="placeholder"
