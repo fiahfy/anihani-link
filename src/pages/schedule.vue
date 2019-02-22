@@ -46,12 +46,17 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import AppImage from '~/components/AppImage.vue'
 
 export default {
   components: {
     AppImage
+  },
+  data() {
+    return {
+      timer: null,
+      date: new Date()
+    }
   },
   watchQuery: ['id'],
   async asyncData({ error, query, store }) {
@@ -67,8 +72,7 @@ export default {
       const endedAt = this.schedule.started_at.toDate()
       endedAt.setHours(endedAt.getHours() + 1)
       return (
-        this.schedule.started_at.toDate().getTime() < this.now &&
-        endedAt.getTime() > this.now
+        this.schedule.started_at.toDate() < this.date && endedAt > this.date
       )
     },
     to() {
@@ -108,8 +112,15 @@ export default {
         )
       }
       return null
-    },
-    ...mapState(['now'])
+    }
+  },
+  created() {
+    this.timer = setInterval(() => {
+      this.date = new Date()
+    }, 1000)
+  },
+  destroyed() {
+    clearInterval(this.timer)
   }
 }
 </script>

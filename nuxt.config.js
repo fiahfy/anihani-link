@@ -76,14 +76,10 @@ module.exports = {
    */
   plugins: [
     { src: '~/plugins/filter', ssr: false },
-    { src: '~/plugins/firebase', ssr: false },
-    { src: '~/plugins/member', ssr: false },
-    { src: '~/plugins/now', ssr: false }
+    { src: '~/plugins/firebase', ssr: false }
   ],
   /*
    ** Router
    */
-  router: {
-    middleware: ['now']
-  }
+  router: {}
 }

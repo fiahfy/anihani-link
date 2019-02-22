@@ -1,7 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
-export default async (_, inject) => {
+export default async ({ store }, inject) => {
   const app = firebase.initializeApp({
     apiKey: process.env.FIREBASE_API_KEY,
     // authDomain: process.env.AUTH_DOMAIN,
@@ -11,4 +11,7 @@ export default async (_, inject) => {
   })
 
   inject('db', app.firestore())
+
+  await store.dispatch('group/fetchGroups')
+  await store.dispatch('member/fetchMembers')
 }
