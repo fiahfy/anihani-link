@@ -16,7 +16,7 @@ export default {
   async asyncData({ error, store }) {
     const members = store.getters['member/members']
     if (!members.length) {
-      return error({ statusCode: 404, message: 'No Members' })
+      return error({ statusCode: 404, message: 'No members' })
     }
     return { members }
   }

@@ -7,7 +7,7 @@ export const getters = {}
 export const actions = {
   async fetchSchedules({ commit, rootGetters }, { startedAt, ownerId }) {
     let query = this.$db
-      .collection('schedules')
+      .collection('events')
       .where('started_at', '>=', startedAt)
     if (ownerId) {
       query = query.where(
@@ -37,7 +37,7 @@ export const actions = {
   },
   async fetchSchedule({ commit, rootGetters }, { id }) {
     const doc = await this.$db
-      .collection('schedules')
+      .collection('events')
       .doc(id)
       .get()
     if (!doc.exists) {

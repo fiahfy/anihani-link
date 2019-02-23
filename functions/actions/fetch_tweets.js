@@ -72,7 +72,7 @@ const updateDailySchedules = async (groupId, { date, append, schedules }) => {
   if (!append) {
     console.log('delete schedules')
     const snapshot = await db
-      .collection('schedules')
+      .collection('events')
       .where('group', '==', db.collection('groups').doc(groupId))
       .where('started_at', '>=', t)
       .where('started_at', '<', m)
@@ -84,7 +84,7 @@ const updateDailySchedules = async (groupId, { date, append, schedules }) => {
   }
 
   for (let s of schedules) {
-    const ref = db.collection('schedules').doc()
+    const ref = db.collection('events').doc()
     batch.set(ref, {
       owner: s.ownerId ? db.collection('members').doc(s.ownerId) : null,
       group: db.collection('groups').doc(groupId),
