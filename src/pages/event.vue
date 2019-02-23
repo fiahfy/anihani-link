@@ -35,10 +35,10 @@
         </v-list-tile-content>
       </v-list-tile>
 
-      <v-list-tile v-if="schedule.description" class="description">
+      <v-list-tile v-if="event.description" class="description">
         <v-list-tile-content>
           <v-list-tile-sub-title>Description</v-list-tile-sub-title>
-          <v-list-tile-title v-text="schedule.description" />
+          <v-list-tile-title v-text="event.description" />
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
@@ -61,35 +61,35 @@ export default {
   watchQuery: ['id'],
   async asyncData({ error, query, store }) {
     const { id } = query
-    const schedule = await store.dispatch('schedule/fetchSchedule', { id })
-    if (!schedule) {
-      return error({ statusCode: 404, message: 'Schedule not found' })
+    const event = await store.dispatch('event/fetchEvent', { id })
+    if (!event) {
+      return error({ statusCode: 404, message: 'Event not found' })
     }
-    return { schedule }
+    return { event }
   },
   computed: {
     live() {
-      const endedAt = this.schedule.started_at.toDate()
+      const endedAt = this.event.started_at.toDate()
       endedAt.setHours(endedAt.getHours() + 1)
       return (
-        this.schedule.started_at.toDate() < this.date && endedAt > this.date
+        this.event.started_at.toDate() < this.date && endedAt > this.date
       )
     },
     to() {
-      return this.schedule.owner ? '/member?id=' + this.schedule.owner.id : null
+      return this.event.owner ? '/member?id=' + this.event.owner.id : null
     },
     src() {
-      return this.schedule.owner
-        ? `/img/members/${this.schedule.owner.id}_48x48.png`
-        : `/img/groups/${this.schedule.group.id}_113x48.png`
+      return this.event.owner
+        ? `/img/members/${this.event.owner.id}_48x48.png`
+        : `/img/groups/${this.event.group.id}_113x48.png`
     },
     title() {
-      return this.schedule.owner
-        ? this.schedule.owner.name_ja
-        : this.schedule.title
+      return this.event.owner
+        ? this.event.owner.name_ja
+        : this.event.title
     },
     startedAt() {
-      return this.schedule.started_at
+      return this.event.started_at
         .toDate()
         .toLocaleString(window.navigator.language, {
           weekday: 'short',
@@ -101,13 +101,13 @@ export default {
         })
     },
     url() {
-      if (this.schedule.url) {
-        return this.schedule.url
+      if (this.event.url) {
+        return this.event.url
       }
-      if (this.schedule.owner) {
+      if (this.event.owner) {
         return (
           'https://www.youtube.com/channel/' +
-          this.schedule.owner.youtube.channel_id +
+          this.event.owner.youtube.channel_id +
           '/live'
         )
       }

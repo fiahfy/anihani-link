@@ -25,17 +25,17 @@ const getGroup = async (groupId) => {
   return group
 }
 
-const updateDailySchedules = async (groupId, { date, append, schedules }) => {
+const updateDailyEvents = async (groupId, { date, append, events }) => {
   // 00:00 -> 24:00 (JST)
   const t = new Date(date)
   const m = new Date(t)
   m.setDate(m.getDate() + 1)
-  console.log('update daily schedules: %s -> %s', t, m)
+  console.log('update daily events: %s -> %s', t, m)
 
   let deletedRows = 0
   const batch = db.batch()
   if (!append) {
-    console.log('delete schedules')
+    console.log('delete events')
     const snapshot = await db
       .collection('events')
       .where('group', '==', db.collection('groups').doc(groupId))
@@ -48,16 +48,16 @@ const updateDailySchedules = async (groupId, { date, append, schedules }) => {
     deletedRows = snapshot.size
   }
 
-  for (let s of schedules) {
+  for (let e of events) {
     const ref = db.collection('events').doc()
     batch.set(ref, {
-      owner: s.ownerId ? db.collection('members').doc(s.ownerId) : null,
+      owner: e.ownerId ? db.collection('members').doc(e.ownerId) : null,
       group: db.collection('groups').doc(groupId),
-      title: s.title,
-      description: s.description || null,
-      url: s.url,
-      started_at: s.startedAt,
-      published_at: s.publishedAt,
+      title: e.title,
+      description: e.description || null,
+      url: e.url,
+      started_at: e.startedAt,
+      published_at: e.publishedAt,
       created_at: new Date(),
       updated_at: new Date()
     })
@@ -66,8 +66,8 @@ const updateDailySchedules = async (groupId, { date, append, schedules }) => {
   if (deletedRows) {
     console.log('deleted rows: %s', deletedRows)
   }
-  console.log('added rows: %s', schedules.length)
-  console.log('updated daily schedules')
+  console.log('added rows: %s', events.length)
+  console.log('updated daily events')
 }
 
 const fetchWikiPage = async (date) => {
@@ -90,9 +90,9 @@ const fetchWikiPage = async (date) => {
   return body
 }
 
-const getDailySchedules = async () => {
-  console.log('get daily schedules')
-  let dailySchedules = []
+const getDailyEvents = async () => {
+  console.log('get daily events')
+  let dailyEvents = []
   for (let i = 0; i < 7; i++) {
     const date = new Date()
     const d = new Date(
@@ -104,21 +104,21 @@ const getDailySchedules = async () => {
       )
     )
     d.setDate(d.getDate() + i)
-    const dailySchedule = await getDailySchedule(d)
-    dailySchedules = [
-      ...dailySchedules,
+    const dailyEvent = await getDailyEvent(d)
+    dailyEvents = [
+      ...dailyEvents,
       {
         date: d,
-        schedules: dailySchedule || []
+        events: dailyEvent || []
       }
     ]
   }
-  console.log('got daily schedules: %s', dailySchedules.length)
-  return dailySchedules
+  console.log('got daily events: %s', dailyEvents.length)
+  return dailyEvents
 }
 
-const getDailySchedule = async (date) => {
-  console.log('get daily schedules: %s', date)
+const getDailyEvent = async (date) => {
+  console.log('get daily events: %s', date)
   const body = await fetchWikiPage(date)
   if (!body) {
     console.log('no body')
@@ -144,7 +144,7 @@ const getDailySchedule = async (date) => {
     return null
   }
 
-  let schedules = []
+  let events = []
   for (let item of list) {
     const text = item.rawText
     const matches = text.match(
@@ -172,8 +172,8 @@ const getDailySchedule = async (date) => {
     startedAt.setHours(startedAt.getHours() + Number(h))
     startedAt.setMinutes(startedAt.getMinutes() + Number(m))
 
-    schedules = [
-      ...schedules,
+    events = [
+      ...events,
       {
         ownerId,
         title,
@@ -185,7 +185,7 @@ const getDailySchedule = async (date) => {
     ]
   }
 
-  return schedules
+  return events
 }
 
 const extractPublishedAt = (node) => {
@@ -234,12 +234,12 @@ module.exports = async ({ groupId }) => {
     return
   }
 
-  const dailySchedules = await getDailySchedules()
-  if (!dailySchedules.length) {
+  const dailyEvents = await getDailyEvents()
+  if (!dailyEvents.length) {
     return
   }
 
-  for (let dailySchedule of dailySchedules) {
-    await updateDailySchedules(groupId, dailySchedule)
+  for (let dailyEvent of dailyEvents) {
+    await updateDailyEvents(groupId, dailyEvent)
   }
 }

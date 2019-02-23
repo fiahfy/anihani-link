@@ -1,11 +1,11 @@
 export const state = () => ({
-  schedules: {}
+  events: {}
 })
 
 export const getters = {}
 
 export const actions = {
-  async fetchSchedules({ commit, rootGetters }, { startedAt, ownerId }) {
+  async fetchEvents({ commit, rootGetters }, { startedAt, ownerId }) {
     let query = this.$db
       .collection('events')
       .where('started_at', '>=', startedAt)
@@ -17,7 +17,7 @@ export const actions = {
       )
     }
     const snapshot = await query.orderBy('started_at', 'asc').get()
-    const schedules = snapshot.docs.map((doc) => {
+    const events = snapshot.docs.map((doc) => {
       const data = doc.data()
       const owner = data.owner
         ? rootGetters['member/getMember']({ id: data.owner.id })
@@ -32,10 +32,10 @@ export const actions = {
         group
       }
     })
-    commit('setSchedules', { schedules })
-    return schedules
+    commit('setEvents', { events })
+    return events
   },
-  async fetchSchedule({ commit, rootGetters }, { id }) {
+  async fetchEvent({ commit, rootGetters }, { id }) {
     const doc = await this.$db
       .collection('events')
       .doc(id)
@@ -50,32 +50,32 @@ export const actions = {
     const group = data.group
       ? rootGetters['group/getGroup']({ id: data.group.id })
       : null
-    const schedule = {
+    const event = {
       ...data,
       id: doc.id,
       owner,
       group
     }
-    commit('setSchedule', { schedule })
-    return schedule
+    commit('setEvent', { event })
+    return event
   }
 }
 
 export const mutations = {
-  setSchedules(state, { schedules }) {
-    state.schedules = {
-      ...schedules.reduce((carry, schedule) => {
+  setEvents(state, { events }) {
+    state.events = {
+      ...events.reduce((carry, event) => {
         return {
           ...carry,
-          [schedule.id]: schedule
+          [event.id]: event
         }
       }, {})
     }
   },
-  setSchedule(state, { schedule }) {
-    state.schedules = {
-      ...state.schedules,
-      [schedule.id]: { ...schedule }
+  setEvent(state, { event }) {
+    state.events = {
+      ...state.events,
+      [event.id]: { ...event }
     }
   }
 }

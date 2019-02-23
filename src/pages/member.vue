@@ -57,12 +57,12 @@
           <v-subheader class="subheading text-uppercase">Schedule</v-subheader>
           <v-divider />
         </v-list>
-        <schedule-list v-if="schedules.length" :schedules="schedules" />
+        <event-list v-if="events.length" :events="events" />
         <v-list v-else>
           <v-list-tile>
             <v-list-tile-content>
               <v-list-tile-title class="body-1 text-xs-center">
-                No Schedules
+                No Events
               </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
@@ -74,12 +74,12 @@
 
 <script>
 import AppImage from '~/components/AppImage.vue'
-import ScheduleList from '~/components/ScheduleList.vue'
+import EventList from '~/components/EventList.vue'
 
 export default {
   components: {
     AppImage,
-    ScheduleList
+    EventList
   },
   watchQuery: ['id'],
   async asyncData({ error, query, store }) {
@@ -92,11 +92,11 @@ export default {
     const d = new Date()
     const startedAt = new Date(d.getFullYear(), d.getMonth(), d.getDate())
 
-    const schedules = await store.dispatch('schedule/fetchSchedules', {
+    const events = await store.dispatch('event/fetchEvents', {
       startedAt,
       ownerId: member.id
     })
-    return { member, schedules }
+    return { member, events }
   }
 }
 </script>

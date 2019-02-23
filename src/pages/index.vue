@@ -1,29 +1,29 @@
 <template>
   <v-container fill-height pa-0>
     <v-layout>
-      <schedule-list :schedules="schedules" />
+      <event-list :events="events" />
     </v-layout>
   </v-container>
 </template>
 
 <script>
-import ScheduleList from '~/components/ScheduleList.vue'
+import EventList from '~/components/EventList.vue'
 
 export default {
   components: {
-    ScheduleList
+    EventList
   },
   async asyncData({ error, store }) {
     const d = new Date()
     const startedAt = new Date(d.getFullYear(), d.getMonth(), d.getDate())
 
-    const schedules = await store.dispatch('schedule/fetchSchedules', {
+    const events = await store.dispatch('event/fetchEvents', {
       startedAt
     })
-    if (!schedules.length) {
-      return error({ statusCode: 404, message: 'No schedules' })
+    if (!events.length) {
+      return error({ statusCode: 404, message: 'No events' })
     }
-    return { schedules }
+    return { events }
   }
 }
 </script>

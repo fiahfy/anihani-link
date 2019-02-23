@@ -1,5 +1,5 @@
 <template>
-  <v-list-tile avatar :to="'/event?id=' + schedule.id">
+  <v-list-tile avatar :to="'/event?id=' + event.id">
     <v-divider vertical :color="color" class="mr-3" />
     <v-list-tile-avatar size="48" color="grey darken-4">
       <app-image :src="src" contain />
@@ -36,7 +36,7 @@ export default {
     AppImage
   },
   props: {
-    schedule: {
+    event: {
       type: Object,
       required: true
     }
@@ -59,35 +59,35 @@ export default {
         'mico-sekishiro': '#c5d090',
         'patra-suo': '#d9266b',
         'ran-hinokuma': '#58b927'
-      }[(this.schedule.owner || {}).id]
+      }[(this.event.owner || {}).id]
     },
     live() {
-      const endedAt = this.schedule.started_at.toDate()
+      const endedAt = this.event.started_at.toDate()
       endedAt.setHours(endedAt.getHours() + 1)
       return (
-        this.schedule.started_at.toDate() < this.date && endedAt > this.date
+        this.event.started_at.toDate() < this.date && endedAt > this.date
       )
     },
     highlighted() {
-      const endedAt = this.schedule.started_at.toDate()
+      const endedAt = this.event.started_at.toDate()
       endedAt.setHours(endedAt.getHours() + 1)
       return endedAt > this.date
     },
     src() {
-      return this.schedule.owner
-        ? `/img/members/${this.schedule.owner.id}_48x48.png`
-        : `/img/groups/${this.schedule.group.id}_113x48.png`
+      return this.event.owner
+        ? `/img/members/${this.event.owner.id}_48x48.png`
+        : `/img/groups/${this.event.group.id}_113x48.png`
     },
     title() {
-      return this.schedule.owner
-        ? this.schedule.owner.name_ja
-        : this.schedule.title
+      return this.event.owner
+        ? this.event.owner.name_ja
+        : this.event.title
     },
     description() {
-      return this.schedule.description ? ' — ' + this.schedule.description : ''
+      return this.event.description ? ' — ' + this.event.description : ''
     },
     startedAt() {
-      const d = this.schedule.started_at.toDate()
+      const d = this.event.started_at.toDate()
       return d.toLocaleTimeString(window.navigator.language, {
         hour: 'numeric',
         minute: 'numeric',

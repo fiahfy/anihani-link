@@ -59,18 +59,18 @@ const deleteTweets = async (twitterId) => {
   console.log('deleted rows: %s', snapshot.size)
 }
 
-const updateDailySchedules = async (groupId, { date, append, schedules }) => {
+const updateDailyEvents = async (groupId, { date, append, events }) => {
   // 6:00 -> 30:00 (JST)
   const t = new Date(date)
   t.setHours(t.getHours() + 6)
   const m = new Date(t)
   m.setDate(m.getDate() + 1)
-  console.log('update daily schedules: %s -> %s', t, m)
+  console.log('update daily events: %s -> %s', t, m)
 
   let deletedRows = 0
   const batch = db.batch()
   if (!append) {
-    console.log('delete schedules')
+    console.log('delete events')
     const snapshot = await db
       .collection('events')
       .where('group', '==', db.collection('groups').doc(groupId))
@@ -83,15 +83,15 @@ const updateDailySchedules = async (groupId, { date, append, schedules }) => {
     deletedRows = snapshot.size
   }
 
-  for (let s of schedules) {
+  for (let e of events) {
     const ref = db.collection('events').doc()
     batch.set(ref, {
-      owner: s.ownerId ? db.collection('members').doc(s.ownerId) : null,
+      owner: e.ownerId ? db.collection('members').doc(e.ownerId) : null,
       group: db.collection('groups').doc(groupId),
-      title: s.title,
-      description: s.description,
-      started_at: s.startedAt,
-      published_at: s.publishedAt,
+      title: e.title,
+      description: e.description,
+      started_at: e.startedAt,
+      published_at: e.publishedAt,
       created_at: new Date(),
       updated_at: new Date()
     })
@@ -100,8 +100,8 @@ const updateDailySchedules = async (groupId, { date, append, schedules }) => {
   if (deletedRows) {
     console.log('deleted rows: %s', deletedRows)
   }
-  console.log('added rows: %s', schedules.length)
-  console.log('updated daily schedules')
+  console.log('added rows: %s', events.length)
+  console.log('updated daily events')
 }
 
 const fetchTimelines = async (screenName, sinceId) => {
@@ -127,18 +127,18 @@ const fetchTimelines = async (screenName, sinceId) => {
   return timelines
 }
 
-const extractDailySchedules = (timelines) => {
-  console.log('extract daily schedules')
-  const dailySchedules = timelines
-    .map(extractDailySchedule)
-    .filter((schedule) => Boolean(schedule))
+const extractDailyEvents = (timelines) => {
+  console.log('extract daily events')
+  const dailyEvents = timelines
+    .map(extractDailyEvent)
+    .filter((event) => Boolean(event))
     .reverse()
     .reduce((previous, current) => [...previous, ...current], [])
-  console.log('extracted daily schedules: %s', dailySchedules.length)
-  return dailySchedules
+  console.log('extracted daily events: %s', dailyEvents.length)
+  return dailyEvents
 }
 
-const extractDailySchedule = (timeline) => {
+const extractDailyEvent = (timeline) => {
   const publishedAt = new Date(timeline.created_at)
   let text = timeline.full_text
   let reg, match
@@ -194,7 +194,7 @@ const extractDailySchedule = (timeline) => {
   return matches.map(({ date, text }) => {
     // eslint-disable-next-line no-irregular-whitespace
     const reg = /([^\s　]+)[\s　]+(\d+):(\d+)-(?:[\s　]*[(（](.+)[）)])?(?:\n(＊[^\n\s]+))?/g
-    let schedules = []
+    let events = []
     for (;;) {
       const match = reg.exec(text)
       if (!match) {
@@ -215,8 +215,8 @@ const extractDailySchedule = (timeline) => {
       startedAt.setHours(startedAt.getHours() + hour)
       startedAt.setMinutes(startedAt.getMinutes() + minute)
 
-      schedules = [
-        ...schedules,
+      events = [
+        ...events,
         {
           ownerId,
           title,
@@ -229,7 +229,7 @@ const extractDailySchedule = (timeline) => {
     return {
       date,
       append,
-      schedules
+      events
     }
   })
 }
@@ -260,14 +260,14 @@ module.exports = async ({ groupId, force }) => {
   }
   const latestTimeline = timelines[0]
 
-  const dailySchedules = extractDailySchedules(timelines)
-  if (!dailySchedules.length) {
+  const dailyEvents = extractDailyEvents(timelines)
+  if (!dailyEvents.length) {
     await addTweet(latestTimeline)
     return
   }
 
-  for (let dailySchedule of dailySchedules) {
-    await updateDailySchedules(groupId, dailySchedule)
+  for (let dailyEvent of dailyEvents) {
+    await updateDailyEvents(groupId, dailyEvent)
   }
 
   await addTweet(latestTimeline)

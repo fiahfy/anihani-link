@@ -1,26 +1,26 @@
 <template>
   <v-list subheader three-line>
     <v-subheader v-text="headline" />
-    <template v-for="(schedule, index) of schedules">
+    <template v-for="(event, index) of events">
       <v-divider v-if="index !== 0" :key="index" inset />
-      <daily-schedule-list-tile :key="schedule.id" :schedule="schedule" />
+      <daily-event-list-tile :key="event.id" :event="event" />
     </template>
   </v-list>
 </template>
 
 <script>
-import DailyScheduleListTile from '~/components/DailyScheduleListTile.vue'
+import DailyEventListTile from '~/components/DailyEventListTile.vue'
 
 export default {
   components: {
-    DailyScheduleListTile
+    DailyEventListTile
   },
   props: {
     date: {
       type: Date,
       required: true
     },
-    schedules: {
+    events: {
       type: Array,
       default: () => []
     }
