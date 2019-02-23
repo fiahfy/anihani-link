@@ -71,9 +71,7 @@ export default {
     live() {
       const endedAt = this.event.started_at.toDate()
       endedAt.setHours(endedAt.getHours() + 1)
-      return (
-        this.event.started_at.toDate() < this.date && endedAt > this.date
-      )
+      return this.event.started_at.toDate() < this.date && endedAt > this.date
     },
     to() {
       return this.event.owner ? '/member?id=' + this.event.owner.id : null
@@ -84,9 +82,7 @@ export default {
         : `/img/groups/${this.event.group.id}_113x48.png`
     },
     title() {
-      return this.event.owner
-        ? this.event.owner.name_ja
-        : this.event.title
+      return this.event.owner ? this.event.owner.name_ja : this.event.title
     },
     startedAt() {
       return this.event.started_at
