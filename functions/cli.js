@@ -38,8 +38,9 @@ const fetchWiki = require('./actions/fetch_wiki')
             break
           }
           case 'wiki': {
+            const force = options.includes('--force')
             const groupId = options[options.indexOf('-g') + 1]
-            await fetchWiki({ groupId })
+            await fetchWiki({ groupId, force })
             break
           }
           default:

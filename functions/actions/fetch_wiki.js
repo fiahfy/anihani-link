@@ -25,71 +25,6 @@ const getGroup = async (groupId) => {
   return group
 }
 
-const updateDailyEvents = async (groupId, { date, append, events }) => {
-  // 00:00 -> 24:00 (JST)
-  const t = new Date(date)
-  const m = new Date(t)
-  m.setDate(m.getDate() + 1)
-  console.log('update daily events: %s -> %s', t, m)
-
-  let deletedRows = 0
-  const batch = db.batch()
-  if (!append) {
-    console.log('delete events')
-    const snapshot = await db
-      .collection('events')
-      .where('group', '==', db.collection('groups').doc(groupId))
-      .where('started_at', '>=', t)
-      .where('started_at', '<', m)
-      .get()
-    snapshot.docs.forEach((doc) => {
-      batch.delete(doc.ref)
-    })
-    deletedRows = snapshot.size
-  }
-
-  for (let e of events) {
-    const ref = db.collection('events').doc()
-    batch.set(ref, {
-      owner: e.ownerId ? db.collection('members').doc(e.ownerId) : null,
-      group: db.collection('groups').doc(groupId),
-      title: e.title,
-      description: e.description || null,
-      url: e.url,
-      started_at: e.startedAt,
-      published_at: e.publishedAt,
-      created_at: new Date(),
-      updated_at: new Date()
-    })
-  }
-  await batch.commit()
-  if (deletedRows) {
-    console.log('deleted rows: %s', deletedRows)
-  }
-  console.log('added rows: %s', events.length)
-  console.log('updated daily events')
-}
-
-const fetchWikiPage = async (date) => {
-  const d = new Date(
-    Date.UTC(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      date.getHours() - timezoneOffsetHours
-    )
-  )
-  const yyyy = d.getFullYear()
-  const mm = ('00' + (d.getMonth() + 1)).slice(-2)
-  const dd = ('00' + d.getDate()).slice(-2)
-  const url = `${wikiBaseUrl}${yyyy}-${mm}-${dd}`
-  console.log('fetch url: %s', url)
-  const res = await fetch(url)
-  const body = await res.text()
-  console.log('fetched url')
-  return body
-}
-
 const getDailyEvents = async () => {
   console.log('get daily events')
   let dailyEvents = []
@@ -113,12 +48,14 @@ const getDailyEvents = async () => {
       }
     ]
   }
+
   console.log('got daily events: %s', dailyEvents.length)
+
   return dailyEvents
 }
 
 const getDailyEvent = async (date) => {
-  console.log('get daily events: %s', date)
+  console.log('get daily event: %s', date)
   const body = await fetchWikiPage(date)
   if (!body) {
     console.log('no body')
@@ -192,7 +129,29 @@ const getDailyEvent = async (date) => {
     ]
   }
 
+  console.log('got events: %s', events.length)
+
   return events
+}
+
+const fetchWikiPage = async (date) => {
+  const d = new Date(
+    Date.UTC(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours() - timezoneOffsetHours
+    )
+  )
+  const yyyy = d.getFullYear()
+  const mm = ('00' + (d.getMonth() + 1)).slice(-2)
+  const dd = ('00' + d.getDate()).slice(-2)
+  const url = `${wikiBaseUrl}${yyyy}-${mm}-${dd}`
+  console.log('fetch url: %s', url)
+  const res = await fetch(url)
+  const body = await res.text()
+  console.log('fetched url')
+  return body
 }
 
 const extractPublishedAt = (node) => {
@@ -222,7 +181,88 @@ const extractPublishedAt = (node) => {
   return date
 }
 
-module.exports = async ({ groupId }) => {
+const updateDailyEvent = async (groupId, { date, events }, force) => {
+  // 00:00 -> 24:00 (JST)
+  const t = new Date(date)
+  const m = new Date(t)
+  m.setDate(m.getDate() + 1)
+  console.log('update daily event: %s -> %s', t, m)
+
+  const uniqueIds = force
+    ? {}
+    : events.reduce((carry, e) => {
+        const uid = getUniqueId(e)
+        return {
+          ...carry,
+          [uid]: false
+        }
+      }, {})
+
+  let deletedRows = 0
+  let addedRows = 0
+  let updatedRows = 0
+  const batch = db.batch()
+
+  const snapshot = await db
+    .collection('events')
+    .where('group', '==', db.collection('groups').doc(groupId))
+    .where('started_at', '>=', t)
+    .where('started_at', '<', m)
+    .get()
+  snapshot.docs.forEach((doc) => {
+    const uid = getUniqueIdWithDoc(doc)
+    if (uniqueIds[uid] === false) {
+      uniqueIds[uid] = doc.id
+      return
+    }
+    batch.delete(doc.ref)
+    deletedRows++
+  })
+
+  for (let e of events) {
+    let ref = db.collection('events').doc()
+    const uid = getUniqueId(e)
+    const id = uniqueIds[uid]
+    if (id) {
+      ref = db.collection('events').doc(id)
+      updatedRows++
+    } else {
+      addedRows++
+    }
+    batch.set(ref, {
+      owner: e.ownerId ? db.collection('members').doc(e.ownerId) : null,
+      group: db.collection('groups').doc(groupId),
+      title: e.title,
+      description: e.description || null,
+      url: e.url,
+      started_at: e.startedAt,
+      published_at: e.publishedAt,
+      created_at: new Date(),
+      updated_at: new Date()
+    })
+  }
+  await batch.commit()
+  console.log(
+    'deleted rows: %s, added rows: %s, updated rows: %s',
+    deletedRows,
+    addedRows,
+    updatedRows
+  )
+  console.log('updated daily event')
+}
+
+const getUniqueId = (event) => {
+  const ownerId = event.ownerId || ''
+  return ownerId + event.startedAt.getTime()
+}
+
+const getUniqueIdWithDoc = (doc) => {
+  const data = doc.data()
+  const ownerId = data.owner ? data.owner.id : ''
+  return ownerId + data.started_at.toDate().getTime()
+}
+
+module.exports = async ({ groupId, force }) => {
   console.log('fetch wiki page for group: %s', groupId)
 
   if (!groupId) {
@@ -247,6 +287,6 @@ module.exports = async ({ groupId }) => {
   }
 
   for (let dailyEvent of dailyEvents) {
-    await updateDailyEvents(groupId, dailyEvent)
+    await updateDailyEvent(groupId, dailyEvent, force)
   }
 }
