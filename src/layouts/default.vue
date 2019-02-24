@@ -79,7 +79,7 @@ export default {
       navs: [
         {
           title: 'Schedule',
-          icon: 'event',
+          icon: 'schedule',
           names: ['index', 'event'],
           path: '/'
         },

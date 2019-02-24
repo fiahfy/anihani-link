@@ -7,13 +7,17 @@
 
     <v-list-tile-content class="justify-start">
       <v-list-tile-title :class="{ 'font-weight-bold': highlighted }">
-        <v-layout align-center>
+        <v-layout align-center justify-space-between>
           <span>{{ startedAt }} -</span>
-          <span
-            v-if="live"
-            class="live primary--text caption ml-2 text-uppercase"
-          >
+          <span v-if="live" class="live primary--text caption text-uppercase">
             Live Now
+          </span>
+          <span
+            v-else
+            class="caption text-xs-right"
+            :class="{ 'font-weight-bold': highlighted }"
+          >
+            {{ event.started_at.toDate() | time_ago }}
           </span>
         </v-layout>
       </v-list-tile-title>

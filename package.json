@@ -13,6 +13,7 @@
     "@nuxtjs/pwa": "^2.3.2",
     "@nuxtjs/vuetify": "^0.5.2",
     "firebase": "^5.8.2",
+    "javascript-time-ago": "^2.0.1",
     "nuxt": "^2.2.0"
   },
   "devDependencies": {
