@@ -146,17 +146,24 @@ const getDailyEvent = async (date) => {
 
   let events = []
   for (let item of list) {
-    const text = item.rawText
-    const matches = text.match(
-      /^(\d+)時(\d+)分～\s((.+?)((:?[\s/()]|$)[\s\S]*))/
+    const members = Object.keys(Owner).join('|')
+    const reg = new RegExp(
+      String.raw`^(\d+)時(\d+)分～\s((${members})?([\s\S]*))`,
+      'im'
     )
+    const matches = item.rawText.match(reg)
+    if (!matches) {
+      continue
+    }
     const [, h, m, all, member, desc] = matches
-
     const ownerId = Owner[member] || null
-    const title = ownerId ? member : all
+    let title = ownerId ? member : all
+    if (title) {
+      title = title.replace(/\s+/g, ' ')
+    }
     let description = ownerId ? desc : null
     if (description) {
-      description = description.replace(/^\//, '').replace(/\s+/g, ' ')
+      description = description.replace(/^[\s/]/, '').replace(/\s+/g, ' ')
     }
 
     let url = null
