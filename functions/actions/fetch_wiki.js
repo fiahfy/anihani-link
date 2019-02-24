@@ -48,9 +48,7 @@ const getDailyEvents = async () => {
       }
     ]
   }
-
   console.log('got daily events: %s', dailyEvents.length)
-
   return dailyEvents
 }
 
@@ -92,13 +90,13 @@ const getDailyEvent = async (date) => {
     if (!matches) {
       continue
     }
-    const [, h, m, all, member, desc] = matches
+    const [, h, m, all, member, tail] = matches
     const ownerId = Owner[member] || null
-    let title = ownerId ? member : all
+    let title = (ownerId ? member : all) || null
     if (title) {
       title = title.replace(/\s+/g, ' ')
     }
-    let description = ownerId ? desc : null
+    let description = (ownerId ? tail : null) || null
     if (description) {
       description = description.replace(/^[\s/]/, '').replace(/\s+/g, ' ')
     }
@@ -233,7 +231,7 @@ const updateDailyEvent = async (groupId, { date, events }, force) => {
       owner: e.ownerId ? db.collection('members').doc(e.ownerId) : null,
       group: db.collection('groups').doc(groupId),
       title: e.title,
-      description: e.description || null,
+      description: e.description,
       url: e.url,
       started_at: e.startedAt,
       published_at: e.publishedAt,
