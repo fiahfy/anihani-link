@@ -4,8 +4,7 @@
       <v-list>
         <v-subheader class="text-uppercase">About</v-subheader>
         <div class="body-2 px-4">
-          バーチャルYouTuberユニット
-          「有閑喫茶あにまーれ」「ハニーストラップ」
+          バーチャルYouTuberユニット 「有閑喫茶あにまーれ」「ハニーストラップ」
           のスケジュールを公式Twitter、非公式Wikiから取得し一覧として表示しています<br />
           ゲリラは反映していません<br />
           動作環境: Google Chrome, Mobile Safari
