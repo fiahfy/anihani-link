@@ -59,14 +59,6 @@ export default {
     }
   },
   watchQuery: ['id'],
-  async asyncData({ error, query, store }) {
-    const { id } = query
-    const event = await store.dispatch('event/fetchEvent', { id })
-    if (!event) {
-      return error({ statusCode: 404, message: 'Event not found' })
-    }
-    return { event }
-  },
   computed: {
     live() {
       const endedAt = this.event.started_at.toDate()
@@ -109,6 +101,14 @@ export default {
       }
       return null
     }
+  },
+  async asyncData({ error, query, store }) {
+    const { id } = query
+    const event = await store.dispatch('event/fetchEvent', { id })
+    if (!event) {
+      return error({ statusCode: 404, message: 'Event not found' })
+    }
+    return { event }
   },
   created() {
     this.timer = setInterval(() => {

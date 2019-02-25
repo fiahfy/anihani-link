@@ -10,7 +10,12 @@ module.exports = {
   head: {
     htmlAttrs: { lang: 'ja' },
     meta: [
-      { hid: 'viewport', name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui, viewport-fit=cover' }
+      {
+        hid: 'viewport',
+        name: 'viewport',
+        content:
+          'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui, viewport-fit=cover'
+      }
     ]
   },
   /*
