@@ -130,6 +130,32 @@ export default {
 </script>
 
 <style scoped>
+.v-navigation-drawer {
+  padding-left: env(safe-area-inset-left) !important;
+}
+.v-toolbar {
+  padding-left: env(safe-area-inset-left) !important;
+  padding-right: env(safe-area-inset-left) !important;
+}
+.v-content {
+  padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
+}
+.v-footer {
+  height: calc(56px + env(safe-area-inset-bottom)) !important;
+}
+.v-item-group.v-bottom-nav {
+  padding-bottom: env(safe-area-inset-bottom);
+  box-sizing: content-box;
+}
+.v-item-group.v-bottom-nav .v-btn {
+  box-sizing: border-box;
+}
+.v-item-group.v-bottom-nav .v-btn--active {
+  padding-top: 8px;
+}
+.v-item-group.v-bottom-nav .v-btn--active >>> .v-btn__content {
+  font-size: 12px;
+}
 @media only screen and (max-width: 599px) {
   .v-toolbar__title:not(:first-child) {
     margin-left: 0 !important;
@@ -144,11 +170,5 @@ export default {
   .v-navigation-drawer {
     max-height: calc(100% - 64px) !important;
   }
-}
-.v-item-group.v-bottom-nav .v-btn--active {
-  padding-top: 8px;
-}
-.v-item-group.v-bottom-nav .v-btn--active >>> .v-btn__content {
-  font-size: 12px;
 }
 </style>

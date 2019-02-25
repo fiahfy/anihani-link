@@ -23,3 +23,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.v-list {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-left);
+}
+</style>

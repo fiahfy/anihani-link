@@ -8,7 +8,7 @@
             バーチャルYouTuberユニット
             「有閑喫茶あにまーれ」「ハニーストラップ」
             のスケジュールを公式Twitter、非公式Wikiから取得し一覧として表示しています<br />
-            キャンセル、ゲリラは反映していません<br />
+            ゲリラは反映していません<br />
             動作環境: Google Chrome, Mobile Safari
           </div>
         </v-list>
@@ -88,3 +88,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.v-list {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-left);
+}
+</style>

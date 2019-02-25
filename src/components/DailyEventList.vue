@@ -39,6 +39,10 @@ export default {
 </script>
 
 <style scoped>
+.v-list {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-left);
+}
 .v-divider--inset {
   margin-left: 98px;
   max-width: calc(100% - 98px);

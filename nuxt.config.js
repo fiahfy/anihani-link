@@ -7,7 +7,12 @@ module.exports = {
    ** Headers of the page
    ** Common headers are already provided by @nuxtjs/pwa preset
    */
-  head: { htmlAttrs: { lang: 'ja' } },
+  head: {
+    htmlAttrs: { lang: 'ja' },
+    meta: [
+      { hid: 'viewport', name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui, viewport-fit=cover' }
+    ]
+  },
   /*
    ** Customize the progress bar color
    */
