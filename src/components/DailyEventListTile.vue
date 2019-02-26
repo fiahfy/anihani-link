@@ -48,7 +48,7 @@ export default {
   data() {
     return {
       timer: null,
-      date: new Date()
+      now: new Date()
     }
   },
   computed: {
@@ -68,12 +68,12 @@ export default {
     live() {
       const endedAt = this.event.started_at.toDate()
       endedAt.setHours(endedAt.getHours() + 1)
-      return this.event.started_at.toDate() < this.date && endedAt > this.date
+      return this.event.started_at.toDate() < this.now && endedAt > this.now
     },
     highlighted() {
       const endedAt = this.event.started_at.toDate()
       endedAt.setHours(endedAt.getHours() + 1)
-      return endedAt > this.date
+      return endedAt > this.now
     },
     src() {
       return this.event.owner
@@ -97,7 +97,7 @@ export default {
   },
   created() {
     this.timer = setInterval(() => {
-      this.date = new Date()
+      this.now = new Date()
     }, 1000)
   },
   destroyed() {

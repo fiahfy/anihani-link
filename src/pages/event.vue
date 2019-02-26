@@ -55,7 +55,7 @@ export default {
   data() {
     return {
       timer: null,
-      date: new Date()
+      now: new Date()
     }
   },
   watchQuery: ['id'],
@@ -63,7 +63,7 @@ export default {
     live() {
       const endedAt = this.event.started_at.toDate()
       endedAt.setHours(endedAt.getHours() + 1)
-      return this.event.started_at.toDate() < this.date && endedAt > this.date
+      return this.event.started_at.toDate() < this.now && endedAt > this.now
     },
     to() {
       return this.event.owner ? '/member?id=' + this.event.owner.id : null
@@ -112,7 +112,7 @@ export default {
   },
   created() {
     this.timer = setInterval(() => {
-      this.date = new Date()
+      this.now = new Date()
     }, 1000)
   },
   destroyed() {
