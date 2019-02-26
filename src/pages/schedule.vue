@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height pa-0>
     <v-layout column>
-      <daily-calendar
+      <daily-event-list
         v-for="(dailyEvent, index) of dailyEvents"
         :key="index"
         :date="dailyEvent.date"
@@ -12,26 +12,23 @@
 </template>
 
 <script>
-import DailyCalendar from '~/components/DailyCalendar.vue'
+import DailyEventList from '~/components/DailyEventList.vue'
 
 export default {
   components: {
-    DailyCalendar
+    DailyEventList
   },
-  async asyncData({ store }) {
+  async asyncData({ error, store }) {
     const d = new Date()
     const startedAt = new Date(d.getFullYear(), d.getMonth(), d.getDate())
 
     const dailyEvents = await store.dispatch('event/fetchDailyEvents', {
       startedAt
     })
+    if (!dailyEvents.length) {
+      return error({ statusCode: 404, message: 'No events' })
+    }
     return { dailyEvents }
-  },
-  mounted() {
-    const d = new Date()
-    const top =
-      66 * (d.getHours() + 2 + d.getMinutes() / 60) - window.innerHeight / 2
-    window.scrollTo(0, top)
   }
 }
 </script>

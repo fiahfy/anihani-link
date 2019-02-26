@@ -31,7 +31,4 @@ export default {
 .v-list__tile__avatar {
   min-width: 64px;
 }
-.v-list__tile__content {
-  /* padding-top: 10px; */
-}
 </style>

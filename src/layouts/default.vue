@@ -78,10 +78,16 @@ export default {
       activeIndex: 0,
       navs: [
         {
+          title: 'Calendar',
+          icon: 'event',
+          names: ['index'],
+          path: '/'
+        },
+        {
           title: 'Schedule',
           icon: 'schedule',
-          names: ['index', 'event'],
-          path: '/'
+          names: ['schedule', 'event'],
+          path: '/schedule'
         },
         {
           title: 'Member',

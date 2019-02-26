@@ -57,7 +57,14 @@
           <v-subheader class="subheading text-uppercase">Schedule</v-subheader>
           <v-divider />
         </v-list>
-        <event-list v-if="events.length" :events="events" />
+        <template v-if="dailyEvents.length">
+          <daily-event-list
+            v-for="(dailyEvent, index) of dailyEvents"
+            :key="index"
+            :date="dailyEvent.date"
+            :events="dailyEvent.events"
+          />
+        </template>
         <v-list v-else>
           <v-list-tile>
             <v-list-tile-content>
@@ -74,12 +81,12 @@
 
 <script>
 import AppImage from '~/components/AppImage.vue'
-import EventList from '~/components/EventList.vue'
+import DailyEventList from '~/components/DailyEventList.vue'
 
 export default {
   components: {
     AppImage,
-    EventList
+    DailyEventList
   },
   watchQuery: ['id'],
   async asyncData({ error, query, store }) {
@@ -92,11 +99,11 @@ export default {
     const d = new Date()
     const startedAt = new Date(d.getFullYear(), d.getMonth(), d.getDate())
 
-    const events = await store.dispatch('event/fetchEvents', {
+    const dailyEvents = await store.dispatch('event/fetchDailyEvents', {
       startedAt,
       ownerId: member.id
     })
-    return { member, events }
+    return { member, dailyEvents }
   }
 }
 </script>
