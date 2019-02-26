@@ -57,7 +57,14 @@
           <v-subheader class="subheading text-uppercase">Schedule</v-subheader>
           <v-divider />
         </v-list>
-        <template v-if="dailyEvents.reduce((carry, dailyEvent) => carry + dailyEvent.events.length, 0)">
+        <template
+          v-if="
+            dailyEvents.reduce(
+              (carry, dailyEvent) => carry + dailyEvent.events.length,
+              0
+            )
+          "
+        >
           <template v-for="(dailyEvent, index) of dailyEvents">
             <daily-event-list
               v-if="dailyEvent.events.length"

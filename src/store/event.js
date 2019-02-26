@@ -11,10 +11,7 @@ export const actions = {
       const d = event.started_at.toDate()
       const date = new Date(d.getFullYear(), d.getMonth(), d.getDate())
       if (carry[date]) {
-        carry[date] = [
-          ...carry[date],
-          event
-        ]
+        carry[date] = [...carry[date], event]
         return carry
       }
       return {
@@ -24,7 +21,11 @@ export const actions = {
     }, {})
 
     let dailyEvents = []
-    const start = new Date(startedAt.getFullYear(), startedAt.getMonth(), startedAt.getDate())
+    const start = new Date(
+      startedAt.getFullYear(),
+      startedAt.getMonth(),
+      startedAt.getDate()
+    )
     for (let i = 0; i < 7; i++) {
       const d = new Date(start)
       d.setDate(d.getDate() + i)
