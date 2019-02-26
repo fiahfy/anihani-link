@@ -5,29 +5,38 @@ export const state = () => ({
 export const getters = {}
 
 export const actions = {
-  async fetchDailyEvents({ dispatch }, payload) {
-    const events = await dispatch('fetchEvents', payload)
-    return events.reduce((carry, event) => {
+  async fetchDailyEvents({ dispatch }, { startedAt, ownerId }) {
+    const events = await dispatch('fetchEvents', { startedAt, ownerId })
+    const dailyEventMap = events.reduce((carry, event) => {
       const d = event.started_at.toDate()
       const date = new Date(d.getFullYear(), d.getMonth(), d.getDate())
-      if (
-        carry.length &&
-        carry[carry.length - 1].date.getTime() === date.getTime()
-      ) {
-        carry[carry.length - 1].events = [
-          ...carry[carry.length - 1].events,
+      if (carry[date]) {
+        carry[date] = [
+          ...carry[date],
           event
         ]
         return carry
       }
-      return [
+      return {
         ...carry,
+        [date]: [event]
+      }
+    }, {})
+
+    let dailyEvents = []
+    const start = new Date(startedAt.getFullYear(), startedAt.getMonth(), startedAt.getDate())
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(start)
+      d.setDate(d.getDate() + i)
+      dailyEvents = [
+        ...dailyEvents,
         {
-          date,
-          events: [event]
+          date: d,
+          events: dailyEventMap[d] || []
         }
       ]
-    }, [])
+    }
+    return dailyEvents
   },
   async fetchEvents({ commit, rootGetters }, { startedAt, ownerId }) {
     let query = this.$db

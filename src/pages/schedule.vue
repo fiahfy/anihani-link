@@ -1,12 +1,14 @@
 <template>
   <v-container fill-height pa-0>
     <v-layout column>
-      <daily-event-list
-        v-for="(dailyEvent, index) of dailyEvents"
-        :key="index"
-        :date="dailyEvent.date"
-        :events="dailyEvent.events"
-      />
+      <template v-for="(dailyEvent, index) of dailyEvents">
+        <daily-event-list
+          v-if="dailyEvent.events.length"
+          :key="index"
+          :date="dailyEvent.date"
+          :events="dailyEvent.events"
+        />
+      </template>
     </v-layout>
   </v-container>
 </template>
