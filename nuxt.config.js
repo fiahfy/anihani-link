@@ -2,7 +2,7 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: ['~/assets/css/app.css'],
+  css: ['swiper/dist/css/swiper.css', '~/assets/css/app.css'],
   /*
    ** Headers of the page
    ** Common headers are already provided by @nuxtjs/pwa preset
@@ -86,7 +86,8 @@ module.exports = {
    */
   plugins: [
     { src: '~/plugins/filter', ssr: false },
-    { src: '~/plugins/firebase', ssr: false }
+    { src: '~/plugins/firebase', ssr: false },
+    { src: '~/plugins/vue-awesome-swiper', ssr: false }
   ],
   /*
    ** Router
