@@ -28,16 +28,16 @@ const getGroup = async (groupId) => {
   return group
 }
 
-const getDailyEvents = async (screenName) => {
-  console.log('get daily events')
+const getSchedules = async (screenName) => {
+  console.log('get schedules')
   const timelines = await fetchTimelines(screenName)
   if (!timelines.length) {
-    console.log('got no daily events')
+    console.log('got no schedules')
     return
   }
-  const dailyEvents = extractDailyEvents(timelines)
-  console.log('got daily events: %s', dailyEvents.length)
-  return dailyEvents
+  const schedules = extractSchedules(timelines)
+  console.log('got schedules: %s', schedules.length)
+  return schedules
 }
 
 const fetchTimelines = async (screenName) => {
@@ -60,18 +60,18 @@ const fetchTimelines = async (screenName) => {
   return timelines
 }
 
-const extractDailyEvents = (timelines) => {
-  console.log('extract daily events')
-  const dailyEvents = timelines
-    .map(extractDailyEvent)
-    .filter((event) => Boolean(event))
+const extractSchedules = (timelines) => {
+  console.log('extract schedules')
+  const schedules = timelines
+    .map(extractSchedule)
+    .filter((schedule) => Boolean(schedule))
     .reverse()
     .reduce((previous, current) => [...previous, ...current], [])
-  console.log('extracted daily events: %s', dailyEvents.length)
-  return dailyEvents
+  console.log('extracted schedules: %s', schedules.length)
+  return schedules
 }
 
-const extractDailyEvent = (timeline) => {
+const extractSchedule = (timeline) => {
   const publishedAt = new Date(timeline.created_at)
   let text = timeline.full_text
   let reg, match
@@ -167,13 +167,13 @@ const extractDailyEvent = (timeline) => {
   })
 }
 
-const updateDailyEvent = async (groupId, { date, append, events }, force) => {
+const updateSchedule = async (groupId, { date, append, events }, force) => {
   // 6:00 -> 30:00 (JST)
   const t = new Date(date)
   t.setHours(t.getHours() + 6)
   const m = new Date(t)
   m.setDate(m.getDate() + 1)
-  console.log('update daily event: %s -> %s', t, m)
+  console.log('update schedule: %s -> %s', t, m)
 
   const uniqueIds = force
     ? {}
@@ -237,7 +237,7 @@ const updateDailyEvent = async (groupId, { date, append, events }, force) => {
     addedRows,
     updatedRows
   )
-  console.log('updated daily event')
+  console.log('updated schedule')
 }
 
 const getUniqueId = (event) => {
@@ -265,12 +265,12 @@ module.exports = async ({ groupId, force }) => {
     return
   }
 
-  const dailyEvents = await getDailyEvents(group.twitter.screen_name)
-  if (!dailyEvents.length) {
+  const schedules = await getSchedules(group.twitter.screen_name)
+  if (!schedules.length) {
     return
   }
 
-  for (let dailyEvent of dailyEvents) {
-    await updateDailyEvent(groupId, dailyEvent, force)
+  for (let schedule of schedules) {
+    await updateSchedule(groupId, schedule, force)
   }
 }

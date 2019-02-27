@@ -25,9 +25,9 @@ const getGroup = async (groupId) => {
   return group
 }
 
-const getDailyEvents = async () => {
-  console.log('get daily events')
-  let dailyEvents = []
+const getSchedules = async () => {
+  console.log('get schedules')
+  let schedules = []
   for (let i = 0; i < 7; i++) {
     const date = new Date()
     const d = new Date(
@@ -39,21 +39,21 @@ const getDailyEvents = async () => {
       )
     )
     d.setDate(d.getDate() + i)
-    const dailyEvent = await getDailyEvent(d)
-    dailyEvents = [
-      ...dailyEvents,
+    const events = await getEvents(d)
+    schedules = [
+      ...schedules,
       {
         date: d,
-        events: dailyEvent || []
+        events: events || []
       }
     ]
   }
-  console.log('got daily events: %s', dailyEvents.length)
-  return dailyEvents
+  console.log('got schedules: %s', schedules.length)
+  return schedules
 }
 
-const getDailyEvent = async (date) => {
-  console.log('get daily event: %s', date)
+const getEvents = async (date) => {
+  console.log('get events: %s', date)
   const body = await fetchWikiPage(date)
   if (!body) {
     console.log('no body')
@@ -179,12 +179,12 @@ const extractPublishedAt = (node) => {
   return date
 }
 
-const updateDailyEvent = async (groupId, { date, events }, force) => {
+const updateSchedule = async (groupId, { date, events }, force) => {
   // 00:00 -> 24:00 (JST)
   const t = new Date(date)
   const m = new Date(t)
   m.setDate(m.getDate() + 1)
-  console.log('update daily event: %s -> %s', t, m)
+  console.log('update schedule: %s -> %s', t, m)
 
   const uniqueIds = force
     ? {}
@@ -246,7 +246,7 @@ const updateDailyEvent = async (groupId, { date, events }, force) => {
     addedRows,
     updatedRows
   )
-  console.log('updated daily event')
+  console.log('updated schedule')
 }
 
 const getUniqueId = (event) => {
@@ -279,12 +279,12 @@ module.exports = async ({ groupId, force }) => {
     return
   }
 
-  const dailyEvents = await getDailyEvents()
-  if (!dailyEvents.length) {
+  const schedules = await getSchedules()
+  if (!schedules.length) {
     return
   }
 
-  for (let dailyEvent of dailyEvents) {
-    await updateDailyEvent(groupId, dailyEvent, force)
+  for (let schedule of schedules) {
+    await updateSchedule(groupId, schedule, force)
   }
 }

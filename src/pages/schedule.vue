@@ -1,12 +1,12 @@
 <template>
   <v-container fill-height pa-0>
     <v-layout column>
-      <template v-for="(dailyEvent, index) of dailyEvents">
-        <daily-event-list
-          v-if="dailyEvent.events.length"
+      <template v-for="(schedule, index) of schedules">
+        <event-list
+          v-if="schedule.events.length"
           :key="index"
-          :date="dailyEvent.date"
-          :events="dailyEvent.events"
+          :date="schedule.date"
+          :events="schedule.events"
         />
       </template>
     </v-layout>
@@ -14,23 +14,25 @@
 </template>
 
 <script>
-import DailyEventList from '~/components/DailyEventList.vue'
+import EventList from '~/components/EventList.vue'
 
 export default {
   components: {
-    DailyEventList
+    EventList
   },
   async asyncData({ error, store }) {
     const d = new Date()
     const startedAt = new Date(d.getFullYear(), d.getMonth(), d.getDate())
 
-    const dailyEvents = await store.dispatch('event/fetchDailyEvents', {
+    const schedules = await store.dispatch('event/fetchSchedules', {
       startedAt
     })
-    if (!dailyEvents.length) {
+    if (
+      !schedules.reduce((carry, schedule) => carry + schedule.events.length, 0)
+    ) {
       return error({ statusCode: 404, message: 'No events' })
     }
-    return { dailyEvents }
+    return { schedules }
   }
 }
 </script>

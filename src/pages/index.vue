@@ -1,8 +1,8 @@
 <template>
   <v-container fill-height pa-0>
     <v-layout row wrap>
-      <v-flex v-for="(dailyEvent, index) of dailyEvents" :key="index" xs12 smw>
-        <daily-calendar :date="dailyEvent.date" :events="dailyEvent.events" />
+      <v-flex v-for="(schedule, index) of schedules" :key="index" xs12 smw>
+        <daily-calendar :date="schedule.date" :events="schedule.events" />
       </v-flex>
     </v-layout>
   </v-container>
@@ -19,10 +19,10 @@ export default {
     const d = new Date()
     const startedAt = new Date(d.getFullYear(), d.getMonth(), d.getDate())
 
-    const dailyEvents = await store.dispatch('event/fetchDailyEvents', {
+    const schedules = await store.dispatch('event/fetchSchedules', {
       startedAt
     })
-    return { dailyEvents }
+    return { schedules }
   },
   mounted() {
     const d = new Date()

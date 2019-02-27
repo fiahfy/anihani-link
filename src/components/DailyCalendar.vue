@@ -10,9 +10,9 @@
       style="height: 66px;"
     >
       <div style="width: 36px;" class="text-xs-right mr-1 caption grey--text">
-        <template v-if="hasLabel(hour)"
-          >{{ hour }}:00</template
-        >
+        <template v-if="hasLabel(hour)">
+          {{ hour }}:00
+        </template>
       </div>
       <v-divider />
     </v-layout>
@@ -115,7 +115,7 @@ export default {
       let maxX = 0
       for (let i = 0; i < events.length; i++) {
         const e = events[i]
-        e.y = e.startedAt.getHours()
+        e.y = e.startedAt.getHours() + e.startedAt.getMinutes() / 60
         e.h = (e.endedAt.getTime() - e.startedAt.getTime()) / 60 / 60 / 1000
         const targets = events.slice(index, i)
         if (!targets.length) {
@@ -151,7 +151,6 @@ export default {
           maxX = 0
         }
       }
-
       return events
     }
   },
@@ -181,6 +180,8 @@ export default {
 <style scoped>
 .wrapper {
   position: relative;
+  margin-left: env(safe-area-inset-left);
+  margin-right: env(safe-area-inset-left);
 }
 .content {
   position: absolute;
