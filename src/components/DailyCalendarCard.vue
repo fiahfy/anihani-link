@@ -47,17 +47,19 @@ export default {
       return !this.event.owner
     },
     color() {
-      return {
-        'charlotte-shimamura': 'rgba(103, 110, 228, 0.3)',
-        'eli-sogetsu': 'rgba(148, 162, 184, 0.3)',
-        'haneru-inaba': 'rgba(235, 205, 71, 0.3)',
-        'hinako-umori': 'rgba(240, 117, 168, 0.3)',
-        'ichika-soya': 'rgba(32, 166, 223, 0.3)',
-        'mary-saionji': 'rgba(210, 108, 224, 0.3)',
-        'mico-sekishiro': 'rgba(197, 208, 144, 0.3)',
-        'patra-suo': 'rgba(217, 38, 107, 0.3)',
-        'ran-hinokuma': 'rgba(88, 185, 39, 0.3)'
-      }[(this.event.owner || {}).id]
+      return (
+        {
+          'charlotte-shimamura': 'rgba(103, 110, 228, 0.3)',
+          'eli-sogetsu': 'rgba(148, 162, 184, 0.3)',
+          'haneru-inaba': 'rgba(235, 205, 71, 0.3)',
+          'hinako-umori': 'rgba(240, 117, 168, 0.3)',
+          'ichika-soya': 'rgba(32, 166, 223, 0.3)',
+          'mary-saionji': 'rgba(210, 108, 224, 0.3)',
+          'mico-sekishiro': 'rgba(197, 208, 144, 0.3)',
+          'patra-suo': 'rgba(217, 38, 107, 0.3)',
+          'ran-hinokuma': 'rgba(88, 185, 39, 0.3)'
+        }[(this.event.owner || {}).id] || 'rgb(66, 66, 66, 0.3)'
+      )
     }
   }
 }

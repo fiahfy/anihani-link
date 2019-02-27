@@ -1,53 +1,54 @@
 <template>
   <v-layout column class="wrapper">
     <v-subheader v-text="headline" />
-    <v-layout
-      v-for="hour of hours"
-      :key="hour"
-      py-4
-      px-3
-      align-center
-      style="height: 66px;"
-    >
-      <div style="width: 36px;" class="text-xs-right mr-1 caption grey--text">
-        <template v-if="hasLabel(hour)">
-          {{ hour }}:00
-        </template>
-      </div>
-      <v-divider />
-    </v-layout>
-    <div class="content">
-      <div>
-        <v-layout
-          v-if="hasNow"
-          :style="{
-            position: 'absolute',
-            top: 66 * nowY - 9 + 'px',
-            right: 0,
-            width: 'calc(100% + 40px)'
-          }"
-          align-center
-        >
-          <div
-            style="width: 36px;"
-            class="text-xs-right mr-1 caption primary--text"
+    <div class="mx-3 mb-3">
+      <v-layout
+        v-for="hour of hours"
+        :key="hour"
+        py-4
+        align-center
+        style="height: 66px;"
+      >
+        <div style="width: 36px;" class="text-xs-right mr-1 caption grey--text">
+          <template v-if="hasLabel(hour)">
+            {{ hour }}:00
+          </template>
+        </div>
+        <v-divider />
+      </v-layout>
+      <div class="content">
+        <div>
+          <v-layout
+            v-if="hasNow"
+            :style="{
+              position: 'absolute',
+              top: 66 * nowY - 9 + 'px',
+              right: 0,
+              width: 'calc(100% + 40px)'
+            }"
+            align-center
           >
-            {{ nowLabel }}
-          </div>
-          <v-divider color="#ff4081" />
-        </v-layout>
-        <daily-calendar-card
-          v-for="e of ajustedEvents"
-          :key="e.id"
-          :style="{
-            position: 'absolute',
-            top: 66 * e.y + 'px',
-            left: 100 * e.w * e.x + '%',
-            height: 66 * e.h + 'px',
-            width: 100 * e.w + '%'
-          }"
-          :event="e"
-        />
+            <div
+              style="width: 36px;"
+              class="text-xs-right mr-1 caption primary--text"
+            >
+              {{ nowLabel }}
+            </div>
+            <v-divider color="#ff4081" />
+          </v-layout>
+          <daily-calendar-card
+            v-for="e of ajustedEvents"
+            :key="e.id"
+            :style="{
+              position: 'absolute',
+              top: 66 * e.y + 'px',
+              left: 100 * e.w * e.x + '%',
+              height: 66 * e.h + 'px',
+              width: 100 * e.w + '%'
+            }"
+            :event="e"
+          />
+        </div>
       </div>
     </div>
   </v-layout>
@@ -87,7 +88,7 @@ export default {
       })
     },
     hasNow() {
-      const tomorrow = new Date()
+      const tomorrow = new Date(this.date)
       tomorrow.setDate(tomorrow.getDate() + 1)
       return this.now >= this.date && this.now < tomorrow
     },
@@ -183,16 +184,19 @@ export default {
   margin-left: env(safe-area-inset-left);
   margin-right: env(safe-area-inset-left);
 }
-.content {
+.wrapper > div {
+  position: relative;
+}
+.wrapper > div > .content {
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
   right: 0;
   box-sizing: border-box;
-  padding: 81px 16px 33px 56px;
+  padding: 33px 0px 33px 40px;
 }
-.content > div {
+.wrapper > div > .content > div {
   position: relative;
 }
 </style>

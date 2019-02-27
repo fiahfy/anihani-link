@@ -1,5 +1,12 @@
 <template>
-  <v-app dark>
+  <v-app
+    dark
+    :class="{
+      'xs-only': $vuetify.breakpoint.xsOnly,
+      'sm-and-up': $vuetify.breakpoint.smAndUp,
+      'lg-and-up': $vuetify.breakpoint.lgAndUp
+    }"
+  >
     <v-navigation-drawer v-model="drawer" app clipped>
       <v-list>
         <v-list-tile v-for="(nav, index) in navs" :key="index" :to="nav.path">
@@ -162,19 +169,13 @@ export default {
 .v-item-group.v-bottom-nav .v-btn--active >>> .v-btn__content {
   font-size: 12px;
 }
-@media only screen and (max-width: 599px) {
-  .v-toolbar__title:not(:first-child) {
-    margin-left: 0 !important;
-  }
+.xs-only .v-toolbar__title:not(:first-child) {
+  margin-left: 0 !important;
 }
-@media only screen and (min-width: 600px) {
-  .v-content {
-    padding-bottom: 0 !important;
-  }
+.sm-and-up .v-content {
+  padding-bottom: 0 !important;
 }
-@media only screen and (min-width: 1264px) {
-  .v-navigation-drawer {
-    max-height: calc(100% - 64px) !important;
-  }
+.lg-and-up .v-navigation-drawer {
+  max-height: calc(100% - 64px) !important;
 }
 </style>
