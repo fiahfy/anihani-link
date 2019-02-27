@@ -32,9 +32,7 @@ export default {
     const d = new Date()
     const top =
       66 * (d.getHours() + 2 + d.getMinutes() / 60) - window.innerHeight / 2
-    setTimeout(() => {
-      window.scrollTo(0, top)
-    }, 0)
+    window.scrollTo(0, top)
   }
 }
 </script>
