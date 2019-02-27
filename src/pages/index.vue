@@ -1,12 +1,9 @@
 <template>
   <v-container fill-height pa-0>
-    <v-layout column>
-      <daily-calendar
-        v-for="(dailyEvent, index) of dailyEvents"
-        :key="index"
-        :date="dailyEvent.date"
-        :events="dailyEvent.events"
-      />
+    <v-layout row wrap>
+      <v-flex v-for="(dailyEvent, index) of dailyEvents" :key="index" xs12 smw>
+        <daily-calendar :date="dailyEvent.date" :events="dailyEvent.events" />
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -35,3 +32,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+@media (min-width: 960px) {
+  .flex.smw {
+    flex-basis: calc(100% / 7);
+    max-width: calc(100% / 7);
+  }
+}
+</style>

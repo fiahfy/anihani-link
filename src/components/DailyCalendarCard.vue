@@ -6,7 +6,13 @@
     :color="color"
     :to="'/event?id=' + event.id"
   >
-    <app-image :src="src" :lazy-src="lazySrc" contain height="66" />
+    <app-image
+      :src="src"
+      :lazy-src="lazySrc"
+      height="66"
+      :max-width="maxWidth"
+      :contain="contain"
+    />
   </v-card>
 </template>
 
@@ -34,6 +40,12 @@ export default {
         ? `/img/members/${this.event.owner.id}_48x48.png`
         : `/img/groups/${this.event.group.id}_113x48.png`
     },
+    maxWidth() {
+      return this.event.owner ? 66 : 155
+    },
+    contain() {
+      return !this.event.owner
+    },
     color() {
       return {
         'charlotte-shimamura': 'rgba(103, 110, 228, 0.3)',
@@ -50,3 +62,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.v-card >>> .v-responsive.v-image {
+  margin: 0 auto;
+}
+</style>
