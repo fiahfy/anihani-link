@@ -1,7 +1,5 @@
 html {
   background: black;
-  /* https://github.com/surmon-china/vue-awesome-swiper/issues/423#issuecomment-442808684 */
-  touch-action: none;
 }
 .text-decoration-none {
   text-decoration: none;
