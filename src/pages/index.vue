@@ -6,7 +6,11 @@
   >
     <v-layout row wrap>
       <v-flex v-for="(schedule, index) of schedules" :key="index" xs12 smw>
-        <daily-calendar :date="schedule.date" :events="schedule.events" />
+        <daily-calendar
+          :date="schedule.date"
+          :events="schedule.events"
+          :class="{ holiday: isHoliday(schedule.date) }"
+        />
       </v-flex>
     </v-layout>
   </v-container>
@@ -33,6 +37,11 @@ export default {
     const top =
       66 * (d.getHours() + 2 + d.getMinutes() / 60) - window.innerHeight / 2
     window.scrollTo(0, top)
+  },
+  methods: {
+    isHoliday(date) {
+      return [0, 6].includes(date.getDay())
+    }
   }
 }
 </script>
@@ -49,22 +58,20 @@ export default {
 .md-and-up .flex.smw >>> .v-subheader {
   justify-content: center;
 }
-.md-and-up .flex.smw >>> .layout.wrapper > div {
-  margin-left: 2px !important;
-  margin-right: 2px !important;
+.md-and-up .flex.smw >>> .wrapper > div {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
 }
-.md-and-up
-  .flex.smw:not(:first-child)
-  >>> .layout.wrapper
-  > div
-  > .layout
-  > div {
+.md-and-up .flex.smw >>> .wrapper.holiday .hour {
+  background-color: #424242;
+}
+.md-and-up .flex.smw:not(:first-child) >>> .hour > .label {
   display: none;
 }
-.md-and-up .flex.smw:first-child >>> .layout.wrapper > div > .layout > div {
+.md-and-up .flex.smw:first-child >>> .hour > .label {
   margin-left: -40px;
 }
-.md-and-up .flex.smw >>> .layout.wrapper > div > .content {
+.md-and-up .flex.smw >>> .content {
   padding-left: 0;
 }
 </style>

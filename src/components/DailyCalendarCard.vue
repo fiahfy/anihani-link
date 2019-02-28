@@ -9,9 +9,9 @@
     <app-image
       :src="src"
       :lazy-src="lazySrc"
-      height="66"
       :max-width="maxWidth"
       :contain="contain"
+      height="66"
     />
   </v-card>
 </template>

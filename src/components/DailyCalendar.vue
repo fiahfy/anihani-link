@@ -1,41 +1,28 @@
 <template>
-  <v-layout column class="wrapper">
+  <v-layout column class="wrapper mb-3">
     <v-subheader v-text="headline" />
-    <div class="mx-3 mb-3">
-      <v-layout
-        v-for="hour of hours"
-        :key="hour"
-        py-4
-        align-center
-        style="height: 66px;"
-      >
-        <div style="width: 36px;" class="text-xs-right mr-1 caption grey--text">
+    <div class="mx-3">
+      <v-layout v-for="hour of hours" :key="hour" align-center class="hour">
+        <div class="label text-xs-right caption grey--text">
           <template v-if="hasLabel(hour)">
             {{ hour }}:00
           </template>
         </div>
         <v-divider />
       </v-layout>
+      <v-layout
+        v-if="hasNow"
+        :style="{ top: 66 * nowY + 'px' }"
+        align-center
+        class="hour current"
+      >
+        <div class="label text-xs-right caption primary--text">
+          {{ nowLabel }}
+        </div>
+        <v-divider class="primary" />
+      </v-layout>
       <div class="content">
         <div>
-          <v-layout
-            v-if="hasNow"
-            :style="{
-              position: 'absolute',
-              top: 66 * nowY - 9 + 'px',
-              right: 0,
-              width: 'calc(100% + 40px)'
-            }"
-            align-center
-          >
-            <div
-              style="width: 36px;"
-              class="text-xs-right mr-1 caption primary--text"
-            >
-              {{ nowLabel }}
-            </div>
-            <v-divider color="#ff4081" />
-          </v-layout>
           <daily-calendar-card
             v-for="e of ajustedEvents"
             :key="e.id"
@@ -187,7 +174,7 @@ export default {
 .wrapper > div {
   position: relative;
 }
-.wrapper > div > .content {
+.content {
   position: absolute;
   left: 0;
   top: 0;
@@ -196,7 +183,19 @@ export default {
   box-sizing: border-box;
   padding: 33px 0px 33px 40px;
 }
-.wrapper > div > .content > div {
+.content > div {
   position: relative;
+}
+.hour {
+  height: 66px;
+}
+.hour.current {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+.hour > .label {
+  width: 40px;
+  padding-right: 4px;
 }
 </style>
