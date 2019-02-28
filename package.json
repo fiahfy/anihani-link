@@ -30,6 +30,7 @@
   },
   "scripts": {
     "build": "nuxt build",
+    "deploy:hosting": "npm run generate && firebase deploy --only hosting -P production",
     "dev": "HOST=0.0.0.0 nuxt",
     "generate": "nuxt generate",
     "lint": "eslint -f codeframe --ext .js,.vue --ignore-path .gitignore --ignore-pattern functions .",

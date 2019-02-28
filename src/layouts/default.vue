@@ -147,10 +147,12 @@ export default {
   padding-left: env(safe-area-inset-left) !important;
 }
 .v-toolbar {
+  padding-top: env(safe-area-inset-top) !important;
   padding-left: env(safe-area-inset-left) !important;
   padding-right: env(safe-area-inset-left) !important;
 }
 .v-content {
+  padding-top: calc(56px + env(safe-area-inset-top)) !important;
   padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
 }
 .v-footer {

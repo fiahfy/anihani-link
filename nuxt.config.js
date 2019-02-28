@@ -58,12 +58,14 @@ module.exports = {
           name: 'あにハニ.link (β)',
           short_name: 'あにハニ.link (β)',
           description:
-            'バーチャルYouTuberユニット 「有閑喫茶あにまーれ」「ハニーストラップ」 非公式スケジュールサイト'
+            'バーチャルYouTuberユニット 「有閑喫茶あにまーれ」「ハニーストラップ」 非公式スケジュールサイト',
+          background_color: '#212121',
+          theme_color: '#212121'
         },
         meta: {
           nativeUI: true,
           mobileAppIOS: true,
-          appleStatusBarStyle: 'black',
+          appleStatusBarStyle: 'black-translucent',
           ogHost: 'https://fiahfy-anihani.firebaseapp.com'
         }
       }
