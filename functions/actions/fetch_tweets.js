@@ -197,7 +197,7 @@ const updateSchedule = async (groupId, { date, append, events }, force) => {
     .where('started_at', '<', m)
     .get()
   snapshot.docs.forEach((doc) => {
-    if (append) {
+    if (append && !force) {
       return
     }
     const uid = getUniqueIdWithDoc(doc)
