@@ -62,7 +62,7 @@ export default {
   margin-left: 0px !important;
   margin-right: 0px !important;
 }
-.md-and-up .flex.smw >>> .wrapper.holiday .hour {
+.md-and-up .flex.smw >>> .wrapper.holiday .hour:not(.current) {
   background-color: #424242;
 }
 .md-and-up .flex.smw:first-child >>> .hour > .label {
