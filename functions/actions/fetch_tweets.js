@@ -126,7 +126,7 @@ const extractSchedule = (timeline) => {
 
   return matches.map(({ date, text }) => {
     // eslint-disable-next-line no-irregular-whitespace
-    const reg = /([^\s　]+)[\s　]+(\d+):(\d+)-(?:[\s　]*[(（](.+)[）)])?(?:\n(＊[^\n\s]+))?/g
+    const reg = /([^\s　]+)[\s　]+(\d+):(\d+)-?(?:[\s　]*[(（](.+)[）)])?(?:\n(＊[^\n\s]+))?/g
     let events = []
     for (;;) {
       const match = reg.exec(text)
