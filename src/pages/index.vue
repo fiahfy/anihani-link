@@ -65,13 +65,23 @@ export default {
 .md-and-up .flex.smw >>> .wrapper.holiday .hour {
   background-color: #424242;
 }
-.md-and-up .flex.smw:not(:first-child) >>> .hour > .label {
-  display: none;
-}
 .md-and-up .flex.smw:first-child >>> .hour > .label {
   margin-left: -40px;
 }
+.md-and-up .flex.smw:first-child >>> .hour.current {
+  width: 700%;
+  z-index: 1;
+}
+.md-and-up .flex.smw:not(:first-child) >>> .hour > .label {
+  display: none;
+}
+.md-and-up .flex.smw:not(:first-child) >>> .hour.current {
+  display: none;
+}
 .md-and-up .flex.smw >>> .content {
   padding-left: 0;
+}
+.md-and-up .flex.smw >>> .content .v-image {
+  z-index: 2;
 }
 </style>
