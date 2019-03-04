@@ -1,5 +1,12 @@
 <template>
-  <v-app dark>
+  <v-app
+    dark
+    :class="{
+      'xs-only': $vuetify.breakpoint.xsOnly,
+      'sm-and-up': $vuetify.breakpoint.smAndUp,
+      'lg-and-up': $vuetify.breakpoint.lgAndUp
+    }"
+  >
     <v-navigation-drawer v-model="drawer" app clipped>
       <v-list>
         <v-list-tile v-for="(nav, index) in navs" :key="index" :to="nav.path">
@@ -23,7 +30,7 @@
           active-class=""
         >
           <v-list-tile-avatar color="grey darken-4">
-            <v-img :src="`/img/members/${member.id}_96x96.png`" contain />
+            <app-image :src="`/img/members/${member.id}_48x48.png`" />
           </v-list-tile-avatar>
           <v-list-tile-content>
             <v-list-tile-title v-text="member.name_ja" />
@@ -66,19 +73,28 @@
 
 <script>
 import { mapState } from 'vuex'
+import AppImage from '~/components/AppImage.vue'
 
 export default {
-  components: {},
+  components: {
+    AppImage
+  },
   data() {
     return {
       drawer: null,
       activeIndex: 0,
       navs: [
         {
+          title: 'Calendar',
+          icon: 'event',
+          names: ['index'],
+          path: '/'
+        },
+        {
           title: 'Schedule',
           icon: 'schedule',
-          names: ['index', 'schedule'],
-          path: '/'
+          names: ['schedule', 'event'],
+          path: '/schedule'
         },
         {
           title: 'Member',
@@ -127,25 +143,41 @@ export default {
 </script>
 
 <style scoped>
-@media only screen and (max-width: 599px) {
-  .v-toolbar__title:not(:first-child) {
-    margin-left: 0 !important;
-  }
+.v-navigation-drawer {
+  padding-left: env(safe-area-inset-left) !important;
 }
-@media only screen and (min-width: 600px) {
-  .v-content {
-    padding-bottom: 0 !important;
-  }
+.v-toolbar {
+  padding-top: env(safe-area-inset-top) !important;
+  padding-left: env(safe-area-inset-left) !important;
+  padding-right: env(safe-area-inset-left) !important;
 }
-@media only screen and (min-width: 1264px) {
-  .v-navigation-drawer {
-    max-height: calc(100% - 64px) !important;
-  }
+.v-content {
+  padding-top: calc(56px + env(safe-area-inset-top)) !important;
+  padding-bottom: calc(56px + env(safe-area-inset-bottom)) !important;
+}
+.v-footer {
+  height: calc(56px + env(safe-area-inset-bottom)) !important;
+}
+.v-item-group.v-bottom-nav {
+  padding-bottom: env(safe-area-inset-bottom);
+  box-sizing: content-box;
+}
+.v-item-group.v-bottom-nav .v-btn {
+  box-sizing: border-box;
 }
 .v-item-group.v-bottom-nav .v-btn--active {
   padding-top: 8px;
 }
 .v-item-group.v-bottom-nav .v-btn--active >>> .v-btn__content {
   font-size: 12px;
+}
+.xs-only .v-toolbar__title:not(:first-child) {
+  margin-left: 0 !important;
+}
+.sm-and-up .v-content {
+  padding-bottom: 0 !important;
+}
+.lg-and-up .v-navigation-drawer {
+  max-height: calc(100% - 64px) !important;
 }
 </style>

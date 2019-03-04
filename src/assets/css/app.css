@@ -1,6 +1,9 @@
 html {
   background: black;
 }
+.nuxt-progress {
+  top: env(safe-area-inset-top) !important;
+}
 .text-decoration-none {
   text-decoration: none;
 }

@@ -5,7 +5,10 @@
         <v-layout row wrap align-center pa-3>
           <v-flex xs12 pa-3 text-xs-center>
             <v-avatar size="192" color="grey darken-4">
-              <app-image :src="`/img/members/${member.id}_192x192.png`">
+              <app-image
+                :src="`/img/members/${member.id}_192x192.png`"
+                :lazy-src="`/img/members/${member.id}_48x48.png`"
+              >
                 <v-layout
                   slot="placeholder"
                   fill-height
@@ -51,15 +54,31 @@
       </v-flex>
       <v-flex md8 sm6 xs12>
         <v-list subheader>
-          <v-subheader class="subheading text-uppercase">Schedules</v-subheader>
+          <v-subheader class="subheading text-uppercase">Schedule</v-subheader>
           <v-divider />
         </v-list>
-        <schedule-list v-if="schedules.length" :schedules="schedules" />
+        <template
+          v-if="
+            schedules.reduce(
+              (carry, schedule) => carry + schedule.events.length,
+              0
+            )
+          "
+        >
+          <template v-for="(schedule, index) of schedules">
+            <event-list
+              v-if="schedule.events.length"
+              :key="index"
+              :date="schedule.date"
+              :events="schedule.events"
+            />
+          </template>
+        </template>
         <v-list v-else>
           <v-list-tile>
             <v-list-tile-content>
               <v-list-tile-title class="body-1 text-xs-center">
-                No Schedules
+                No Events
               </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
@@ -71,25 +90,25 @@
 
 <script>
 import AppImage from '~/components/AppImage.vue'
-import ScheduleList from '~/components/ScheduleList.vue'
+import EventList from '~/components/EventList.vue'
 
 export default {
   components: {
     AppImage,
-    ScheduleList
+    EventList
   },
   watchQuery: ['id'],
   async asyncData({ error, query, store }) {
     const { id } = query
     const member = store.getters['member/getMember']({ id })
     if (!member) {
-      return error({ statusCode: 404, message: 'Member Not Found' })
+      return error({ statusCode: 404, message: 'Member not found' })
     }
 
     const d = new Date()
     const startedAt = new Date(d.getFullYear(), d.getMonth(), d.getDate())
 
-    const schedules = await store.dispatch('schedule/fetchSchedules', {
+    const schedules = await store.dispatch('event/fetchSchedules', {
       startedAt,
       ownerId: member.id
     })

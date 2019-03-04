@@ -15,7 +15,7 @@
       ]
     },
     {
-      "collectionGroup": "schedules",
+      "collectionGroup": "events",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -29,7 +29,7 @@
       ]
     },
     {
-      "collectionGroup": "schedules",
+      "collectionGroup": "events",
       "queryScope": "COLLECTION",
       "fields": [
         {
