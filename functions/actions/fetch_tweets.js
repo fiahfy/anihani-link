@@ -1,8 +1,5 @@
 const Twitter = require('twitter')
-const initializeApp = require('../firebase')
-
-const app = initializeApp()
-const db = app.firestore()
+const models = require('../models')
 
 const Owner = {
   はねる: 'haneru-inaba',
@@ -18,15 +15,6 @@ const Owner = {
 
 const fetchCount = 20
 const timezoneOffsetHours = -9
-
-const getGroup = async (groupId) => {
-  const snapshot = await db
-    .collection('groups')
-    .doc(groupId)
-    .get()
-  const group = snapshot.data()
-  return group
-}
 
 const getSchedules = async (screenName) => {
   console.log('get schedules')
@@ -138,7 +126,7 @@ const extractSchedule = (timeline) => {
       const hour = Number(match[2])
       const minute = Number(match[3])
 
-      const ownerId = Owner[member] || null
+      const owner = Owner[member] || null
       const title = member
       let description = match[4] || null
       if (description) {
@@ -151,7 +139,7 @@ const extractSchedule = (timeline) => {
       events = [
         ...events,
         {
-          ownerId,
+          owner,
           title,
           description,
           startedAt,
@@ -175,80 +163,82 @@ const updateSchedule = async (groupId, { date, append, events }, force) => {
   m.setDate(m.getDate() + 1)
   console.log('update schedule: %s -> %s', t, m)
 
-  const uniqueIds = force
+  const eventIds = force
     ? {}
-    : events.reduce((carry, e) => {
-        const uid = getUniqueId(e)
+    : events.reduce((carry, event) => {
+        const uid = getUniqueId(event)
         return {
           ...carry,
           [uid]: false
         }
       }, {})
 
-  let deletedRows = 0
-  let addedRows = 0
-  let updatedRows = 0
-  const batch = db.batch()
-
-  const snapshot = await db
-    .collection('events')
-    .where('group', '==', db.collection('groups').doc(groupId))
-    .where('started_at', '>=', t)
-    .where('started_at', '<', m)
-    .get()
-  snapshot.docs.forEach((doc) => {
+  const exists = await models.event.list({
+    group: groupId,
+    started_at_gte: t,
+    started_at_lt: m
+  })
+  const deleted = exists.filter((event) => {
     if (append && !force) {
-      return
+      return false
     }
-    const uid = getUniqueIdWithDoc(doc)
-    if (uniqueIds[uid] === false) {
-      uniqueIds[uid] = doc.id
-      return
+    const uid = getUniqueIdWithDoc(event)
+    if (eventIds[uid] === false) {
+      eventIds[uid] = event.id
+      return false
     }
-    batch.delete(doc.ref)
-    deletedRows++
+    return true
   })
 
+  let created = []
+  let updated = []
   for (let e of events) {
-    let ref = db.collection('events').doc()
-    const uid = getUniqueId(e)
-    const id = uniqueIds[uid]
-    if (id) {
-      ref = db.collection('events').doc(id)
-      updatedRows++
-    } else {
-      addedRows++
-    }
-    batch.set(ref, {
-      owner: e.ownerId ? db.collection('members').doc(e.ownerId) : null,
-      group: db.collection('groups').doc(groupId),
+    const event = {
+      group: groupId,
+      owner: e.owner,
       title: e.title,
       description: e.description,
       started_at: e.startedAt,
       published_at: e.publishedAt,
       created_at: new Date(),
       updated_at: new Date()
-    })
+    }
+    const uid = getUniqueId(e)
+    const id = eventIds[uid]
+    if (id) {
+      updated = [
+        ...updated,
+        {
+          ...event,
+          id
+        }
+      ]
+    } else {
+      created = [...created, event]
+    }
   }
-  await batch.commit()
+
+  const deletedResults = await models.event.batchDelete(deleted)
+  const createdResults = await models.event.batchCreate(created)
+  const updatedResults = await models.event.batchUpdate(updated)
+
   console.log(
     'deleted rows: %s, added rows: %s, updated rows: %s',
-    deletedRows,
-    addedRows,
-    updatedRows
+    deletedResults.length,
+    createdResults.length,
+    updatedResults.length
   )
   console.log('updated schedule')
 }
 
 const getUniqueId = (event) => {
-  const ownerId = event.ownerId || ''
+  const ownerId = event.owner || ''
   return ownerId + event.startedAt.getTime()
 }
 
-const getUniqueIdWithDoc = (doc) => {
-  const data = doc.data()
-  const ownerId = data.owner ? data.owner.id : ''
-  return ownerId + data.started_at.toDate().getTime()
+const getUniqueIdWithDoc = (event) => {
+  const ownerId = event.owner ? event.owner.id : ''
+  return ownerId + event.started_at.toDate().getTime()
 }
 
 module.exports = async ({ groupId, force }) => {
@@ -259,7 +249,7 @@ module.exports = async ({ groupId, force }) => {
     return
   }
 
-  const group = await getGroup(groupId)
+  const group = await models.group.get(groupId)
   if (!group) {
     console.log('group not found: %s', groupId)
     return
