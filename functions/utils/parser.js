@@ -1,4 +1,4 @@
-const timezoneOffset = 9 * 60
+const jst = require('./jst')
 
 const Owner = {
   はねる: 'haneru-inaba',
@@ -12,12 +12,6 @@ const Owner = {
   メアリ: 'mary-saionji'
 }
 
-const fakeJST = () => {
-  const d = new Date()
-  d.setMinutes(d.getMinutes() + d.getTimezoneOffset() + timezoneOffset)
-  return d
-}
-
 const parseTweet = (text) => {
   // reg = /配信スケジュール.*\n([\s\S]*)#(あにまーれ|ハニスト)/
   // match = reg.exec(text)
@@ -25,8 +19,6 @@ const parseTweet = (text) => {
   //   return false
   // }
   // ;[, text] = match
-
-  const append = /追加/.test(text)
 
   let matches = []
   let index = 0
@@ -48,14 +40,14 @@ const parseTweet = (text) => {
     const month = Number(match[2]) - 1
     const date = Number(match[3])
 
-    const d = fakeJST()
+    const d = jst.date()
     let year = d.getFullYear()
     if (d.getMonth() === 11 && month === 0) {
       year++ // increment year if it is December
     }
 
     // 0:00:00 UTC+9
-    const startedAt = new Date(Date.UTC(year, month, date, 0, -timezoneOffset))
+    const startedAt = jst.from(new Date(year, month, date))
 
     matches = [...matches, { date: startedAt }]
   }
@@ -101,7 +93,6 @@ const parseTweet = (text) => {
 
     return {
       date,
-      append,
       events
     }
   })

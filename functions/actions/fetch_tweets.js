@@ -34,7 +34,7 @@ const getSchedules = async (screenName) => {
   return schedules
 }
 
-const updateSchedule = async (groupId, { date, append, events }, force) => {
+const updateSchedule = async (groupId, { date, events }, force) => {
   // 0:00:00 UTC+9
   const startedAt = new Date(date)
   startedAt.setHours(startedAt.getHours() + 6)
@@ -59,9 +59,6 @@ const updateSchedule = async (groupId, { date, append, events }, force) => {
     started_at_lt: endedAt
   })
   const deleted = exists.filter((event) => {
-    if (append && !force) {
-      return false
-    }
     const uid = getUniqueIdWithDoc(event)
     if (eventIds[uid] === false) {
       eventIds[uid] = event.id

@@ -60,7 +60,7 @@ const batchDelete = async (events) => {
   for (let event of events) {
     const { id } = event
 
-    const ref = db.collection('groups').doc(id)
+    const ref = db.collection('events').doc(id)
     batch.delete(ref)
   }
   return await batch.commit()
