@@ -7,14 +7,10 @@ const client = new Twitter({
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 })
 
-const fetchTimelines = async (screenName) => {
+module.exports = async (screenName) => {
   return await client.get('statuses/user_timeline', {
     screen_name: screenName,
     tweet_mode: 'extended',
     count: 20
   })
-}
-
-module.exports = {
-  fetchTimelines
 }

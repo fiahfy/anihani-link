@@ -72,9 +72,10 @@ const updateSchedule = async (groupId, { date, events }, force) => {
   for (let e of events) {
     const event = {
       group: groupId,
-      owner: e.owner,
-      title: e.title,
-      description: e.description,
+      owner: e.owner || null,
+      title: e.title || null,
+      description: e.description || null,
+      url: e.url || null,
       started_at: e.startedAt,
       published_at: e.publishedAt,
       created_at: new Date(),

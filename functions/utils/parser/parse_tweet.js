@@ -1,4 +1,4 @@
-const jst = require('./jst')
+const jst = require('../jst')
 
 const Owner = {
   はねる: 'haneru-inaba',
@@ -12,7 +12,7 @@ const Owner = {
   メアリ: 'mary-saionji'
 }
 
-const parseTweet = (text) => {
+module.exports = (text) => {
   // reg = /配信スケジュール.*\n([\s\S]*)#(あにまーれ|ハニスト)/
   // match = reg.exec(text)
   // if (!match) {
@@ -96,8 +96,4 @@ const parseTweet = (text) => {
       events
     }
   })
-}
-
-module.exports = {
-  parseTweet
 }

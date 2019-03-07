@@ -10,7 +10,7 @@ process.env.TWITTER_ACCESS_TOKEN_SECRET = ''
 const updateGroups = require('./actions/update_groups')
 const updateMembers = require('./actions/update_members')
 const fetchTweets = require('./actions/fetch_tweets')
-// const fetchWiki = require('./actions/fetch_wiki')
+const fetchWiki = require('./actions/fetch_wiki')
 
 ;(async () => {
   try {
@@ -40,7 +40,7 @@ const fetchTweets = require('./actions/fetch_tweets')
           case 'wiki': {
             const force = options.includes('--force')
             const groupId = options[options.indexOf('-g') + 1]
-            // await fetchWiki({ groupId, force })
+            await fetchWiki({ groupId, force })
             break
           }
           default:
