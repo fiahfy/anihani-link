@@ -83,9 +83,9 @@ const extractSchedule = (timeline) => {
   // }
   // ;[, text] = match
 
-  reg = /追加/
-  match = reg.exec(text)
-  const append = !!match
+  // reg = /追加/
+  // match = reg.exec(text)
+  const append = false //!!match
 
   let matches = []
   let index = 0
