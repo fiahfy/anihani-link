@@ -6,7 +6,7 @@ const date = () => {
 }
 
 const from = (d) => {
-  d.setMinutes(d.getMinutes() + d.getTimezoneOffset() + timezoneOffset)
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset() - timezoneOffset)
   return d
 }
 
