@@ -7,7 +7,7 @@
         </v-list-tile-avatar>
 
         <v-list-tile-content>
-          <v-list-tile-title v-text="title" />
+          <v-list-tile-title v-text="owner" />
         </v-list-tile-content>
       </v-list-tile>
 
@@ -35,10 +35,21 @@
         </v-list-tile-content>
       </v-list-tile>
 
+      <v-list-tile v-if="event.title">
+        <v-list-tile-content>
+          <v-list-tile-sub-title>Title</v-list-tile-sub-title>
+          <v-list-tile-title v-text="event.title" />
+        </v-list-tile-content>
+      </v-list-tile>
+
       <v-list-tile v-if="event.description" class="description">
         <v-list-tile-content>
           <v-list-tile-sub-title>Description</v-list-tile-sub-title>
-          <v-list-tile-title v-text="event.description" />
+          <!-- eslint-disable vue/no-v-html -->
+          <v-list-tile-title
+            v-html="$options.filters.nl2br(event.description)"
+          />
+          <!-- eslint-enable vue/no-v-html -->
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
@@ -73,7 +84,7 @@ export default {
         ? `/img/members/${this.event.owner.id}_48x48.png`
         : `/img/groups/${this.event.group.id}_113x48.png`
     },
-    title() {
+    owner() {
       return this.event.owner ? this.event.owner.name_ja : this.event.title
     },
     startedAt() {

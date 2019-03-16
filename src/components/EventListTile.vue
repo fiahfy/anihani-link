@@ -24,9 +24,9 @@
       <v-list-tile-sub-title>
         <span
           :class="{ 'text--primary': true, 'font-weight-bold': highlighted }"
-          v-text="title"
+          v-text="owner"
         />
-        {{ description }}
+        {{ title }}
       </v-list-tile-sub-title>
     </v-list-tile-content>
   </v-list-tile>
@@ -80,11 +80,11 @@ export default {
         ? `/img/members/${this.event.owner.id}_48x48.png`
         : `/img/groups/${this.event.group.id}_113x48.png`
     },
-    title() {
+    owner() {
       return this.event.owner ? this.event.owner.name_ja : this.event.title
     },
-    description() {
-      return this.event.description ? ' — ' + this.event.description : ''
+    title() {
+      return this.event.title ? ' — ' + this.event.title : ''
     },
     startedAt() {
       const d = this.event.started_at.toDate()
