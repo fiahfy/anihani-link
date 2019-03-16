@@ -1,6 +1,6 @@
 const timezoneOffset = 9 * 60
 
-const date = () => {
+const now = () => {
   const d = new Date()
   return from(d)
 }
@@ -10,4 +10,4 @@ const from = (d) => {
   return d
 }
 
-module.exports = { date, from }
+module.exports = { now, from }

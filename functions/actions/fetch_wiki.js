@@ -6,7 +6,7 @@ const jst = require('../utils/jst')
 const getSchedules = async () => {
   let schedules = []
   for (let i = 0; i < 7; i++) {
-    const d = jst.date()
+    const d = jst.now()
     d.setDate(d.getDate() + i)
     const text = await fetcher.fetchSchedule(d)
     const schedule = await parser.parseSchedule(text)

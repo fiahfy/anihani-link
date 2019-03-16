@@ -40,7 +40,7 @@ module.exports = (text) => {
     const month = Number(match[2]) - 1
     const date = Number(match[3])
 
-    const d = jst.date()
+    const d = jst.now()
     let year = d.getFullYear()
     if (d.getMonth() === 11 && month === 0) {
       year++ // increment year if it is December
