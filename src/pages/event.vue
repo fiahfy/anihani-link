@@ -42,13 +42,11 @@
         </v-list-tile-content>
       </v-list-tile>
 
-      <v-list-tile v-if="event.description" class="description">
+      <v-list-tile v-if="description" class="description">
         <v-list-tile-content>
           <v-list-tile-sub-title>Description</v-list-tile-sub-title>
           <!-- eslint-disable vue/no-v-html -->
-          <v-list-tile-title
-            v-html="$options.filters.nl2br(event.description)"
-          />
+          <v-list-tile-title v-html="description" />
           <!-- eslint-enable vue/no-v-html -->
         </v-list-tile-content>
       </v-list-tile>
@@ -111,6 +109,11 @@ export default {
         )
       }
       return null
+    },
+    description() {
+      return this.$options.filters.nl2br(
+        this.$options.filters.url2anchor(this.event.description)
+      )
     }
   },
   async asyncData({ error, query, store }) {

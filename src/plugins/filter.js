@@ -16,6 +16,10 @@ Vue.filter('nl2br', (value) => {
   return (value || '').replace(/\n/g, '<br />')
 })
 
+Vue.filter('url2anchor', (value) => {
+  return (value || '').replace(/(https?:\/\/[^\n\s]+)/g, '<a href="$1">$1</a>')
+})
+
 Vue.filter('time_ago', (value) => {
   if (value instanceof Date) {
     value = value.getTime()
