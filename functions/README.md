@@ -37,10 +37,10 @@ node cli.js update members
 
 ### Fetch Wiki Pages
 ```
-node cli.js fetch wiki -g <group-id>
+node cli.js fetch wiki -g <group_id> [--force]
 ```
 
 ### Fetch Tweets
 ```
-node cli.js fetch tweets -g <group-id> [--force]
+node cli.js fetch tweets -g <group_id> [--force]
 ```

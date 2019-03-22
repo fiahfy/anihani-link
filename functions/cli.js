@@ -11,6 +11,7 @@ process.env.TWITTER_ACCESS_TOKEN_SECRET = ''
 const updateGroups = require('./actions/update_groups')
 const updateMembers = require('./actions/update_members')
 const updateEvents = require('./actions/update_events')
+const updateEventUrls = require('./actions/update_event_urls')
 const fetchTweets = require('./actions/fetch_tweets')
 const fetchWiki = require('./actions/fetch_wiki')
 
@@ -28,6 +29,9 @@ const fetchWiki = require('./actions/fetch_wiki')
             break
           case 'events':
             await updateEvents()
+            break
+          case 'event-urls':
+            await updateEventUrls()
             break
           default:
             console.error('invalid target')
