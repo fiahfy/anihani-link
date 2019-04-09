@@ -21,16 +21,13 @@ const getEventMap = async () => {
   const events = await models.event.list({
     started_at_gte: startedAt
   })
-  return events.reduce(async (carry, event) => {
+  return events.reduce((carry, event) => {
     if (!event.owner) {
       return carry
     }
-    console.log(event.owner)
-    const r = await event.owner.get()
-    console.log(r.data())
     return {
       ...carry,
-      [event.owner.id]: event
+      [event.owner.id]: [...(carry[event.owner.id] || []), event]
     }
   }, {})
 }
@@ -80,6 +77,10 @@ const updateEvents = async (events, videos) => {
 
 module.exports = async () => {
   const events = await getEventMap()
+
+  for (let [k, v] of Object.entries(events)) {
+    console.log(k, v.length)
+  }
   // const videos = await getVideoMap(Object.keys(events))
   // await updateEvents(events, videos)
 }
