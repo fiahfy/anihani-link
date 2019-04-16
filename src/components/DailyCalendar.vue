@@ -193,6 +193,7 @@ export default {
   position: absolute;
   left: 0;
   right: 0;
+  pointer-events: none;
 }
 .hour > .label {
   width: 40px;
