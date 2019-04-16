@@ -30,10 +30,10 @@ const batchCreate = async (events) => {
     const { group, owner, ...data } = event
 
     if (group !== undefined) {
-      event.group = group ? db.collection('groups').doc(group) : null
+      data.group = group ? db.collection('groups').doc(group) : null
     }
     if (owner !== undefined) {
-      event.owner = owner ? db.collection('members').doc(owner) : null
+      data.owner = owner ? db.collection('members').doc(owner) : null
     }
 
     const ref = db.collection('events').doc()
@@ -48,10 +48,10 @@ const batchUpdate = async (events) => {
     const { id, group, owner, ...data } = event
 
     if (group !== undefined) {
-      event.group = group ? db.collection('groups').doc(group) : null
+      data.group = group ? db.collection('groups').doc(group) : null
     }
     if (owner !== undefined) {
-      event.owner = owner ? db.collection('members').doc(owner) : null
+      data.owner = owner ? db.collection('members').doc(owner) : null
     }
 
     const ref = db.collection('events').doc(id)

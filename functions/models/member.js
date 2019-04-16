@@ -8,7 +8,7 @@ const batchReplace = async (members) => {
     const { id, group, ...data } = member
 
     if (group !== undefined) {
-      member.group = group ? db.collection('groups').doc(group) : null
+      data.group = group ? db.collection('groups').doc(group) : null
     }
 
     const ref = db.collection('members').doc(id)

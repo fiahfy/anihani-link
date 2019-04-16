@@ -59,12 +59,7 @@ const updateEvents = async (events, videos) => {
     updated = [
       ...updated,
       {
-        ...event,
-        group: event.group ? event.group.id : null,
-        owner: event.owner ? event.owner.id : null,
-        started_at: event.started_at.toDate(),
-        published_at: event.published_at.toDate(),
-        created_at: event.created_at.toDate(),
+        id: event.id,
         updated_at: new Date(),
         title: video.snippet.title,
         description: video.snippet.description
