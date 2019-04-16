@@ -76,6 +76,21 @@ const updateEvents = async (events, videos) => {
 }
 
 module.exports = async () => {
+  const r = await fetcher.fetchYoutubeSearch({
+    part: 'id,snippet',
+    channelId: 'UC0Owc36U9lOyi9Gx9Ic-4qg',
+    order: 'date',
+    eventType: 'upcoming',
+    type: 'video',
+    maxResults: 10
+  })
+  console.log(r)
+  const s = await fetcher.fetchYoutubeVideos({
+    part: 'id,snippet,liveStreamingDetails',
+    id: 'p5_INljopV8'
+  })
+  console.log(s)
+  return
   const events = await getEventMap()
 
   for (let [k, v] of Object.entries(events)) {
