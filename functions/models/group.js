@@ -14,7 +14,7 @@ const get = async (id) => {
   }
 }
 
-const batchUpdate = async (groups) => {
+const batchReplace = async (groups) => {
   const batch = db.batch()
   for (let group of groups) {
     const { id, ...data } = group
@@ -27,5 +27,5 @@ const batchUpdate = async (groups) => {
 
 module.exports = {
   get,
-  batchUpdate
+  batchReplace
 }

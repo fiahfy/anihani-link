@@ -8,6 +8,6 @@ module.exports = async () => {
       id
     }
   })
-  const results = await models.member.batchUpdate(items)
+  const results = await models.member.batchReplace(items)
   console.log('updated rows: %s', results.length)
 }
