@@ -7,9 +7,9 @@ const get = async (id) => {
     .collection('groups')
     .doc(id)
     .get()
-  const group = doc.data()
+  const data = doc.data()
   return {
-    ...group,
+    ...data,
     id: doc.id
   }
 }
