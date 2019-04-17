@@ -50,9 +50,8 @@ const updateEvents = async (events, videos) => {
   console.log('update events')
 
   let updated = []
-  for (let key of Object.keys(events)) {
-    const event = events[key]
-    const video = videos[key]
+  for (let [videoId, event] of Object.entries(events)) {
+    const video = videos[videoId]
     if (!video) {
       return
     }

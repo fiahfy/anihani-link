@@ -13,7 +13,7 @@ const extractYoutubeVideoId = (url) => {
   return match[1]
 }
 
-const getEventMap = async () => {
+const getMemberEventsMap = async () => {
   const d = new Date()
   d.setDate(d.getDate() - 7)
   const startedAt = jst.from(d)
@@ -32,41 +32,52 @@ const getEventMap = async () => {
   }, {})
 }
 
-const getVideoMap = async (ids) => {
+const getVideoIdMap = async (channelId) => {
+  const results = await fetcher.fetchYoutubeSearch({
+    part: 'id',
+    channelId,
+    order: 'date',
+    // eventType: 'upcoming',
+    type: 'video',
+    maxResults: 20
+  })
+  const videoIds = results.map((result) => result.id.videoId)
+  if (!videoIds) {
+    return {}
+  }
   const videos = await fetcher.fetchYoutubeVideos({
-    part: 'id,snippet',
-    id: ids.join(',')
+    part: 'id,liveStreamingDetails',
+    id: videoIds.join(',')
   })
   return videos.reduce((carry, video) => {
+    const { id, liveStreamingDetails } = video
+    if (!liveStreamingDetails) {
+      return carry
+    }
+    const date = new Date(liveStreamingDetails.scheduledStartTime)
+    const timestamp = date.getTime()
     return {
       ...carry,
-      [video.id]: video
+      [timestamp]: id
     }
   }, {})
 }
 
-const updateEvents = async (events, videos) => {
+const updateEvents = async (events, videoIds) => {
   console.log('update events')
 
   let updated = []
-  for (let key of Object.keys(events)) {
-    const event = events[key]
-    const video = videos[key]
-    if (!video) {
-      return
+  for (let event of events) {
+    const timestamp = event.started_at.toDate().getTime()
+    const videoId = videoIds[timestamp]
+    if (!videoId) {
+      break
     }
     updated = [
       ...updated,
       {
-        ...event,
-        group: event.group ? event.group.id : null,
-        owner: event.owner ? event.owner.id : null,
-        started_at: event.started_at.toDate(),
-        published_at: event.published_at.toDate(),
-        created_at: event.created_at.toDate(),
-        updated_at: new Date(),
-        title: video.snippet.title,
-        description: video.snippet.description
+        id: event.id,
+        // url: videoId
       }
     ]
   }
@@ -76,26 +87,11 @@ const updateEvents = async (events, videos) => {
 }
 
 module.exports = async () => {
-  const r = await fetcher.fetchYoutubeSearch({
-    part: 'id,snippet',
-    channelId: 'UC0Owc36U9lOyi9Gx9Ic-4qg',
-    order: 'date',
-    eventType: 'upcoming',
-    type: 'video',
-    maxResults: 10
-  })
-  console.log(r)
-  const s = await fetcher.fetchYoutubeVideos({
-    part: 'id,snippet,liveStreamingDetails',
-    id: 'p5_INljopV8'
-  })
-  console.log(s)
-  return
-  const events = await getEventMap()
+  const memberEvents = await getMemberEventsMap()
 
-  for (let [k, v] of Object.entries(events)) {
-    console.log(k, v.length)
+  for (let [memberId, events] of Object.entries(memberEvents)) {
+    const member = await models.member.get(memberId)
+    const videoIds = await getVideoIdMap(member.youtube.channel_id)
+    await updateEvents(events, videoIds)
   }
-  // const videos = await getVideoMap(Object.keys(events))
-  // await updateEvents(events, videos)
 }
