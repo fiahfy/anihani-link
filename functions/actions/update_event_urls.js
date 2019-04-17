@@ -2,15 +2,8 @@ const models = require('../models')
 const fetcher = require('../utils/fetcher')
 const jst = require('../utils/jst')
 
-const extractYoutubeVideoId = (url) => {
-  if (!url) {
-    return null
-  }
-  const match = url.match(/\/\/youtu\.be\/(.+)/)
-  if (!match) {
-    return null
-  }
-  return match[1]
+const buildYoutubeVideoUrl = (videoId) => {
+  return `https://youtu.be/${videoId}`
 }
 
 const getMemberEventsMap = async () => {
@@ -73,11 +66,12 @@ const updateEvents = async (events, videoIds) => {
     if (!videoId) {
       break
     }
+    const url = buildYoutubeVideoUrl(videoId)
     updated = [
       ...updated,
       {
         id: event.id,
-        // url: videoId
+        url
       }
     ]
   }
