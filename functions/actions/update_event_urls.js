@@ -8,7 +8,7 @@ const buildYoutubeVideoUrl = (videoId) => {
 
 const getMemberEventsMap = async () => {
   const d = new Date()
-  d.setDate(d.getDate() - 7)
+  d.setDate(d.getDate() - 1)
   const startedAt = jst.from(d)
   // const startedAt = jst.now()
   const events = await models.event.list({
