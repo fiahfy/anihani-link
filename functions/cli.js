@@ -52,6 +52,12 @@ const fetchWiki = require('./actions/fetch_wiki')
             await fetchWiki({ groupId, force })
             break
           }
+          case 'all': {
+            const force = options.includes('--force')
+            await fetchWiki({ groupId: 'ani-mare', force })
+            await fetchTweets({ groupId: 'honey-strap', force })
+            break
+          }
           default:
             console.error('invalid target')
             break
