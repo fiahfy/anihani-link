@@ -8,7 +8,7 @@ process.env.TWITTER_ACCESS_TOKEN_SECRET = ''
 
 const fetchTweets = require('./actions/fetch_tweets')
 // const fetchWiki = require('./actions/fetch_wiki')
-// const updateEventUrls = require('./actions/update_event_urls')
+const updateEventUrls = require('./actions/update_event_urls')
 const updateEvents = require('./actions/update_events')
 
 exports.fetchEvents = functions
@@ -18,7 +18,7 @@ exports.fetchEvents = functions
     try {
       await fetchTweets({ groupId: 'ani-mare' })
       await fetchTweets({ groupId: 'honey-strap' })
-      // await updateEventUrls()
+      await updateEventUrls()
       await updateEvents()
     } catch (e) {
       console.error(e)

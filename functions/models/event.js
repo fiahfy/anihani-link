@@ -2,7 +2,7 @@ const app = require('../firebase')
 
 const db = app.firestore()
 
-const list = async ({ group, started_at_gte, started_at_lt }) => {
+const list = async ({ group, started_at_gte, started_at_lt, fetched }) => {
   let ref = db.collection('events')
   if (group) {
     ref = ref.where('group', '==', db.collection('groups').doc(group))
@@ -12,6 +12,9 @@ const list = async ({ group, started_at_gte, started_at_lt }) => {
   }
   if (started_at_lt) {
     ref = ref.where('started_at', '<', started_at_lt)
+  }
+  if (fetched !== undefined) {
+    ref = ref.where('fetched', '==', fetched)
   }
   const snapshot = await ref.get()
   const events = snapshot.docs.map((doc) => {

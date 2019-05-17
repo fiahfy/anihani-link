@@ -19,7 +19,8 @@ const getEventMap = async () => {
   const startedAt = jst.from(d)
   // const startedAt = jst.now()
   const events = await models.event.list({
-    started_at_gte: startedAt
+    started_at_gte: startedAt,
+    fetched: false
   })
   return events.reduce((carry, event) => {
     const videoId = extractYoutubeVideoId(event.url)
@@ -61,7 +62,8 @@ const updateEvents = async (events, videos) => {
         id: event.id,
         updated_at: new Date(),
         title: video.snippet.title,
-        description: video.snippet.description
+        description: video.snippet.description,
+        fetched: true
       }
     ]
   }
