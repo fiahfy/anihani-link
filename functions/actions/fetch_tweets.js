@@ -1,254 +1,122 @@
-const Twitter = require('twitter')
-const initializeApp = require('../firebase')
-
-const app = initializeApp()
-const db = app.firestore()
-
-const Owner = {
-  はねる: 'haneru-inaba',
-  ひなこ: 'hinako-umori',
-  いちか: 'ichika-soya',
-  らん: 'ran-hinokuma',
-  パトラ: 'patra-suo',
-  シャル: 'charlotte-shimamura',
-  エリ: 'eli-sogetsu',
-  ミコ: 'mico-sekishiro',
-  メアリ: 'mary-saionji'
-}
-
-const fetchCount = 20
-const timezoneOffsetHours = -9
-
-const getGroup = async (groupId) => {
-  const snapshot = await db
-    .collection('groups')
-    .doc(groupId)
-    .get()
-  const group = snapshot.data()
-  return group
-}
+const models = require('../models')
+const fetcher = require('../utils/fetcher')
+const parser = require('../utils/parser')
 
 const getSchedules = async (screenName) => {
-  console.log('get schedules')
-  const timelines = await fetchTimelines(screenName)
+  const timelines = await fetcher.fetchTimelines(screenName)
+  console.log('fetched tweets: %s', timelines.length)
   if (!timelines.length) {
-    console.log('got no schedules')
-    return
+    return []
   }
-  const schedules = extractSchedules(timelines)
+  const schedules = timelines
+    .map((timeline) => {
+      const publishedAt = new Date(timeline.created_at)
+      const schedules = parser.parseTweet(timeline.full_text)
+      if (!schedules) {
+        return false
+      }
+      return schedules.map((schedule) => {
+        return {
+          ...schedule,
+          events: schedule.events.map((event) => {
+            return {
+              ...event,
+              publishedAt
+            }
+          })
+        }
+      })
+    })
+    .filter((schedules) => Boolean(schedules))
+    .reverse()
+    .reduce((carry, schedules) => [...carry, ...schedules], [])
   console.log('got schedules: %s', schedules.length)
   return schedules
 }
 
-const fetchTimelines = async (screenName) => {
-  console.log('fetch tweets')
-  const client = new Twitter({
-    consumer_key: process.env.TWITTER_CONSUMER_KEY,
-    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-    access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-  })
-  let timelines = await client.get('statuses/user_timeline', {
-    screen_name: screenName,
-    tweet_mode: 'extended',
-    count: fetchCount
-  })
-  if (!timelines) {
-    return []
-  }
-  console.log('fetched tweets: %s', timelines.length)
-  return timelines
-}
+const updateSchedule = async (groupId, { date, events }, force) => {
+  // 0:00:00 UTC+9
+  const startedAt = new Date(date)
+  startedAt.setHours(startedAt.getHours() + 6)
+  const endedAt = new Date(startedAt)
+  endedAt.setDate(endedAt.getDate() + 1)
+  // update 6:00 UTC+9 -> 30:00 UTC+9
+  console.log('updating schedule: %s -> %s', startedAt, endedAt)
 
-const extractSchedules = (timelines) => {
-  console.log('extract schedules')
-  const schedules = timelines
-    .map(extractSchedule)
-    .filter((schedule) => Boolean(schedule))
-    .reverse()
-    .reduce((previous, current) => [...previous, ...current], [])
-  console.log('extracted schedules: %s', schedules.length)
-  return schedules
-}
-
-const extractSchedule = (timeline) => {
-  const publishedAt = new Date(timeline.created_at)
-  let text = timeline.full_text
-  let reg, match
-
-  // reg = /配信スケジュール.*\n([\s\S]*)#(あにまーれ|ハニスト)/
-  // match = reg.exec(text)
-  // if (!match) {
-  //   return false
-  // }
-  // ;[, text] = match
-
-  reg = /追加/
-  match = reg.exec(text)
-  const append = !!match
-
-  let matches = []
-  let index = 0
-  reg = /((\d+)\/(\d+)[(（].[）)])/g
-  for (;;) {
-    match = reg.exec(text)
-    if (!match) {
-      if (matches.length) {
-        matches[matches.length - 1].text = text.slice(index)
-      }
-      break
-    }
-
-    if (matches.length) {
-      matches[matches.length - 1].text = text.slice(index, match.index)
-    }
-    index = match.index
-
-    const month = Number(match[2])
-    const date = Number(match[3])
-
-    const d = new Date()
-    let year = d.getFullYear()
-    if (d.getMonth() + 1 === 12 && month === 1) {
-      year += 1 // next year
-    }
-
-    matches = [
-      ...matches,
-      {
-        date: new Date(Date.UTC(year, month - 1, date, timezoneOffsetHours))
-      }
-    ]
-  }
-  if (!matches.length) {
-    return false
-  }
-
-  return matches.map(({ date, text }) => {
-    // eslint-disable-next-line no-irregular-whitespace
-    const reg = /([^\s　]+)[\s　]+(\d+):(\d+)-?(?:[\s　]*[(（](.+)[）)])?(?:\n(＊[^\n\s]+))?/g
-    let events = []
-    for (;;) {
-      const match = reg.exec(text)
-      if (!match) {
-        break
-      }
-
-      const member = match[1]
-      const hour = Number(match[2])
-      const minute = Number(match[3])
-
-      const ownerId = Owner[member] || null
-      const title = member
-      let description = match[4] || null
-      if (description) {
-        description += match[5] || ''
-      }
-      const startedAt = new Date(date)
-      startedAt.setHours(startedAt.getHours() + hour)
-      startedAt.setMinutes(startedAt.getMinutes() + minute)
-
-      events = [
-        ...events,
-        {
-          ownerId,
-          title,
-          description,
-          startedAt,
-          publishedAt
-        }
-      ]
-    }
-    return {
-      date,
-      append,
-      events
-    }
-  })
-}
-
-const updateSchedule = async (groupId, { date, append, events }, force) => {
-  // 6:00 -> 30:00 (JST)
-  const t = new Date(date)
-  t.setHours(t.getHours() + 6)
-  const m = new Date(t)
-  m.setDate(m.getDate() + 1)
-  console.log('update schedule: %s -> %s', t, m)
-
-  const uniqueIds = force
+  const eventIds = force
     ? {}
-    : events.reduce((carry, e) => {
-        const uid = getUniqueId(e)
+    : events.reduce((carry, event) => {
+        const uid = getUniqueId(event)
         return {
           ...carry,
           [uid]: false
         }
       }, {})
 
-  let deletedRows = 0
-  let addedRows = 0
-  let updatedRows = 0
-  const batch = db.batch()
-
-  const snapshot = await db
-    .collection('events')
-    .where('group', '==', db.collection('groups').doc(groupId))
-    .where('started_at', '>=', t)
-    .where('started_at', '<', m)
-    .get()
-  snapshot.docs.forEach((doc) => {
-    if (append && !force) {
-      return
+  const exists = await models.event.list({
+    group: groupId,
+    started_at_gte: startedAt,
+    started_at_lt: endedAt
+  })
+  const deleted = exists.filter((event) => {
+    const uid = getUniqueIdWithDoc(event)
+    if (eventIds[uid] === false) {
+      eventIds[uid] = event.id
+      return false
     }
-    const uid = getUniqueIdWithDoc(doc)
-    if (uniqueIds[uid] === false) {
-      uniqueIds[uid] = doc.id
-      return
-    }
-    batch.delete(doc.ref)
-    deletedRows++
+    return true
   })
 
+  let created = []
+  let updated = []
   for (let e of events) {
-    let ref = db.collection('events').doc()
-    const uid = getUniqueId(e)
-    const id = uniqueIds[uid]
-    if (id) {
-      ref = db.collection('events').doc(id)
-      updatedRows++
-    } else {
-      addedRows++
-    }
-    batch.set(ref, {
-      owner: e.ownerId ? db.collection('members').doc(e.ownerId) : null,
-      group: db.collection('groups').doc(groupId),
-      title: e.title,
-      description: e.description,
+    const event = {
+      group: groupId,
+      owner: e.owner || null,
+      title: e.title || null,
+      description: e.description || null,
+      url: e.url || null,
       started_at: e.startedAt,
       published_at: e.publishedAt,
       created_at: new Date(),
       updated_at: new Date()
-    })
+    }
+    const uid = getUniqueId(e)
+    const id = eventIds[uid]
+    if (id) {
+      updated = [
+        ...updated,
+        {
+          ...event,
+          id
+        }
+      ]
+    } else {
+      created = [...created, event]
+    }
   }
-  await batch.commit()
+
+  const deletedResults = await models.event.batchDelete(deleted)
+  const createdResults = await models.event.batchCreate(created)
+  const updatedResults = await models.event.batchUpdate(updated)
+
   console.log(
     'deleted rows: %s, added rows: %s, updated rows: %s',
-    deletedRows,
-    addedRows,
-    updatedRows
+    deletedResults.length,
+    createdResults.length,
+    updatedResults.length
   )
   console.log('updated schedule')
 }
 
 const getUniqueId = (event) => {
-  const ownerId = event.ownerId || ''
+  const ownerId = event.owner || ''
   return ownerId + event.startedAt.getTime()
 }
 
-const getUniqueIdWithDoc = (doc) => {
-  const data = doc.data()
-  const ownerId = data.owner ? data.owner.id : ''
-  return ownerId + data.started_at.toDate().getTime()
+const getUniqueIdWithDoc = (event) => {
+  const ownerId = event.owner ? event.owner.id : ''
+  return ownerId + event.started_at.toDate().getTime()
 }
 
 module.exports = async ({ groupId, force }) => {
@@ -259,17 +127,13 @@ module.exports = async ({ groupId, force }) => {
     return
   }
 
-  const group = await getGroup(groupId)
+  const group = await models.group.get(groupId)
   if (!group) {
     console.log('group not found: %s', groupId)
     return
   }
 
   const schedules = await getSchedules(group.twitter.screen_name)
-  if (!schedules.length) {
-    return
-  }
-
   for (let schedule of schedules) {
     await updateSchedule(groupId, schedule, force)
   }

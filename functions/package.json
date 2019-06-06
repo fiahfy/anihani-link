@@ -5,6 +5,7 @@
   "dependencies": {
     "firebase-admin": "~7.0.0",
     "firebase-functions": "^2.2.0",
+    "googleapis": "^38.0.0",
     "node-fetch": "^2.3.0",
     "node-html-parser": "^1.1.12",
     "twitter": "^1.7.1"

@@ -9,7 +9,7 @@
         <daily-calendar
           :date="schedule.date"
           :events="schedule.events"
-          :class="{ holiday: isHoliday(schedule.date) }"
+          :class="{ today: index === 0 }"
         />
       </v-flex>
     </v-layout>
@@ -37,11 +37,6 @@ export default {
     const top =
       66 * (d.getHours() + 2 + d.getMinutes() / 60) - window.innerHeight / 2
     window.scrollTo(0, top)
-  },
-  methods: {
-    isHoliday(date) {
-      return [0, 6].includes(date.getDay())
-    }
   }
 }
 </script>
@@ -62,7 +57,7 @@ export default {
   margin-left: 0px !important;
   margin-right: 0px !important;
 }
-.md-and-up .flex.smw >>> .wrapper.holiday .hour:not(.current) {
+.md-and-up .flex.smw >>> .wrapper.today .hour:not(.current) {
   background-color: #424242;
 }
 .md-and-up .flex.smw:first-child >>> .hour > .label {

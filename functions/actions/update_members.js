@@ -1,19 +1,13 @@
-const initializeApp = require('../firebase')
+const models = require('../models')
 const members = require('../data/members.json')
 
-const app = initializeApp()
-const db = app.firestore()
-
 module.exports = async () => {
-  const batch = db.batch()
-  for (let key of Object.keys(members)) {
-    const member = members[key]
-    const ref = db.collection('members').doc(key)
-    batch.set(ref, {
-      ...member,
-      group: db.collection('groups').doc(member.group)
-    })
-  }
-  await batch.commit()
-  console.log('updated rows: %s', Object.keys(members).length)
+  const items = Object.keys(members).map((id) => {
+    return {
+      ...members[id],
+      id
+    }
+  })
+  const results = await models.member.batchReplace(items)
+  console.log('updated rows: %s', results.length)
 }
