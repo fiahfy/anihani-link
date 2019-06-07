@@ -7,11 +7,23 @@ const get = async (id) => {
     .collection('groups')
     .doc(id)
     .get()
-  const data = doc.data()
+  if (!doc.exists) {
+    return null
+  }
   return {
-    ...data,
+    ...doc.data(),
     id: doc.id
   }
+}
+
+const list = async () => {
+  const snapshot = await db.collection('groups').get()
+  return snapshot.docs.map((doc) => {
+    return {
+      ...doc.data(),
+      id: doc.id
+    }
+  })
 }
 
 const batchReplace = async (groups) => {
@@ -27,5 +39,6 @@ const batchReplace = async (groups) => {
 
 module.exports = {
   get,
+  list,
   batchReplace
 }

@@ -17,26 +17,24 @@ const list = async ({ group, started_at_gte, started_at_lt, fetched }) => {
     ref = ref.where('fetched', '==', fetched)
   }
   const snapshot = await ref.get()
-  const events = snapshot.docs.map((doc) => {
-    const data = doc.data()
+  return snapshot.docs.map((doc) => {
     return {
-      ...data,
+      ...doc.data(),
       id: doc.id
     }
   })
-  return events
 }
 
 const batchCreate = async (events) => {
   const batch = db.batch()
   for (let event of events) {
-    const { group, owner, ...data } = event
+    const { group_id, owner_id, ...data } = event
 
-    if (group !== undefined) {
-      data.group = group ? db.collection('groups').doc(group) : null
+    if (group_id !== undefined) {
+      data.group = group_id ? db.collection('groups').doc(group_id) : null
     }
-    if (owner !== undefined) {
-      data.owner = owner ? db.collection('members').doc(owner) : null
+    if (owner_id !== undefined) {
+      data.owner = owner_id ? db.collection('members').doc(owner_id) : null
     }
 
     const ref = db.collection('events').doc()
@@ -48,13 +46,13 @@ const batchCreate = async (events) => {
 const batchUpdate = async (events) => {
   const batch = db.batch()
   for (let event of events) {
-    const { id, group, owner, ...data } = event
+    const { id, group_id, owner_id, ...data } = event
 
-    if (group !== undefined) {
-      data.group = group ? db.collection('groups').doc(group) : null
+    if (group_id !== undefined) {
+      data.group = group_id ? db.collection('groups').doc(group_id) : null
     }
-    if (owner !== undefined) {
-      data.owner = owner ? db.collection('members').doc(owner) : null
+    if (owner_id !== undefined) {
+      data.owner = owner_id ? db.collection('members').doc(owner_id) : null
     }
 
     const ref = db.collection('events').doc(id)

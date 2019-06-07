@@ -2,6 +2,8 @@ const models = require('../models')
 const members = require('../data/members.json')
 
 module.exports = async () => {
+  console.log('starting update members')
+
   const items = Object.keys(members).map((id) => {
     return {
       ...members[id],
@@ -9,5 +11,6 @@ module.exports = async () => {
     }
   })
   const results = await models.member.batchReplace(items)
-  console.log('updated rows: %s', results.length)
+
+  console.log('finished update members: size=%s', results.length)
 }

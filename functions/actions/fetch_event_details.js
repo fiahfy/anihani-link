@@ -22,7 +22,12 @@ const getEventMap = async () => {
     started_at_gte: startedAt,
     fetched: false
   })
-  return events.reduce((carry, event) => {
+  console.log(
+    'selected events: started_at=%s, size=%s',
+    startedAt,
+    events.length
+  )
+  const map = events.reduce((carry, event) => {
     const videoId = extractYoutubeVideoId(event.url)
     if (!videoId) {
       return carry
@@ -32,6 +37,8 @@ const getEventMap = async () => {
       [videoId]: event
     }
   }, {})
+  console.log('filtered events: size=%s', Object.keys(map).length)
+  return map
 }
 
 const getVideoMap = async (ids) => {
@@ -39,6 +46,7 @@ const getVideoMap = async (ids) => {
     part: 'id,snippet',
     id: ids.join(',')
   })
+  console.log('fetched videos: id_size=%s', videos.length)
   return videos.reduce((carry, video) => {
     return {
       ...carry,
@@ -48,7 +56,7 @@ const getVideoMap = async (ids) => {
 }
 
 const updateEvents = async (events, videos) => {
-  console.log('update events')
+  console.log('updating events')
 
   let updated = []
   for (let [videoId, event] of Object.entries(events)) {
@@ -69,11 +77,15 @@ const updateEvents = async (events, videos) => {
   }
   const results = await models.event.batchUpdate(updated)
 
-  console.log('updated rows: %s', results.length)
+  console.log('updated events: size=%s', results.length)
 }
 
 module.exports = async () => {
+  console.log('starting fetch event details')
+
   const events = await getEventMap()
   const videos = await getVideoMap(Object.keys(events))
   await updateEvents(events, videos)
+
+  console.log('finished fetch event details')
 }

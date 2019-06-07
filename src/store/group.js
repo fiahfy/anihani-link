@@ -15,9 +15,8 @@ export const actions = {
   async fetchGroups({ commit }) {
     const snapshot = await this.$db.collection('groups').get()
     const groups = snapshot.docs.map((doc) => {
-      const data = doc.data()
       return {
-        ...data,
+        ...doc.data(),
         id: doc.id
       }
     })

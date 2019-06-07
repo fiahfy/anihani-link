@@ -55,8 +55,8 @@ const updateSchedule = async (groupId, { date, events }, force) => {
   let updated = []
   for (let e of events) {
     const event = {
-      group: groupId,
-      owner: e.owner || null,
+      group_id: groupId,
+      owner_id: e.ownerId || null,
       title: e.title || null,
       description: e.description || null,
       url: e.url || null,
@@ -94,7 +94,7 @@ const updateSchedule = async (groupId, { date, events }, force) => {
 }
 
 const getUniqueId = (event) => {
-  const ownerId = event.owner || ''
+  const ownerId = event.ownerId || ''
   return ownerId + event.startedAt.getTime()
 }
 
