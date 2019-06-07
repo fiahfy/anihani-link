@@ -92,7 +92,6 @@ const updateEvents = async (events, groupId, date, force) => {
         ...created,
         {
           ...event,
-          fetched: false,
           created_at: new Date()
         }
       ]
@@ -104,7 +103,7 @@ const updateEvents = async (events, groupId, date, force) => {
   const updatedResults = await models.event.batchUpdate(updated)
 
   console.log(
-    'updated events: created=%s, updated=%s, deleted=%s',
+    'updated events: creates=%s, updates=%s, deletes=%s',
     createdResults.length,
     updatedResults.length,
     deletedResults.length
@@ -140,12 +139,12 @@ module.exports = async ({ groupId, force }) => {
     console.log('starting group: group_id=%s', group.id)
     const timelines = await fetcher.fetchTimelines(group.twitter.screen_name)
     console.log(
-      'fetched timelines: screen_name=%s, size=%s',
+      'fetched timelines: screen_name=%s, results=%s',
       group.twitter.screen_name,
       timelines.length
     )
     const schedules = await parseTimelines(timelines)
-    console.log('parsed schedules: size=%s', schedules.length)
+    console.log('parsed schedules: results=%s', schedules.length)
     for (let { date, events } of schedules) {
       await updateEvents(events, group.id, date, force)
     }

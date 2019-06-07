@@ -12,5 +12,5 @@ module.exports = async () => {
   })
   const results = await models.member.batchReplace(items)
 
-  console.log('finished update members: size=%s', results.length)
+  console.log('finished update members: results=%s', results.length)
 }

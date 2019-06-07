@@ -12,5 +12,5 @@ module.exports = async () => {
   })
   const results = await models.group.batchReplace(items)
 
-  console.log('finished update groups: size=%s', results.length)
+  console.log('finished update groups: results=%s', results.length)
 }

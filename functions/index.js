@@ -7,9 +7,8 @@ process.env.TWITTER_ACCESS_TOKEN_KEY = ''
 process.env.TWITTER_ACCESS_TOKEN_SECRET = ''
 
 const fetchTweets = require('./actions/fetch_tweets')
-// const fetchWiki = require('./actions/fetch_wiki')
-const updateEventUrls = require('./actions/update_event_urls')
 const fetchEventDetails = require('./actions/fetch_event_details')
+const jst = require('./utils/jst')
 
 exports.fetchEvents = functions
   .region('asia-northeast1')
@@ -17,8 +16,10 @@ exports.fetchEvents = functions
   .onPublish(async () => {
     try {
       await fetchTweets()
-      await updateEventUrls()
-      await fetchEventDetails()
+      const m = jst.now().getMinutes()
+      if (m >= 0 && m < 10) {
+        await fetchEventDetails()
+      }
     } catch (e) {
       console.error(e)
     }
