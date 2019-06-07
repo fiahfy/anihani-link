@@ -120,7 +120,7 @@ const getUniqueIdWithDoc = (event) => {
   return ownerId + event.started_at.toDate().getTime()
 }
 
-module.exports = async ({ groupId, force }) => {
+module.exports = async ({ groupId, force } = {}) => {
   console.log('starting fetch tweets: group_id=%s, force=%s', groupId, force)
 
   let groups = []
