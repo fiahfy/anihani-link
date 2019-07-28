@@ -66,7 +66,7 @@ module.exports = {
           nativeUI: true,
           mobileAppIOS: true,
           appleStatusBarStyle: 'black-translucent',
-          ogHost: 'https://fiahfy-anihani.firebaseapp.com'
+          ogHost: 'https://fiahfy-anihani.web.app'
         }
       }
     ],

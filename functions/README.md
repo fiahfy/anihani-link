@@ -1,7 +1,7 @@
 # functions
 
-## Development
 
+## Development
 ```
 cd functions
 yarn
@@ -35,12 +35,12 @@ node cli.js update groups
 node cli.js update members
 ```
 
-### Fetch Wiki Pages
-```
-node cli.js fetch wiki -g <group_id> [--force]
-```
-
 ### Fetch Tweets
 ```
 node cli.js fetch tweets -g <group_id> [--force]
+```
+
+### Fetch Event details
+```
+node cli.js fetch event-details
 ```

@@ -2,8 +2,8 @@
 
 > Unofficial schedule site for AniMare and HoneyStrap
 
-## Build Setup
 
+## Build Setup
 ``` bash
 # install dependencies
 $ yarn
@@ -19,7 +19,7 @@ $ yarn start
 $ yarn generate
 
 # deploy
-$ deploy:hosting
+$ yarn deploy
 ```
 
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
