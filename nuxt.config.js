@@ -56,8 +56,9 @@ export default {
           short_name: 'あにハニ.link (β)',
           description:
             'バーチャルYouTuberユニット 「有閑喫茶あにまーれ」「ハニーストラップ」 非公式スケジュールサイト',
-          background_color: '#212121',
-          theme_color: '#212121'
+          background_color: colors.pink.accent2,
+          theme_color: colors.pink.accent2,
+          lang: 'ja'
         },
         meta: {
           nativeUI: true,

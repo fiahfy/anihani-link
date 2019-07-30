@@ -151,18 +151,9 @@ export default {
 .v-footer {
   height: calc(56px + env(safe-area-inset-bottom)) !important;
 }
-.v-item-group.v-bottom-nav {
+.v-item-group.v-bottom-navigation {
   padding-bottom: env(safe-area-inset-bottom);
   box-sizing: content-box;
-}
-.v-item-group.v-bottom-nav .v-btn {
-  box-sizing: border-box;
-}
-.v-item-group.v-bottom-nav .v-btn--active {
-  padding-top: 8px;
-}
-.v-item-group.v-bottom-nav .v-btn--active >>> .v-btn__content {
-  font-size: 12px;
 }
 .xs-only .v-toolbar__title:not(:first-child) {
   padding-left: 0 !important;
