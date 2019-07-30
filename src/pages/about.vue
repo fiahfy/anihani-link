@@ -79,7 +79,7 @@
 
 <script>
 export default {
-  async asyncData({ store }) {
+  asyncData({ store }) {
     const groups = store.getters['group/groups']
     return { groups }
   }

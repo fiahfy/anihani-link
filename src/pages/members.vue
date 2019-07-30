@@ -13,7 +13,7 @@ export default {
   components: {
     MemberList
   },
-  async asyncData({ error, store }) {
+  asyncData({ error, store }) {
     const members = store.getters['member/members']
     if (!members.length) {
       return error({ statusCode: 404, message: 'No members' })
