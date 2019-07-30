@@ -44,7 +44,7 @@ export default {
   padding-right: env(safe-area-inset-left);
 }
 .v-divider--inset {
-  margin-left: 98px;
-  max-width: calc(100% - 98px);
+  margin-left: 90px;
+  max-width: calc(100% - 90px);
 }
 </style>

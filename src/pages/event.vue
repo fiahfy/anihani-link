@@ -1,21 +1,21 @@
 <template>
-  <v-container full-height pa-0>
+  <v-container class="pa-0">
     <v-list two-line>
-      <v-list-tile avatar :to="to">
-        <v-list-tile-avatar size="48" color="grey darken-4">
+      <v-list-item :to="to">
+        <v-list-item-avatar size="48" color="grey darken-4">
           <app-image :src="src" contain />
-        </v-list-tile-avatar>
+        </v-list-item-avatar>
 
-        <v-list-tile-content>
-          <v-list-tile-title v-text="owner" />
-        </v-list-tile-content>
-      </v-list-tile>
+        <v-list-item-content>
+          <v-list-item-title v-text="owner" />
+        </v-list-item-content>
+      </v-list-item>
 
-      <v-list-tile>
-        <v-list-tile-content>
-          <v-list-tile-sub-title>Start</v-list-tile-sub-title>
-          <v-list-tile-title>
-            <v-layout align-center>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-subtitle>Start</v-list-item-subtitle>
+          <v-list-item-title>
+            <v-row class="px-3" align="center" justify="space-between">
               <span>{{ startedAt }}</span>
               <span
                 v-if="live"
@@ -23,33 +23,33 @@
               >
                 Live Now
               </span>
-            </v-layout>
-          </v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
+            </v-row>
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
 
-      <v-list-tile v-if="url" :href="url">
-        <v-list-tile-content>
-          <v-list-tile-sub-title>URL</v-list-tile-sub-title>
-          <v-list-tile-title v-text="url" />
-        </v-list-tile-content>
-      </v-list-tile>
+      <v-list-item v-if="url" :href="url">
+        <v-list-item-content>
+          <v-list-item-subtitle>URL</v-list-item-subtitle>
+          <v-list-item-title v-text="url" />
+        </v-list-item-content>
+      </v-list-item>
 
-      <v-list-tile v-if="event.title">
-        <v-list-tile-content>
-          <v-list-tile-sub-title>Title</v-list-tile-sub-title>
-          <v-list-tile-title v-text="event.title" />
-        </v-list-tile-content>
-      </v-list-tile>
+      <v-list-item v-if="event.title">
+        <v-list-item-content>
+          <v-list-item-subtitle>Title</v-list-item-subtitle>
+          <v-list-item-title v-text="event.title" />
+        </v-list-item-content>
+      </v-list-item>
 
-      <v-list-tile v-if="description" class="description">
-        <v-list-tile-content>
-          <v-list-tile-sub-title>Description</v-list-tile-sub-title>
+      <v-list-item v-if="description" class="description">
+        <v-list-item-content>
+          <v-list-item-subtitle>Description</v-list-item-subtitle>
           <!-- eslint-disable vue/no-v-html -->
-          <v-list-tile-title v-html="description" />
+          <v-list-item-title v-html="description" />
           <!-- eslint-enable vue/no-v-html -->
-        </v-list-tile-content>
-      </v-list-tile>
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
   </v-container>
 </template>
@@ -136,7 +136,7 @@ export default {
 </script>
 
 <style scoped>
-.v-list__tile__avatar {
+.v-list-item__avatar {
   min-width: 64px;
 }
 .live {
@@ -149,10 +149,10 @@ export default {
   padding-top: 14px;
   padding-bottom: 14px;
 }
-.description >>> .v-list__tile {
+.description >>> .v-list-item {
   height: unset;
 }
-.description >>> .v-list__tile .v-list__tile__title {
+.description >>> .v-list-item .v-list-item__title {
   height: unset;
   white-space: unset;
 }

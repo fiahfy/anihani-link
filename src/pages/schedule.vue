@@ -1,15 +1,13 @@
 <template>
-  <v-container fill-height pa-0>
-    <v-layout column>
-      <template v-for="(schedule, index) of schedules">
-        <event-list
-          v-if="schedule.events.length"
-          :key="index"
-          :date="schedule.date"
-          :events="schedule.events"
-        />
-      </template>
-    </v-layout>
+  <v-container class="pa-0">
+    <template v-for="(schedule, index) of schedules">
+      <event-list
+        v-if="schedule.events.length"
+        :key="index"
+        :date="schedule.date"
+        :events="schedule.events"
+      />
+    </template>
   </v-container>
 </template>
 

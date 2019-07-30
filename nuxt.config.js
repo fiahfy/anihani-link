@@ -72,13 +72,16 @@ export default {
       {
         customVariables: ['~/assets/variables.scss'],
         treeShake: true,
-        dark: true,
         theme: {
+          dark: true,
           themes: {
             dark: {
               primary: colors.pink.accent2,
               accent: colors.pink.accent2
             }
+          },
+          options: {
+            customProperties: true
           }
         }
       }

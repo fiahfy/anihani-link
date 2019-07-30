@@ -1,18 +1,22 @@
 <template>
   <v-container
-    fill-height
-    pa-0
+    class="fill-height pa-0"
     :class="{ 'md-and-up': $vuetify.breakpoint.mdAndUp }"
   >
-    <v-layout row wrap>
-      <v-flex v-for="(schedule, index) of schedules" :key="index" xs12 smw>
+    <v-row>
+      <v-col
+        v-for="(schedule, index) of schedules"
+        :key="index"
+        class="smw"
+        cols="12"
+      >
         <daily-calendar
           :date="schedule.date"
           :events="schedule.events"
           :class="{ today: index === 0 }"
         />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

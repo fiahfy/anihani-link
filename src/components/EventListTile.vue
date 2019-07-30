@@ -1,35 +1,35 @@
 <template>
-  <v-list-tile avatar :to="'/event?id=' + event.id">
+  <v-list-item :to="'/event?id=' + event.id">
     <v-divider vertical :color="color" class="mr-3" />
-    <v-list-tile-avatar size="48" color="grey darken-4">
+    <v-list-item-avatar size="48" color="grey darken-4 mr-3">
       <app-image :src="src" contain />
-    </v-list-tile-avatar>
+    </v-list-item-avatar>
 
-    <v-list-tile-content class="justify-start">
-      <v-list-tile-title :class="{ 'font-weight-bold': highlighted }">
-        <v-layout align-center justify-space-between>
+    <v-list-item-content class="align-start">
+      <v-list-item-title :class="{ 'font-weight-bold': highlighted }">
+        <v-row class="px-3" align="center" justify="space-between">
           <span>{{ startedAt }} -</span>
           <span v-if="live" class="live primary--text caption text-uppercase">
             Live Now
           </span>
           <span
             v-else
-            class="caption text-xs-right"
+            class="caption text-right"
             :class="{ 'font-weight-bold': highlighted }"
           >
             {{ event.started_at.toDate() | time_ago }}
           </span>
-        </v-layout>
-      </v-list-tile-title>
-      <v-list-tile-sub-title>
+        </v-row>
+      </v-list-item-title>
+      <v-list-item-subtitle>
         <span
           :class="{ 'text--primary': true, 'font-weight-bold': highlighted }"
           v-text="owner"
         />
         {{ title }}
-      </v-list-tile-sub-title>
-    </v-list-tile-content>
-  </v-list-tile>
+      </v-list-item-subtitle>
+    </v-list-item-content>
+  </v-list-item>
 </template>
 
 <script>
@@ -110,14 +110,10 @@ export default {
 .v-divider {
   border-right-width: 2px;
 }
-.v-list__tile__avatar {
-  min-width: 64px;
-  margin-top: -12px;
-}
-.v-list__tile__content {
+.v-list-item__content {
   padding-top: 10px;
 }
-.v-list__tile__sub-title {
+.v-list-item__subtitle {
   /* autoprefixer: ignore next */
   -webkit-box-orient: vertical;
 }

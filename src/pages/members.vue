@@ -1,8 +1,6 @@
 <template>
-  <v-container fill-height pa-0>
-    <v-layout column>
-      <member-list :members="members" />
-    </v-layout>
+  <v-container class="pa-0">
+    <member-list :members="members" />
   </v-container>
 </template>
 
