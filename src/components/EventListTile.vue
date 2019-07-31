@@ -7,7 +7,7 @@
 
     <v-list-item-content class="align-start">
       <v-list-item-title :class="{ 'font-weight-bold': highlighted }">
-        <v-row class="px-3" align="center" justify="space-between">
+        <v-row class="mx-0" align="center" justify="space-between">
           <span>{{ startedAt }} -</span>
           <span v-if="live" class="live primary--text caption text-uppercase">
             Live Now

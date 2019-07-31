@@ -15,7 +15,7 @@
         <v-list-item-content>
           <v-list-item-subtitle>Start</v-list-item-subtitle>
           <v-list-item-title>
-            <v-row class="px-3" align="center" justify="space-between">
+            <v-row class="mx-0" align="center" justify="space-between">
               <span>{{ startedAt }}</span>
               <span
                 v-if="live"

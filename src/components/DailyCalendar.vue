@@ -1,8 +1,8 @@
 <template>
-  <v-row class="wrapper mb-3">
+  <div class="wrapper mb-3">
     <v-subheader v-text="headline" />
-    <div class="mx-3">
-      <v-row v-for="hour of hours" :key="hour" align="center" class="hour">
+    <div class="mx-4">
+      <v-row v-for="hour of hours" :key="hour" align="center" class="mx-0 hour">
         <div class="label text-right caption grey--text">
           <template v-if="hasLabel(hour)">
             {{ hour }}:00
@@ -14,7 +14,7 @@
         v-if="hasNow"
         :style="{ top: 66 * nowY + 'px' }"
         align="center"
-        class="hour current"
+        class="mx-0 hour current"
       >
         <div class="label text-right caption primary--text">
           {{ nowLabel }}
@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-  </v-row>
+  </div>
 </template>
 
 <script>

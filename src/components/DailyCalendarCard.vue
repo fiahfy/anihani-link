@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <div>
     <v-menu open-on-hover offset-x min-width="256">
       <template v-slot:activator="{ on }">
         <v-card
@@ -50,7 +50,7 @@
         </v-list>
       </v-card>
     </v-menu>
-  </v-row>
+  </div>
 </template>
 
 <script>
@@ -93,7 +93,6 @@ export default {
       return (
         {
           'charlotte-shimamura': 'rgba(103, 110, 228, 0.3)',
-          'eli-sogetsu': 'rgba(148, 162, 184, 0.3)',
           'haneru-inaba': 'rgba(235, 205, 71, 0.3)',
           'hinako-umori': 'rgba(240, 117, 168, 0.3)',
           'ichika-soya': 'rgba(32, 166, 223, 0.3)',
