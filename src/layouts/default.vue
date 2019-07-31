@@ -155,6 +155,9 @@ export default {
   padding-bottom: env(safe-area-inset-bottom);
   box-sizing: content-box;
 }
+.v-item-group.v-bottom-navigation > .v-btn {
+  min-width: unset;
+}
 .xs-only .v-toolbar__title:not(:first-child) {
   padding-left: 0 !important;
 }

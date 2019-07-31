@@ -1,6 +1,6 @@
 <template>
   <v-list two-line>
-    <member-list-tile
+    <member-list-item
       v-for="member of members"
       :key="member.id"
       :member="member"
@@ -9,11 +9,11 @@
 </template>
 
 <script>
-import MemberListTile from '~/components/MemberListTile.vue'
+import MemberListItem from '~/components/MemberListItem.vue'
 
 export default {
   components: {
-    MemberListTile
+    MemberListItem
   },
   props: {
     members: {

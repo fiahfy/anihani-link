@@ -3,17 +3,17 @@
     <v-subheader v-text="headline" />
     <template v-for="(event, index) of events">
       <v-divider v-if="index !== 0" :key="index" inset />
-      <event-list-tile :key="event.id" :event="event" />
+      <event-list-item :key="event.id" :event="event" />
     </template>
   </v-list>
 </template>
 
 <script>
-import EventListTile from '~/components/EventListTile.vue'
+import EventListItem from '~/components/EventListItem.vue'
 
 export default {
   components: {
-    EventListTile
+    EventListItem
   },
   props: {
     date: {

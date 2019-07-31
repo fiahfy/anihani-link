@@ -21,7 +21,7 @@
       </template>
       <v-card>
         <v-list dense>
-          <v-list-item avatar :to="to">
+          <v-list-item :to="to">
             <v-list-item-avatar color="grey darken-4">
               <app-image :src="src" contain />
             </v-list-item-avatar>
