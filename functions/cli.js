@@ -10,10 +10,9 @@ process.env.TWITTER_ACCESS_TOKEN_SECRET = ''
 
 const updateGroups = require('./actions/update_groups')
 const updateMembers = require('./actions/update_members')
-const updateEvents = require('./actions/update_events')
-const updateEventUrls = require('./actions/update_event_urls')
 const fetchTweets = require('./actions/fetch_tweets')
 const fetchWiki = require('./actions/fetch_wiki')
+const fetchEventDetails = require('./actions/fetch_event_details')
 
 ;(async () => {
   try {
@@ -27,12 +26,6 @@ const fetchWiki = require('./actions/fetch_wiki')
           case 'members':
             await updateMembers()
             break
-          case 'events':
-            await updateEvents()
-            break
-          case 'event-urls':
-            await updateEventUrls()
-            break
           default:
             console.error('invalid target')
             break
@@ -42,7 +35,9 @@ const fetchWiki = require('./actions/fetch_wiki')
         switch (target) {
           case 'tweets': {
             const force = options.includes('--force')
-            const groupId = options[options.indexOf('-g') + 1]
+            const groupId = options.includes('-g')
+              ? options[options.indexOf('-g') + 1]
+              : null
             await fetchTweets({ groupId, force })
             break
           }
@@ -52,12 +47,9 @@ const fetchWiki = require('./actions/fetch_wiki')
             await fetchWiki({ groupId, force })
             break
           }
-          case 'all': {
-            const force = options.includes('--force')
-            await fetchTweets({ groupId: 'ani-mare', force })
-            await fetchTweets({ groupId: 'honey-strap', force })
+          case 'event-details':
+            await fetchEventDetails()
             break
-          }
           default:
             console.error('invalid target')
             break

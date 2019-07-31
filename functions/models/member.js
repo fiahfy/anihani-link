@@ -7,9 +7,11 @@ const get = async (id) => {
     .collection('members')
     .doc(id)
     .get()
-  const data = doc.data()
+  if (!doc.exists) {
+    return null
+  }
   return {
-    ...data,
+    ...doc.data(),
     id: doc.id
   }
 }

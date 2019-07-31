@@ -1,26 +1,26 @@
 <template>
-  <v-layout column class="wrapper mb-3">
+  <div class="wrapper mb-3">
     <v-subheader v-text="headline" />
-    <div class="mx-3">
-      <v-layout v-for="hour of hours" :key="hour" align-center class="hour">
-        <div class="label text-xs-right caption grey--text">
+    <div class="mx-4">
+      <v-row v-for="hour of hours" :key="hour" align="center" class="mx-0 hour">
+        <div class="label text-right caption grey--text">
           <template v-if="hasLabel(hour)">
             {{ hour }}:00
           </template>
         </div>
         <v-divider />
-      </v-layout>
-      <v-layout
+      </v-row>
+      <v-row
         v-if="hasNow"
         :style="{ top: 66 * nowY + 'px' }"
-        align-center
-        class="hour current"
+        align="center"
+        class="mx-0 hour current"
       >
-        <div class="label text-xs-right caption primary--text">
+        <div class="label text-right caption primary--text">
           {{ nowLabel }}
         </div>
         <v-divider class="primary" />
-      </v-layout>
+      </v-row>
       <div class="content">
         <div>
           <daily-calendar-card
@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-  </v-layout>
+  </div>
 </template>
 
 <script>

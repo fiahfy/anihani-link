@@ -70,9 +70,9 @@ module.exports = (text) => {
       const hour = Number(match[2])
       const minute = Number(match[3])
 
-      const owner = Owner[member] || null
+      const ownerId = Owner[member] || null
       let title = null
-      if (owner) {
+      if (ownerId) {
         title = match[4] || null
         if (title) {
           title += match[5] || ''
@@ -87,7 +87,7 @@ module.exports = (text) => {
       events = [
         ...events,
         {
-          owner,
+          ownerId,
           title,
           startedAt
         }

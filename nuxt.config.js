@@ -1,49 +1,46 @@
-module.exports = {
-  /*
-   ** Global CSS
-   */
-  css: ['~/assets/css/app.css'],
+import colors from 'vuetify/es5/util/colors'
+
+export default {
+  mode: 'spa',
   /*
    ** Headers of the page
-   ** Common headers are already provided by @nuxtjs/pwa preset
    */
   head: {
     htmlAttrs: { lang: 'ja' },
     meta: [
+      { charset: 'utf-8' },
       {
-        hid: 'viewport',
         name: 'viewport',
         content:
           'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui, viewport-fit=cover'
+      },
+      {
+        hid: 'description',
+        name: 'description',
+        content: process.env.npm_package_description || ''
       }
     ]
   },
   /*
-   ** Customize the progress bar color
+   ** Customize the progress-bar color
    */
-  loading: { color: '#ff4081' },
+  loading: { color: colors.pink.accent2 },
   /*
-   ** Build configuration
+   ** Global CSS
    */
-  build: {},
+  css: [],
   /*
-   ** Mode
+   ** Plugins to load before mounting the App
    */
-  mode: 'spa',
+  plugins: [
+    { src: '~/plugins/filter', ssr: false },
+    { src: '~/plugins/firebase', ssr: false }
+  ],
   /*
-   ** Generate configuration
+   ** Nuxt.js dev-modules
    */
-  generate: {
-    fallback: true
-  },
-  /*
-   ** Source directory
-   */
-  srcDir: 'src',
-  /*
-   ** Modules
-   */
-  modules: [
+  devModules: [
+    '@nuxtjs/eslint-module',
     ['@nuxtjs/dotenv', { path: process.cwd() }],
     [
       '@nuxtjs/google-analytics',
@@ -59,40 +56,56 @@ module.exports = {
           short_name: 'あにハニ.link (β)',
           description:
             'バーチャルYouTuberユニット 「有閑喫茶あにまーれ」「ハニーストラップ」 非公式スケジュールサイト',
-          background_color: '#212121',
-          theme_color: '#212121'
+          background_color: colors.pink.accent2,
+          theme_color: colors.pink.accent2,
+          lang: 'ja'
         },
         meta: {
           nativeUI: true,
           mobileAppIOS: true,
           appleStatusBarStyle: 'black-translucent',
-          ogHost: 'https://fiahfy-anihani.firebaseapp.com'
+          ogHost: 'https://fiahfy-anihani.web.app'
         }
       }
     ],
     [
       '@nuxtjs/vuetify',
       {
+        customVariables: ['~/assets/variables.scss'],
+        treeShake: true,
         theme: {
-          primary: '#ff4081',
-          accent: '#ff4081'
-        },
-        options: {
-          customProperties: true
+          dark: true,
+          themes: {
+            dark: {
+              primary: colors.pink.accent2,
+              accent: colors.pink.accent2
+            }
+          },
+          options: {
+            customProperties: true
+          }
         }
       }
     ]
   ],
   /*
-   ** Plugins
+   ** Nuxt.js modules
    */
-  plugins: [
-    { src: '~/plugins/filter', ssr: false },
-    { src: '~/plugins/firebase', ssr: false }
-  ],
+  modules: [],
   /*
-   ** Router
+   ** Build configuration
    */
+  build: {
+    /*
+     ** You can extend webpack config here
+     */
+    extend(config, ctx) {}
+  },
+
+  srcDir: 'src',
+  generate: {
+    fallback: true
+  },
   router: {
     scrollBehavior: (to, from, savedPosition) => {
       // if the returned position is falsy or an empty object,

@@ -1,18 +1,22 @@
 <template>
   <v-container
-    fill-height
-    pa-0
+    class="pa-0"
     :class="{ 'md-and-up': $vuetify.breakpoint.mdAndUp }"
   >
-    <v-layout row wrap>
-      <v-flex v-for="(schedule, index) of schedules" :key="index" xs12 smw>
+    <v-row class="mx-0">
+      <v-col
+        v-for="(schedule, index) of schedules"
+        :key="index"
+        class="pa-0"
+        cols="12"
+      >
         <daily-calendar
           :date="schedule.date"
           :events="schedule.events"
           :class="{ today: index === 0 }"
         />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -42,41 +46,41 @@ export default {
 </script>
 
 <style scoped>
-.md-and-up > .layout {
+.md-and-up > .row {
   padding-left: 56px;
   padding-right: 16px;
 }
-.md-and-up .flex.smw {
+.md-and-up > .row > .col {
   flex-basis: calc(100% / 7);
   max-width: calc(100% / 7);
 }
-.md-and-up .flex.smw >>> .v-subheader {
+.md-and-up > .row > .col >>> .v-subheader {
   justify-content: center;
 }
-.md-and-up .flex.smw >>> .wrapper > div {
+.md-and-up > .row > .col >>> .wrapper > div {
   margin-left: 0px !important;
   margin-right: 0px !important;
 }
-.md-and-up .flex.smw >>> .wrapper.today .hour:not(.current) {
+.md-and-up > .row > .col >>> .wrapper.today .hour:not(.current) {
   background-color: #424242;
 }
-.md-and-up .flex.smw:first-child >>> .hour > .label {
+.md-and-up > .row > .col:first-child >>> .hour > .label {
   margin-left: -40px;
 }
-.md-and-up .flex.smw:first-child >>> .hour.current {
+.md-and-up > .row > .col:first-child >>> .hour.current {
   width: 700%;
   z-index: 1;
 }
-.md-and-up .flex.smw:not(:first-child) >>> .hour > .label {
+.md-and-up > .row > .col:not(:first-child) >>> .hour > .label {
   display: none;
 }
-.md-and-up .flex.smw:not(:first-child) >>> .hour.current {
+.md-and-up > .row > .col:not(:first-child) >>> .hour.current {
   display: none;
 }
-.md-and-up .flex.smw >>> .content {
+.md-and-up > .row > .col >>> .content {
   padding-left: 0;
 }
-.md-and-up .flex.smw >>> .content .v-image {
+.md-and-up > .row > .col >>> .content .v-image {
   z-index: 2;
 }
 </style>

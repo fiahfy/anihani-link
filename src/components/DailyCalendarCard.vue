@@ -1,9 +1,9 @@
 <template>
-  <v-layout>
-    <v-menu open-on-hover lazy offset-x min-width="256">
+  <div>
+    <v-menu open-on-hover offset-x min-width="256">
       <template v-slot:activator="{ on }">
         <v-card
-          class="text-xs-center"
+          class="text-center"
           flat
           tile
           :color="color"
@@ -21,36 +21,36 @@
       </template>
       <v-card>
         <v-list dense>
-          <v-list-tile avatar :to="to">
-            <v-list-tile-avatar color="grey darken-4">
+          <v-list-item :to="to">
+            <v-list-item-avatar color="grey darken-4">
               <app-image :src="src" contain />
-            </v-list-tile-avatar>
+            </v-list-item-avatar>
 
-            <v-list-tile-content>
-              <v-list-tile-title v-text="owner" />
-            </v-list-tile-content>
-          </v-list-tile>
+            <v-list-item-content>
+              <v-list-item-title v-text="owner" />
+            </v-list-item-content>
+          </v-list-item>
 
-          <v-list-tile>
-            <v-list-tile-content>
-              <v-list-tile-title
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title
                 :class="{ 'grey--text': !event.title }"
                 v-text="event.title || 'No title'"
               />
-            </v-list-tile-content>
-          </v-list-tile>
+            </v-list-item-content>
+          </v-list-item>
 
-          <v-list-tile :to="'/event?id=' + event.id">
-            <v-list-tile-content>
-              <v-list-tile-title class="text-xs-right">
+          <v-list-item :to="'/event?id=' + event.id">
+            <v-list-item-content>
+              <v-list-item-title class="text-right">
                 Detail
-              </v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
       </v-card>
     </v-menu>
-  </v-layout>
+  </div>
 </template>
 
 <script>
@@ -93,7 +93,6 @@ export default {
       return (
         {
           'charlotte-shimamura': 'rgba(103, 110, 228, 0.3)',
-          'eli-sogetsu': 'rgba(148, 162, 184, 0.3)',
           'haneru-inaba': 'rgba(235, 205, 71, 0.3)',
           'hinako-umori': 'rgba(240, 117, 168, 0.3)',
           'ichika-soya': 'rgba(32, 166, 223, 0.3)',

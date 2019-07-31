@@ -7,19 +7,19 @@ process.env.TWITTER_ACCESS_TOKEN_KEY = ''
 process.env.TWITTER_ACCESS_TOKEN_SECRET = ''
 
 const fetchTweets = require('./actions/fetch_tweets')
-// const fetchWiki = require('./actions/fetch_wiki')
-const updateEventUrls = require('./actions/update_event_urls')
-const updateEvents = require('./actions/update_events')
+const fetchEventDetails = require('./actions/fetch_event_details')
+const jst = require('./utils/jst')
 
 exports.fetchEvents = functions
   .region('asia-northeast1')
   .pubsub.topic('fetch-events')
   .onPublish(async () => {
     try {
-      await fetchTweets({ groupId: 'ani-mare' })
-      await fetchTweets({ groupId: 'honey-strap' })
-      await updateEventUrls()
-      await updateEvents()
+      await fetchTweets()
+      const m = jst.now().getMinutes()
+      if (m >= 0 && m < 10) {
+        await fetchEventDetails()
+      }
     } catch (e) {
       console.error(e)
     }

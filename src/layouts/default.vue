@@ -1,6 +1,5 @@
 <template>
   <v-app
-    dark
     :class="{
       'xs-only': $vuetify.breakpoint.xsOnly,
       'sm-and-up': $vuetify.breakpoint.smAndUp,
@@ -9,38 +8,36 @@
   >
     <v-navigation-drawer v-model="drawer" app clipped>
       <v-list>
-        <v-list-tile v-for="(nav, index) in navs" :key="index" :to="nav.path">
-          <v-list-tile-action>
+        <v-list-item v-for="(nav, index) in navs" :key="index" :to="nav.path">
+          <v-list-item-action>
             <v-icon>{{ nav.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title v-text="nav.title" />
-          </v-list-tile-content>
-        </v-list-tile>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="nav.title" />
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
       <v-divider />
       <v-list subheader>
         <v-subheader class="text-uppercase">Members</v-subheader>
-        <v-list-tile
+        <v-list-item
           v-for="member in members"
           :key="member.id"
           :to="'/member?id=' + member.id"
-          :class="getTileClass(member)"
-          avatar
-          active-class=""
+          exact
         >
-          <v-list-tile-avatar color="grey darken-4">
+          <v-list-item-avatar color="grey darken-4">
             <app-image :src="`/img/members/${member.id}_48x48.png`" />
-          </v-list-tile-avatar>
-          <v-list-tile-content>
-            <v-list-tile-title v-text="member.name_ja" />
-          </v-list-tile-content>
-        </v-list-tile>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title v-text="member.name_ja" />
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
-    <v-toolbar app clipped-left>
-      <v-toolbar-side-icon
+    <v-app-bar app clipped-left>
+      <v-app-bar-nav-icon
         class="hidden-xs-only"
         @click.stop="drawer = !drawer"
       />
@@ -48,25 +45,25 @@
         <img src="/icon_transparent.png" height="44" class="mb-1" />
         <span>{{ title }}</span>
       </v-toolbar-title>
-    </v-toolbar>
+    </v-app-bar>
 
-    <v-content class="fill-height scroll-y">
+    <v-content class="fill-height overflow-y-auto">
       <nuxt />
     </v-content>
 
-    <v-footer app mandatory height="56" class="hidden-sm-and-up">
-      <v-bottom-nav :active.sync="activeIndex" :value="true">
+    <v-footer app height="56" class="hidden-sm-and-up pa-0">
+      <v-bottom-navigation grow :value="activeIndex">
         <v-btn
           v-for="(nav, index) of navs"
           :key="index"
           color="primary"
-          flat
+          text
           @click="(e) => onTabClick(e, nav)"
         >
           <span>{{ nav.title }}</span>
           <v-icon>{{ nav.icon }}</v-icon>
         </v-btn>
-      </v-bottom-nav>
+      </v-bottom-navigation>
     </v-footer>
   </v-app>
 </template>
@@ -86,25 +83,25 @@ export default {
       navs: [
         {
           title: 'Calendar',
-          icon: 'event',
+          icon: 'mdi-calendar',
           names: ['index'],
           path: '/'
         },
         {
           title: 'Schedule',
-          icon: 'schedule',
+          icon: 'mdi-clock',
           names: ['schedule', 'event'],
           path: '/schedule'
         },
         {
           title: 'Member',
-          icon: 'account_circle',
+          icon: 'mdi-account-circle',
           names: ['members', 'member'],
           path: '/members'
         },
         {
           title: 'About',
-          icon: 'help',
+          icon: 'mdi-help-circle',
           names: ['about'],
           path: '/about'
         }
@@ -128,10 +125,6 @@ export default {
   methods: {
     onTabClick(e, nav) {
       this.$router.push(nav.path)
-    },
-    getTileClass(member) {
-      const { id } = this.$route.query
-      return { 'primary--text': member.id === id }
     },
     updateActiveIndex() {
       this.activeIndex = this.navs.findIndex((nav) =>
@@ -158,21 +151,15 @@ export default {
 .v-footer {
   height: calc(56px + env(safe-area-inset-bottom)) !important;
 }
-.v-item-group.v-bottom-nav {
+.v-item-group.v-bottom-navigation {
   padding-bottom: env(safe-area-inset-bottom);
   box-sizing: content-box;
 }
-.v-item-group.v-bottom-nav .v-btn {
-  box-sizing: border-box;
-}
-.v-item-group.v-bottom-nav .v-btn--active {
-  padding-top: 8px;
-}
-.v-item-group.v-bottom-nav .v-btn--active >>> .v-btn__content {
-  font-size: 12px;
+.v-item-group.v-bottom-navigation > .v-btn {
+  min-width: unset;
 }
 .xs-only .v-toolbar__title:not(:first-child) {
-  margin-left: 0 !important;
+  padding-left: 0 !important;
 }
 .sm-and-up .v-content {
   padding-bottom: 0 !important;

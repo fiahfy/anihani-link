@@ -100,8 +100,8 @@ module.exports = async (text) => {
     const member = match[4]
     const tail = match[5]
 
-    const owner = Owner[member] || null
-    let title = owner ? tail : all
+    const ownerId = Owner[member] || null
+    let title = ownerId ? tail : all
     if (title) {
       title = title.replace(/^[\s/]/, '').replace(/\s+/g, ' ')
     }
@@ -122,7 +122,7 @@ module.exports = async (text) => {
     events = [
       ...events,
       {
-        owner,
+        ownerId,
         title,
         url,
         startedAt,

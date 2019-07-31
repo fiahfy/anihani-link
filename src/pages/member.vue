@@ -1,58 +1,60 @@
 <template>
-  <v-container pa-0>
-    <v-layout row wrap :class="{ 'pa-3': $vuetify.breakpoint.smAndUp }">
-      <v-flex md4 sm6 xs12>
-        <v-layout row wrap align-center pa-3>
-          <v-flex xs12 pa-3 text-xs-center>
+  <v-container class="pa-0">
+    <v-row :class="{ 'pa-3': $vuetify.breakpoint.smAndUp }">
+      <v-col md="4" sm="6" cols="12">
+        <v-row class="pa-3" align="center">
+          <v-col class="pa-3 text-center" cols="12">
             <v-avatar size="192" color="grey darken-4">
               <app-image
                 :src="`/img/members/${member.id}_192x192.png`"
                 :lazy-src="`/img/members/${member.id}_48x48.png`"
               >
-                <v-layout
+                <v-row
                   slot="placeholder"
-                  fill-height
-                  align-center
-                  justify-center
+                  class="fill-height"
+                  align="center"
+                  justify="center"
                 >
                   <v-progress-circular indeterminate color="grey lighten-5" />
-                </v-layout>
+                </v-row>
               </app-image>
             </v-avatar>
-          </v-flex>
-          <v-flex xs12 pa-3 text-xs-center title v-text="member.name_ja" />
+          </v-col>
+          <v-col
+            class="pa-3 text-center title"
+            cols="12"
+            v-text="member.name_ja"
+          />
           <!-- eslint-disable vue/no-v-html -->
-          <v-flex
-            xs12
-            pa-3
-            text-xs-center
-            caption
+          <v-col
+            class="pa-3 text-center caption"
+            cols="12"
             v-html="$options.filters.nl2br(member.description)"
           />
           <!-- eslint-enable vue/no-v-html -->
-          <v-flex xs12 pa-3 text-xs-left>
-            <v-layout pa-1 align-center>
+          <v-col class="pa-3 text-left" cols="12">
+            <v-row class="px-3 py-1 flex-nowrap" align="center">
               <img src="/img/twitter-logo.svg" height="30" class="mr-2" />
               <a
-                class="caption ellipsis text-decoration-none"
+                class="caption text-truncate text-decoration-none"
                 :href="`https://twitter.com/${member.twitter.screen_name}`"
                 v-text="`twitter.com/${member.twitter.screen_name}`"
               />
-            </v-layout>
-            <v-layout pa-1 align-center>
+            </v-row>
+            <v-row class="px-3 py-1 flex-nowrap" align="center">
               <img src="/img/youtube-logo.png" height="16" class="px-1 mr-2" />
               <a
-                class="caption ellipsis text-decoration-none"
+                class="caption text-truncate text-decoration-none"
                 :href="
                   `https://www.youtube.com/channel/${member.youtube.channel_id}`
                 "
                 v-text="`www.youtube.com/channel/${member.youtube.channel_id}`"
               />
-            </v-layout>
-          </v-flex>
-        </v-layout>
-      </v-flex>
-      <v-flex md8 sm6 xs12>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col md="8" sm="6" cols="12">
         <v-list subheader>
           <v-subheader class="subheading text-uppercase">Schedule</v-subheader>
           <v-divider />
@@ -75,16 +77,16 @@
           </template>
         </template>
         <v-list v-else>
-          <v-list-tile>
-            <v-list-tile-content>
-              <v-list-tile-title class="body-1 text-xs-center">
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title class="body-1 text-center">
                 No Events
-              </v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

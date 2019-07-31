@@ -4,6 +4,8 @@ html {
 .nuxt-progress {
   top: env(safe-area-inset-top) !important;
 }
-.text-decoration-none {
-  text-decoration: none;
+.v-application {
+  .text-decoration-none {
+    text-decoration: none;
+  }
 }
