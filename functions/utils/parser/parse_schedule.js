@@ -3,7 +3,6 @@ const jst = require('../jst')
 
 const Owner = {
   因幡はねる: 'haneru-inaba',
-  宇森ひなこ: 'hinako-umori',
   宗谷いちか: 'ichika-soya',
   日ノ隈らん: 'ran-hinokuma'
 }

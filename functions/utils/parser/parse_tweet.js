@@ -2,12 +2,12 @@ const jst = require('../jst')
 
 const Owner = {
   はねる: 'haneru-inaba',
-  ひなこ: 'hinako-umori',
   いちか: 'ichika-soya',
   らん: 'ran-hinokuma',
+  くく: 'kuku-kazami',
+  いづみ: 'izumi-yunohara',
   パトラ: 'patra-suo',
   シャル: 'charlotte-shimamura',
-  エリ: 'eli-sogetsu',
   ミコ: 'mico-sekishiro',
   メアリ: 'mary-saionji'
 }

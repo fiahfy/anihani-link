@@ -94,8 +94,9 @@ export default {
         {
           'charlotte-shimamura': 'rgba(103, 110, 228, 0.3)',
           'haneru-inaba': 'rgba(235, 205, 71, 0.3)',
-          'hinako-umori': 'rgba(240, 117, 168, 0.3)',
           'ichika-soya': 'rgba(32, 166, 223, 0.3)',
+          'izumi-yunohara': 'rgba(119, 74, 58, 0.3)',
+          'kuku-kazami': 'rgba(215, 86, 34, 0.3)',
           'mary-saionji': 'rgba(210, 108, 224, 0.3)',
           'mico-sekishiro': 'rgba(197, 208, 144, 0.3)',
           'patra-suo': 'rgba(217, 38, 107, 0.3)',

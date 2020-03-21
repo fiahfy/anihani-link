@@ -35,6 +35,30 @@
       "channel_id": "UCRvpMpzAXBRKJQuk-8-Sdvg"
     }
   },
+  "kuku-kazami": {
+    "name": "Kuku Kazami",
+    "name_ja": "風見くく",
+    "group": "ani-mare",
+    "description": "",
+    "twitter": {
+      "screen_name": "Kuku_Kazami"
+    },
+    "youtube": {
+      "channel_id": "UCXp7sNC0F_qkjickvlYkg-Q"
+    }
+  },
+  "izumi-yunohara": {
+    "name": "Izumi Yunohara",
+    "name_ja": "柚原いづみ",
+    "group": "ani-mare",
+    "description": "",
+    "twitter": {
+      "screen_name": "Izumi_Yunohara"
+    },
+    "youtube": {
+      "channel_id": "UCW8WKciBixmaqaGqrlTITRQ"
+    }
+  },
   "patra-suo": {
     "name": "Patra Suo",
     "name_ja": "周防パトラ",

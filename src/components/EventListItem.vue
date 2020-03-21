@@ -55,10 +55,10 @@ export default {
     color() {
       return {
         'charlotte-shimamura': '#676ee4',
-        'eli-sogetsu': '#94a2b8',
         'haneru-inaba': '#ebcd47',
-        'hinako-umori': '#f075a8',
         'ichika-soya': '#20a6df',
+        'izumi-yunohara': '#774a3a',
+        'kuku-kazami': '#d75622',
         'mary-saionji': '#d26ce0',
         'mico-sekishiro': '#c5d090',
         'patra-suo': '#d9266b',
